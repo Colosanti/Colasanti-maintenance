@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Colasanti's Weekly Vehicle Checklist</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  emailjs.init('GJhqhaqE-7vM3qsyw');
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1923;
+    --panel: #1a2635;
+    --panel2: #223044;
+    --accent: #f0a500;
+    --accent2: #e05c00;
+    --text: #e8edf2;
+    --muted: #7a8fa6;
+    --ok: #2ecc71;
+    --warn: #e74c3c;
+    --border: #2d4059;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a1520 0%, #1a2c42 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 18px 20px 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .header-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+
+  .header-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .header-text p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .week-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 18px 16px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* STEP CARDS */
+  .step-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .step-card.active { border-color: var(--accent); }
+
+  .step-header {
+    background: var(--panel2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-num {
+    background: var(--accent);
+    color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .step-body { padding: 16px; }
+
+  /* WEEK SELECTOR */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .week-btn {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .week-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .week-btn.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 800;
+  }
+
+  /* VAN SELECTOR */
+  .van-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .van-btn {
+    background: var(--panel2);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 14px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .van-btn .van-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .van-btn .van-vin {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .van-btn:hover { border-color: var(--accent); }
+  .van-btn.selected {
+    border-color: var(--accent);
+    background: rgba(240,165,0,0.1);
+  }
+
+  /* FORM FIELDS */
+  .form-row {
+    margin-bottom: 14px;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.05rem;
+    padding: 13px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+
+  /* TOGGLE BUTTONS */
+  .toggle-group {
+    display: flex;
+    gap: 10px;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 13px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .toggle-btn.yes.selected {
+    background: rgba(46,204,113,0.15);
+    border-color: var(--ok);
+    color: var(--ok);
+  }
+
+  .toggle-btn.no.selected {
+    background: rgba(231,76,60,0.15);
+    border-color: var(--warn);
+    color: var(--warn);
+  }
+
+  /* FUEL GAUGE */
+  .fuel-options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .fuel-btn {
+    padding: 12px 6px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--panel2);
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .fuel-btn.selected {
+    border-color: var(--accent);
+    background: rgba(240,165,0,0.15);
+    color: var(--accent);
+  }
+
+  /* DEFECT SECTION */
+  .defect-toggle-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .defect-area {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    padding: 13px 14px;
+    outline: none;
+    resize: vertical;
+    min-height: 90px;
+    transition: border-color 0.2s;
+  }
+
+  .defect-area:focus { border-color: var(--warn); }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    color: #000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 18px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 6px;
+  }
+
+  .submit-btn:hover { opacity: 0.92; }
+  .submit-btn:active { transform: scale(0.99); }
+
+  /* SUCCESS */
+  .success-panel {
+    display: none;
+    background: rgba(46,204,113,0.1);
+    border: 2px solid var(--ok);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .success-panel.show { display: block; }
+
+  .success-panel h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--ok);
+    margin-bottom: 6px;
+  }
+
+  .success-panel p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .summary-box {
+    background: var(--panel2);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .summary-box strong {
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .new-entry-btn {
+    background: var(--panel2);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  /* QR SECTION */
+  .qr-section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .qr-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  #qrcode {
+    display: inline-block;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .qr-note {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* OIL CHANGE WARNING */
+  .oil-warning {
+    display: none;
+    background: rgba(231,76,60,0.15);
+    border: 2px solid var(--warn);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warn);
+    letter-spacing: 0.5px;
+  }
+
+  .oil-warning.show { display: block; }
+
+  .form-row.oil-alert label {
+    color: var(--warn);
+  }
+
+  select.form-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f0a500' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  select.form-input option {
+    background: #1a2635;
+    color: #e8edf2;
+  }
+
+  /* HIDDEN */
+  .hidden { display: none; }
+
+  /* SELECTED VAN DISPLAY */
+  .selected-van-display {
+    background: rgba(240,165,0,0.1);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🚐</div>
+  <div class="header-text">
+    <h1>Colasanti's</h1>
+    <p>Weekly Vehicle Checklist</p>
+  </div>
+  <div class="week-badge" id="headerWeek">Select Week</div>
+</div>
+
+<div class="content">
+
+  <!-- STEP 1: WEEK -->
+  <div class="step-card active" id="card-week">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">Select Week</div>
+    </div>
+    <div class="step-body">
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: VEHICLE -->
+  <div class="step-card" id="card-van">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">Select Vehicle</div>
+    </div>
+    <div class="step-body">
+      <div class="van-grid" id="vanGrid"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: CHECKLIST -->
+  <div class="step-card hidden" id="card-form">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">Complete Inspection</div>
+    </div>
+    <div class="step-body">
+
+      <div class="selected-van-display" id="selectedVanDisplay"></div>
+
+      <!-- STAFF NAME -->
+      <div class="form-row">
+        <label class="form-label">👤 Staff Name</label>
+        <select class="form-input" id="staffNameSelect" onchange="handleNameSelect(this)">
+          <option value="">— Select your name —</option>
+          <option value="Roman">Roman</option>
+          <option value="Jason B">Jason B</option>
+          <option value="Jason R">Jason R</option>
+          <option value="__other__">Other (type name)</option>
+        </select>
+        <input class="form-input" id="staffNameOther" type="text" placeholder="Enter your name" autocomplete="off"
+          style="margin-top:8px; display:none;">
+        <input type="hidden" id="staffName">
+      </div>
+
+      <hr class="divider">
+
+      <!-- MILEAGE -->
+      <div class="form-row">
+        <label class="form-label">📍 Previous Mileage (KM)</label>
+        <input class="form-input" id="prevKm" type="number" placeholder="e.g. 85000" inputmode="numeric" onchange="checkMileageGap()" oninput="checkMileageGap()">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">📍 Current Mileage (KM)</label>
+        <input class="form-input" id="currKm" type="number" placeholder="e.g. 85450" inputmode="numeric" onchange="checkMileageGap()" oninput="checkMileageGap()">
+      </div>
+
+      <hr class="divider">
+
+      <!-- OIL CHANGE -->
+      <div class="form-row" id="oilRow">
+        <label class="form-label" id="oilLabel">🔧 Oil Change Required?</label>
+        <div class="toggle-group">
+          <button class="toggle-btn yes" onclick="toggleBtn('oil','yes',this)">✅ YES</button>
+          <button class="toggle-btn no" onclick="toggleBtn('oil','no',this)">❌ NO</button>
+        </div>
+        <input type="hidden" id="oilVal">
+        <div class="oil-warning" id="oilWarning">
+          ⚠️ OIL CHANGE DUE — Mileage gap exceeds 8,000 km!
+        </div>
+      </div>
+
+      <!-- FUEL LEVEL -->
+      <div class="form-row">
+        <label class="form-label">⛽ Fuel Level</label>
+        <div class="fuel-options">
+          <button class="fuel-btn" onclick="selectFuel(this,'Empty')">Empty</button>
+          <button class="fuel-btn" onclick="selectFuel(this,'1/4')">¼</button>
+          <button class="fuel-btn" onclick="selectFuel(this,'1/2')">½</button>
+          <button class="fuel-btn" onclick="selectFuel(this,'3/4')">¾</button>
+          <button class="fuel-btn" onclick="selectFuel(this,'Full')">Full</button>
+        </div>
+        <input type="hidden" id="fuelVal">
+      </div>
+
+      <hr class="divider">
+
+      <!-- COOLANT -->
+      <div class="form-row">
+        <label class="form-label">🌡️ Coolant Level</label>
+        <div class="toggle-group">
+          <button class="toggle-btn yes" onclick="toggleBtn('coolant','ok',this)">✅ OK</button>
+          <button class="toggle-btn no" onclick="toggleBtn('coolant','low',this)">⚠️ LOW</button>
+        </div>
+        <input type="hidden" id="coolantVal">
+      </div>
+
+      <!-- TIRES -->
+      <div class="form-row">
+        <label class="form-label">🔘 Tire Condition</label>
+        <div class="toggle-group">
+          <button class="toggle-btn yes" onclick="toggleBtn('tires','good',this)">✅ GOOD</button>
+          <button class="toggle-btn no" onclick="toggleBtn('tires','attention',this)">⚠️ NEEDS ATTENTION</button>
+        </div>
+        <input type="hidden" id="tiresVal">
+      </div>
+
+      <!-- WIPERS -->
+      <div class="form-row">
+        <label class="form-label">🪟 Windshield Wipers</label>
+        <div class="toggle-group">
+          <button class="toggle-btn yes" onclick="toggleBtn('wipers','good',this)">✅ GOOD</button>
+          <button class="toggle-btn no" onclick="toggleBtn('wipers','replace',this)">⚠️ NEEDS REPLACING</button>
+        </div>
+        <input type="hidden" id="wipersVal">
+      </div>
+
+      <hr class="divider">
+
+      <!-- DEFECTS -->
+      <div class="form-row">
+        <label class="form-label">⚠️ Any Defects or Issues?</label>
+        <div class="toggle-group defect-toggle-row">
+          <button class="toggle-btn yes" onclick="toggleDefect('yes',this)">✅ ALL GOOD</button>
+          <button class="toggle-btn no" onclick="toggleDefect('no',this)">⚠️ ISSUE FOUND</button>
+        </div>
+        <input type="hidden" id="defectToggle">
+      </div>
+
+      <div id="defectDetail" class="hidden form-row">
+        <label class="form-label">Describe the Issue</label>
+        <textarea class="defect-area" id="defectText" placeholder="Describe what was found..."></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <button class="submit-btn" onclick="submitForm()">✔ SUBMIT INSPECTION</button>
+
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="successPanel">
+    <h2>✅ Inspection Logged!</h2>
+    <p>Record submitted successfully</p>
+    <div class="summary-box" id="summaryBox"></div>
+    <button class="new-entry-btn" onclick="resetForm()">+ New Inspection</button>
+  </div>
+
+  <!-- QR CODE -->
+  <div class="qr-section">
+    <h3>📲 Scan to open this form</h3>
+    <div id="qrcode"></div>
+    <p class="qr-note">Print and post this QR code for quick tablet access</p>
+  </div>
+
+</div>
+
+<script>
+  // DATA
+  const vans = [
+    { name: 'Van 1', vin: 'BNAC599' },
+    { name: 'Van 2', vin: 'AFRJ129' },
+    { name: 'Van 3', vin: 'BXFM888' },
+    { name: 'Van 4 (White)', vin: 'DAAL334' },
+    { name: 'Van 5', vin: 'CDAB073' },
+    { name: 'Van 6 Promaster City', vin: '' },
+    { name: 'Promaster', vin: 'AT93700' },
+    { name: 'KIA', vin: '' },
+  ];
+
+  let selectedWeek = null;
+  let selectedVan = null;
+
+  // BUILD WEEK GRID
+  const weekGrid = document.getElementById('weekGrid');
+  for (let w = 1; w <= 52; w++) {
+    const btn = document.createElement('button');
+    btn.className = 'week-btn';
+    btn.textContent = w;
+    btn.onclick = () => selectWeek(w, btn);
+    weekGrid.appendChild(btn);
+  }
+
+  // Auto-select current week
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const currentWeek = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+  const autoWeek = Math.min(currentWeek, 52);
+
+  // BUILD VAN GRID
+  const vanGrid = document.getElementById('vanGrid');
+  vans.forEach((v, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'van-btn';
+    btn.innerHTML = `<span class="van-name">${v.name}</span><span class="van-vin">${v.vin ? 'VIN: ' + v.vin : '&nbsp;'}</span>`;
+    btn.onclick = () => selectVan(i, btn);
+    vanGrid.appendChild(btn);
+  });
+
+  function selectWeek(w, btn) {
+    selectedWeek = w;
+    document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('headerWeek').textContent = 'Week ' + w;
+    document.getElementById('card-week').classList.remove('active');
+    document.getElementById('card-van').classList.add('active');
+    document.getElementById('card-van').scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function selectVan(i, btn) {
+    selectedVan = vans[i];
+    document.querySelectorAll('.van-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('card-van').classList.remove('active');
+    const formCard = document.getElementById('card-form');
+    formCard.classList.remove('hidden');
+    formCard.classList.add('active');
+    const disp = document.getElementById('selectedVanDisplay');
+    disp.textContent = '🚐 ' + selectedVan.name + (selectedVan.vin ? ' — ' + selectedVan.vin : '');
+    disp.style.display = 'block';
+    formCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function handleNameSelect(sel) {
+    const other = document.getElementById('staffNameOther');
+    const hidden = document.getElementById('staffName');
+    if (sel.value === '__other__') {
+      other.style.display = 'block';
+      other.focus();
+      hidden.value = '';
+      other.oninput = () => hidden.value = other.value.trim();
+    } else {
+      other.style.display = 'none';
+      other.value = '';
+      hidden.value = sel.value;
+    }
+  }
+
+  function checkMileageGap() {
+    const prev = parseInt(document.getElementById('prevKm').value) || 0;
+    const curr = parseInt(document.getElementById('currKm').value) || 0;
+    const gap = curr - prev;
+    const oilWarning = document.getElementById('oilWarning');
+    const oilRow = document.getElementById('oilRow');
+    const oilLabel = document.getElementById('oilLabel');
+
+    if (prev > 0 && curr > 0 && gap >= 8000) {
+      oilWarning.classList.add('show');
+      oilRow.classList.add('oil-alert');
+      oilLabel.textContent = '🔧 Oil Change Required? (' + gap.toLocaleString() + ' km gap!)';
+      // Auto-select YES for oil change
+      const yesBtn = oilRow.querySelector('.toggle-btn.yes');
+      document.querySelectorAll('#oilRow .toggle-btn').forEach(b => b.classList.remove('selected'));
+      yesBtn.classList.add('selected');
+      document.getElementById('oilVal').value = 'yes';
+    } else {
+      oilWarning.classList.remove('show');
+      oilRow.classList.remove('oil-alert');
+      oilLabel.textContent = '🔧 Oil Change Required?';
+    }
+  }
+
+  function toggleBtn(field, val, btn) {
+    const siblings = btn.parentElement.querySelectorAll('.toggle-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById(field + 'Val').value = val;
+  }
+
+  function toggleDefect(val, btn) {
+    const siblings = btn.parentElement.querySelectorAll('.toggle-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('defectToggle').value = val;
+    document.getElementById('defectDetail').classList.toggle('hidden', val === 'yes');
+  }
+
+  function selectFuel(btn, val) {
+    document.querySelectorAll('.fuel-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('fuelVal').value = val;
+  }
+
+  function submitForm() {
+    const staff = document.getElementById('staffName').value.trim();
+    const prevKm = document.getElementById('prevKm').value;
+    const currKm = document.getElementById('currKm').value;
+    const oil = document.getElementById('oilVal').value;
+    const fuel = document.getElementById('fuelVal').value;
+    const coolant = document.getElementById('coolantVal').value;
+    const tires = document.getElementById('tiresVal').value;
+    const wipers = document.getElementById('wipersVal').value;
+    const defectToggle = document.getElementById('defectToggle').value;
+    const defectText = document.getElementById('defectText').value.trim();
+
+    if (!selectedWeek) return alert('Please select a week.');
+    if (!selectedVan) return alert('Please select a vehicle.');
+    if (!staff) return alert('Please enter your name.');
+    if (!prevKm) return alert('Please enter previous mileage.');
+    if (!currKm) return alert('Please enter current mileage.');
+    if (!oil) return alert('Please indicate if an oil change is required.');
+    if (!fuel) return alert('Please select the fuel level.');
+    if (!coolant) return alert('Please check the coolant level.');
+    if (!tires) return alert('Please check tire condition.');
+    if (!wipers) return alert('Please check the windshield wipers.');
+    if (!defectToggle) return alert('Please indicate if there are any defects.');
+
+    const defectStatus = defectToggle === 'yes' ? '✅ No Issues' : '⚠️ Issue: ' + (defectText || 'See notes');
+
+    const summary = `
+      <strong>Week</strong> ${selectedWeek}<br>
+      <strong>Vehicle</strong> ${selectedVan.name}${selectedVan.vin ? ' (' + selectedVan.vin + ')' : ''}<br>
+      <strong>Staff</strong> ${staff}<br>
+      <strong>Previous KM</strong> ${parseInt(prevKm).toLocaleString()}<br>
+      <strong>Current KM</strong> ${parseInt(currKm).toLocaleString()}<br>
+      <strong>KM This Week</strong> ${(parseInt(currKm) - parseInt(prevKm)).toLocaleString()}<br>
+      <strong>Oil Change Needed</strong> ${oil === 'yes' ? '✅ Yes' : '❌ No'}<br>
+      <strong>Fuel Level</strong> ${fuel}<br>
+      <strong>Coolant Level</strong> ${coolant === 'ok' ? '✅ OK' : '⚠️ Low'}<br>
+      <strong>Tire Condition</strong> ${tires === 'good' ? '✅ Good' : '⚠️ Needs Attention'}<br>
+      <strong>Windshield Wipers</strong> ${wipers === 'good' ? '✅ Good' : '⚠️ Needs Replacing'}<br>
+      <strong>Defects</strong> ${defectStatus}
+    `;
+
+    // Build issues list for subject line
+    const issues = [];
+    if (oil === 'yes') issues.push('Oil Change Due');
+    if (coolant === 'low') issues.push('Low Coolant');
+    if (tires === 'attention') issues.push('Tire Attention');
+    if (wipers === 'replace') issues.push('Wipers Need Replacing');
+    if (defectToggle === 'no') issues.push('Defect Reported');
+
+    const timestamp = new Date().toLocaleString('en-CA', {
+      weekday: 'long', year: 'numeric', month: 'long',
+      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    const subjectLine = issues.length > 0
+      ? `⚠️ Colasanti's Vehicle Check — ISSUES FOUND: ${issues.join(', ')} | ${selectedVan.name} | ${staff} | ${timestamp}`
+      : `✅ Colasanti's Vehicle Check — All Clear | ${selectedVan.name} | ${staff} | ${timestamp}`;
+
+    const emailBody = `
+COLASANTI'S WEEKLY VEHICLE CHECKLIST
+=====================================
+Submitted: ${timestamp}
+
+VEHICLE: ${selectedVan.name}${selectedVan.vin ? ' (VIN: ' + selectedVan.vin + ')' : ''}
+STAFF: ${staff}
+WEEK: ${selectedWeek}
+
+MILEAGE
+-------
+Previous KM: ${parseInt(prevKm).toLocaleString()}
+Current KM: ${parseInt(currKm).toLocaleString()}
+KM This Week: ${(parseInt(currKm) - parseInt(prevKm)).toLocaleString()}
+
+INSPECTION ITEMS
+----------------
+Oil Change Required: ${oil === 'yes' ? '⚠️ YES' : '✅ No'}
+Fuel Level: ${fuel}
+Coolant Level: ${coolant === 'ok' ? '✅ OK' : '⚠️ LOW'}
+Tire Condition: ${tires === 'good' ? '✅ Good' : '⚠️ NEEDS ATTENTION'}
+Windshield Wipers: ${wipers === 'good' ? '✅ Good' : '⚠️ NEEDS REPLACING'}
+
+DEFECTS
+-------
+${defectToggle === 'yes' ? '✅ No Issues Reported' : '⚠️ ISSUE FOUND: ' + (defectText || 'See notes')}
+
+=====================================
+Submitted via Colasanti's Maintenance System
+    `;
+
+    // Send email
+    emailjs.send('service_a35rfka', 'template_ehen3f7', {
+      to_email: 'maintenance@colasanti.com',
+      subject: subjectLine,
+      message: emailBody,
+      from_name: 'Colasanti Maintenance System',
+    }).then(() => {
+      console.log('Email sent successfully');
+    }).catch((error) => {
+      console.error('Email error:', error);
+    });
+
+    document.getElementById('summaryBox').innerHTML = summary;
+    document.getElementById('card-form').classList.add('hidden');
+    document.getElementById('successPanel').classList.add('show');
+    document.getElementById('successPanel').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetForm() {
+    selectedVan = null;
+    document.getElementById('staffNameSelect').value = '';
+    document.getElementById('staffNameOther').style.display = 'none';
+    document.getElementById('staffNameOther').value = '';
+    document.getElementById('staffName').value = '';
+    document.getElementById('prevKm').value = '';
+    document.getElementById('currKm').value = '';
+    document.getElementById('oilVal').value = '';
+    document.getElementById('fuelVal').value = '';
+    document.getElementById('coolantVal').value = '';
+    document.getElementById('tiresVal').value = '';
+    document.getElementById('wipersVal').value = '';
+    document.getElementById('defectToggle').value = '';
+    document.getElementById('defectText').value = '';
+    document.querySelectorAll('.toggle-btn, .fuel-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.van-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('oilWarning').classList.remove('show');
+    document.getElementById('oilRow').classList.remove('oil-alert');
+    document.getElementById('oilLabel').textContent = '🔧 Oil Change Required?';
+    document.getElementById('defectDetail').classList.add('hidden');
+    document.getElementById('card-form').classList.add('hidden');
+    document.getElementById('card-form').classList.remove('active');
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('card-van').classList.add('active');
+    document.getElementById('selectedVanDisplay').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // QR CODE - using Google Charts API as reliable fallback
+  window.addEventListener('load', () => {
+    const url = 'https://bucolic-hummingbird-336829.netlify.app';
+    const qrDiv = document.getElementById('qrcode');
+    const img = document.createElement('img');
+    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
+    img.alt = 'QR Code';
+    img.width = 160;
+    img.height = 160;
+    img.style.borderRadius = '4px';
+    qrDiv.appendChild(img);
+
+    // Auto-select current week
+    const weekBtns = document.querySelectorAll('.week-btn');
+    if (weekBtns[autoWeek - 1]) {
+      selectWeek(autoWeek, weekBtns[autoWeek - 1]);
+    }
+  });
+</script>
+</body>
+</html>
