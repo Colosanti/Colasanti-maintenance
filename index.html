@@ -492,12 +492,150 @@
     display: none;
   }
 
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 14px 0;
+  /* SOP PANEL */
+  .sop-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
   }
-</style>
+
+  .sop-overlay.open { display: block; }
+
+  .sop-panel {
+    position: fixed;
+    top: 0; right: -100%;
+    width: 90%;
+    max-width: 420px;
+    height: 100%;
+    background: #1a2635;
+    z-index: 300;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .sop-panel.open { right: 0; }
+
+  .sop-panel-header {
+    background: linear-gradient(135deg, #0a1520 0%, #1a2c42 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .sop-panel-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .sop-close {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--text);
+    font-size: 1.4rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sop-content { padding: 16px; }
+
+  .sop-section {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .sop-section-header {
+    background: rgba(240,165,0,0.1);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sop-section-header h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+  }
+
+  .sop-section-body {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .sop-section-body ol,
+  .sop-section-body ul {
+    padding-left: 18px;
+  }
+
+  .sop-section-body li {
+    margin-bottom: 6px;
+  }
+
+  .sop-section-body .warning {
+    background: rgba(231,76,60,0.1);
+    border-left: 3px solid var(--warn);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+    color: #ff8a80;
+  }
+
+  .sop-section-body .tip {
+    background: rgba(46,204,113,0.1);
+    border-left: 3px solid var(--ok);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 8px 0;
+    font-size: 0.85rem;
+    color: #69f0ae;
+  }
+
+  .sop-btn {
+    background: rgba(240,165,0,0.15);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .sop-btn:hover { background: rgba(240,165,0,0.25); }
+
+
 </head>
 <body>
 
@@ -507,7 +645,117 @@
     <h1>Colasanti's</h1>
     <p>Weekly Vehicle Checklist</p>
   </div>
+  <button class="sop-btn" onclick="openSOP()">📋 SOP</button>
   <div class="week-badge" id="headerWeek">Select Week</div>
+</div>
+
+<!-- SOP OVERLAY -->
+<div class="sop-overlay" id="sopOverlay" onclick="closeSOP()"></div>
+
+<!-- SOP SLIDE OUT PANEL -->
+<div class="sop-panel" id="sopPanel">
+  <div class="sop-panel-header">
+    <h2>📋 Vehicle Inspection SOP</h2>
+    <button class="sop-close" onclick="closeSOP()">✕</button>
+  </div>
+  <div class="sop-content">
+
+    <!-- HOW TO COMPLETE -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>📝 How to Complete This Inspection</h3>
+      </div>
+      <div class="sop-section-body">
+        <ol>
+          <li>Select the current week number from the grid</li>
+          <li>Select the vehicle you are inspecting</li>
+          <li>Enter your name from the dropdown</li>
+          <li>Record the previous and current mileage from the odometer</li>
+          <li>Check all fluid levels and vehicle condition items</li>
+          <li>Report any defects immediately to your supervisor</li>
+          <li>Hit Submit when complete</li>
+        </ol>
+        <div class="tip">✅ This form must be completed at the start of each week before the vehicle is used.</div>
+      </div>
+    </div>
+
+    <!-- TOOLS REQUIRED -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>🔧 Tools Required</h3>
+      </div>
+      <div class="sop-section-body">
+        <ul>
+          <li>Clean cloth or paper towel for dipstick checks</li>
+          <li>Tire pressure gauge</li>
+          <li>Flashlight (for undercarriage inspection)</li>
+          <li>Gloves (recommended when checking fluids)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FLUIDS & CHEMICALS -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>⚗️ Fluids & Chemicals</h3>
+      </div>
+      <div class="sop-section-body">
+        <ul>
+          <li><strong>Engine Oil</strong> — [Enter oil type/grade here] — stored in [location]</li>
+          <li><strong>Coolant/Antifreeze</strong> — [Enter product name here] — stored in [location]</li>
+          <li><strong>Windshield Washer Fluid</strong> — [Enter product name here] — stored in [location]</li>
+          <li><strong>Brake Fluid</strong> — [Enter product name here] — stored in [location]</li>
+        </ul>
+        <div class="warning">⚠️ Always wear gloves when handling fluids. Dispose of used fluids properly — do not pour down drains.</div>
+      </div>
+    </div>
+
+    <!-- SDS SHEETS -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>⚠️ Safety Data Sheets (SDS)</h3>
+      </div>
+      <div class="sop-section-body">
+        <ul>
+          <li><strong>Engine Oil SDS</strong> — [Add link or location here]</li>
+          <li><strong>Coolant SDS</strong> — [Add link or location here]</li>
+          <li><strong>Washer Fluid SDS</strong> — [Add link or location here]</li>
+          <li><strong>Brake Fluid SDS</strong> — [Add link or location here]</li>
+        </ul>
+        <div class="warning">⚠️ Physical SDS binder is located at [enter location]. In case of exposure contact your supervisor immediately and call 911 if required.</div>
+      </div>
+    </div>
+
+    <!-- PPE -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>🦺 PPE Required</h3>
+      </div>
+      <div class="sop-section-body">
+        <ul>
+          <li>Safety gloves when handling fluids</li>
+          <li>Safety glasses when checking under hood</li>
+          <li>Steel toe boots when inspecting tires</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3>📞 Who to Contact</h3>
+      </div>
+      <div class="sop-section-body">
+        <ul>
+          <li><strong>Maintenance Supervisor</strong> — [Name] — [Phone]</li>
+          <li><strong>Emergency</strong> — 911</li>
+          <li><strong>Maintenance Email</strong> — maintenance@colasanti.com</li>
+        </ul>
+        <div class="tip">✅ If a vehicle has a defect do NOT operate it until it has been inspected and cleared by the maintenance team.</div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <div class="content">
@@ -673,6 +921,18 @@
 </div>
 
 <script>
+  function openSOP() {
+    document.getElementById('sopPanel').classList.add('open');
+    document.getElementById('sopOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSOP() {
+    document.getElementById('sopPanel').classList.remove('open');
+    document.getElementById('sopOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   // DATA
   const vans = [
     { name: 'Van 1', vin: 'BNAC599' },
