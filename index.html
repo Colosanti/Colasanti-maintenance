@@ -614,6 +614,25 @@
     color: #69f0ae;
   }
 
+  .lang-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .lang-btn:hover { background: rgba(255,255,255,0.2); }
+  .lang-btn.es { background: rgba(240,165,0,0.2); border-color: var(--accent); color: var(--accent); }
+
   .sop-btn {
     background: rgba(240,165,0,0.15);
     border: 2px solid var(--accent);
@@ -639,8 +658,9 @@
   <div class="header-icon">🚐</div>
   <div class="header-text">
     <h1>Colasanti's</h1>
-    <p>Weekly Vehicle Checklist</p>
+    <p id="headerSubtitle">Weekly Vehicle Checklist</p>
   </div>
+  <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">🇲🇽 ES</button>
   <button class="sop-btn" onclick="openSOP()">📋 SOP</button>
   <div class="week-badge" id="headerWeek">Select Week</div>
 </div>
@@ -651,7 +671,7 @@
 <!-- SOP SLIDE OUT PANEL -->
 <div class="sop-panel" id="sopPanel">
   <div class="sop-panel-header">
-    <h2>📋 Vehicle Inspection SOP</h2>
+    <h2 id="sopTitle">📋 Vehicle Inspection SOP</h2>
     <button class="sop-close" onclick="closeSOP()">✕</button>
   </div>
   <div class="sop-content">
@@ -659,9 +679,9 @@
     <!-- HOW TO COMPLETE -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>📝 How to Complete This Inspection</h3>
+        <h3 id="sopHow">📝 How to Complete This Inspection</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopHowBody">
         <ol>
           <li>Select the current week number from the grid</li>
           <li>Select the vehicle you are inspecting</li>
@@ -678,9 +698,9 @@
     <!-- TOOLS REQUIRED -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>🔧 Tools Required</h3>
+        <h3 id="sopTools">🔧 Tools Required</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopToolsBody">
         <ul>
           <li>Clean cloth or paper towel for dipstick checks</li>
           <li>Tire pressure gauge</li>
@@ -693,9 +713,9 @@
     <!-- FLUIDS & CHEMICALS -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>⚗️ Fluids & Chemicals</h3>
+        <h3 id="sopFluids">⚗️ Fluids & Chemicals</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopFluidsBody">
         <ul>
           <li><strong>Engine Oil</strong> — [Enter oil type/grade here] — stored in [location]</li>
           <li><strong>Coolant/Antifreeze</strong> — [Enter product name here] — stored in [location]</li>
@@ -709,9 +729,9 @@
     <!-- SDS SHEETS -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>⚠️ Safety Data Sheets (SDS)</h3>
+        <h3 id="sopSDS">⚠️ Safety Data Sheets (SDS)</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopSDSBody">
         <ul>
           <li><strong>Engine Oil SDS</strong> — [Add link or location here]</li>
           <li><strong>Coolant SDS</strong> — [Add link or location here]</li>
@@ -725,9 +745,9 @@
     <!-- PPE -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>🦺 PPE Required</h3>
+        <h3 id="sopPPE">🦺 PPE Required</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopPPEBody">
         <ul>
           <li>Safety gloves when handling fluids</li>
           <li>Safety glasses when checking under hood</li>
@@ -739,9 +759,9 @@
     <!-- CONTACTS -->
     <div class="sop-section">
       <div class="sop-section-header">
-        <h3>📞 Who to Contact</h3>
+        <h3 id="sopContacts">📞 Who to Contact</h3>
       </div>
-      <div class="sop-section-body">
+      <div class="sop-section-body" id="sopContactsBody">
         <ul>
           <li><strong>Maintenance Supervisor</strong> — [Name] — [Phone]</li>
           <li><strong>Emergency</strong> — 911</li>
@@ -847,7 +867,7 @@
       <hr class="divider">
 
       <!-- COOLANT -->
-      <div class="form-row">
+      <div class="form-row" id="coolantRow">
         <label class="form-label">🌡️ Coolant Level</label>
         <div class="toggle-group">
           <button class="toggle-btn yes" onclick="toggleBtn('coolant','ok',this)">✅ OK</button>
@@ -857,7 +877,7 @@
       </div>
 
       <!-- TIRES -->
-      <div class="form-row">
+      <div class="form-row" id="tiresRow">
         <label class="form-label">🔘 Tire Condition</label>
         <div class="toggle-group">
           <button class="toggle-btn yes" onclick="toggleBtn('tires','good',this)">✅ GOOD</button>
@@ -867,7 +887,7 @@
       </div>
 
       <!-- WIPERS -->
-      <div class="form-row">
+      <div class="form-row" id="wipersRow">
         <label class="form-label">🪟 Windshield Wipers</label>
         <div class="toggle-group">
           <button class="toggle-btn yes" onclick="toggleBtn('wipers','good',this)">✅ GOOD</button>
@@ -881,7 +901,7 @@
       <!-- DEFECTS -->
       <div class="form-row">
         <label class="form-label">⚠️ Any Defects or Issues?</label>
-        <div class="toggle-group defect-toggle-row">
+        <div class="toggle-group defect-toggle-row" id="defectToggleRow">
           <button class="toggle-btn yes" onclick="toggleDefect('yes',this)">✅ ALL GOOD</button>
           <button class="toggle-btn no" onclick="toggleDefect('no',this)">⚠️ ISSUE FOUND</button>
         </div>
@@ -917,6 +937,308 @@
 </div>
 
 <script>
+  // LANGUAGE SYSTEM
+  let currentLang = 'en';
+
+  const translations = {
+    en: {
+      subtitle: 'Weekly Vehicle Checklist',
+      selectWeek: 'Select Week',
+      selectVehicle: 'Select Vehicle',
+      completeInspection: 'Complete Inspection',
+      staffName: '👤 Staff Name',
+      selectName: '— Select your name —',
+      other: 'Other (type name)',
+      enterName: 'Enter your name',
+      prevKm: '📍 Previous Mileage (KM)',
+      currKm: '📍 Current Mileage (KM)',
+      oilChange: '🔧 Oil Change Required?',
+      oilWarning: '⚠️ OIL CHANGE DUE — Mileage gap exceeds 8,000 km!',
+      yes: '✅ YES',
+      no: '❌ NO',
+      fuelLevel: '⛽ Fuel Level',
+      coolant: '🌡️ Coolant Level',
+      ok: '✅ OK',
+      low: '⚠️ LOW',
+      tires: '🔘 Tire Condition',
+      good: '✅ GOOD',
+      attention: '⚠️ NEEDS ATTENTION',
+      wipers: '🪟 Windshield Wipers',
+      replace: '⚠️ NEEDS REPLACING',
+      defects: '⚠️ Any Defects or Issues?',
+      allGood: '✅ ALL GOOD',
+      issueFound: '⚠️ ISSUE FOUND',
+      describeIssue: 'Describe the Issue',
+      describePlaceholder: 'Describe what was found...',
+      submit: '✔ SUBMIT INSPECTION',
+      successTitle: '✅ Inspection Logged!',
+      successSub: 'Record submitted successfully',
+      newEntry: '+ New Inspection',
+      scanText: '📲 Scan to open this form',
+      printText: 'Print and post this QR code for quick tablet access',
+      sopBtn: '📋 SOP',
+      weekBadge: 'Select Week',
+    },
+    es: {
+      subtitle: 'Lista de Verificación Semanal de Vehículos',
+      selectWeek: 'Seleccionar Semana',
+      selectVehicle: 'Seleccionar Vehículo',
+      completeInspection: 'Completar Inspección',
+      staffName: '👤 Nombre del Empleado',
+      selectName: '— Selecciona tu nombre —',
+      other: 'Otro (escribe tu nombre)',
+      enterName: 'Escribe tu nombre',
+      prevKm: '📍 Kilometraje Anterior (KM)',
+      currKm: '📍 Kilometraje Actual (KM)',
+      oilChange: '🔧 ¿Se Requiere Cambio de Aceite?',
+      oilWarning: '⚠️ CAMBIO DE ACEITE REQUERIDO — ¡Diferencia de más de 8,000 km!',
+      yes: '✅ SÍ',
+      no: '❌ NO',
+      fuelLevel: '⛽ Nivel de Combustible',
+      coolant: '🌡️ Nivel de Refrigerante',
+      ok: '✅ BIEN',
+      low: '⚠️ BAJO',
+      tires: '🔘 Condición de las Llantas',
+      good: '✅ BIEN',
+      attention: '⚠️ NECESITA ATENCIÓN',
+      wipers: '🪟 Limpiaparabrisas',
+      replace: '⚠️ NECESITA REEMPLAZO',
+      defects: '⚠️ ¿Hay Defectos o Problemas?',
+      allGood: '✅ TODO BIEN',
+      issueFound: '⚠️ PROBLEMA ENCONTRADO',
+      describeIssue: 'Describe el Problema',
+      describePlaceholder: 'Describe lo que encontraste...',
+      submit: '✔ ENVIAR INSPECCIÓN',
+      successTitle: '✅ ¡Inspección Registrada!',
+      successSub: 'Registro enviado exitosamente',
+      newEntry: '+ Nueva Inspección',
+      scanText: '📲 Escanear para abrir este formulario',
+      printText: 'Imprime y coloca este código QR para acceso rápido',
+      sopBtn: '📋 SOP',
+      weekBadge: 'Seleccionar Semana',
+    }
+  };
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    applyLanguage();
+  }
+
+  function applyLanguage() {
+    const t = translations[currentLang];
+    const btn = document.getElementById('langBtn');
+
+    // Update button
+    if (currentLang === 'es') {
+      btn.textContent = '🇨🇦 EN';
+      btn.classList.add('es');
+    } else {
+      btn.textContent = '🇲🇽 ES';
+      btn.classList.remove('es');
+    }
+
+    // Header
+    document.getElementById('headerSubtitle').textContent = t.subtitle;
+    if (!document.getElementById('headerWeek').textContent.includes('Week') &&
+        !document.getElementById('headerWeek').textContent.includes('Semana')) {
+      document.getElementById('headerWeek').textContent = t.weekBadge;
+    }
+
+    // Step titles
+    document.querySelectorAll('.step-title')[0].textContent = t.selectWeek;
+    document.querySelectorAll('.step-title')[1].textContent = t.selectVehicle;
+    document.querySelectorAll('.step-title')[2].textContent = t.completeInspection;
+
+    // Form labels
+    document.getElementById('oilLabel').textContent = t.oilChange;
+    document.getElementById('oilWarning').textContent = t.oilWarning;
+    document.querySelector('label[for="staffNameSelect"], .form-label').textContent = t.staffName;
+
+    // All form labels
+    const labels = document.querySelectorAll('.form-label');
+    labels[0].textContent = t.staffName;
+    labels[1].textContent = t.prevKm;
+    labels[2].textContent = t.currKm;
+    labels[4].textContent = t.fuelLevel;
+    labels[5].textContent = t.coolant;
+    labels[6].textContent = t.tires;
+    labels[7].textContent = t.wipers;
+    labels[8].textContent = t.defects;
+    labels[9].textContent = t.describeIssue;
+
+    // Dropdowns
+    document.querySelector('#staffNameSelect option[value=""]').textContent = t.selectName;
+    document.querySelector('#staffNameSelect option[value="__other__"]').textContent = t.other;
+    document.getElementById('staffNameOther').placeholder = t.enterName;
+
+    // Input placeholders
+    document.getElementById('prevKm').placeholder = 'e.g. 85000';
+    document.getElementById('currKm').placeholder = 'e.g. 85450';
+    document.getElementById('defectText').placeholder = t.describePlaceholder;
+
+    // Toggle buttons - Oil
+    const oilBtns = document.querySelectorAll('#oilRow .toggle-btn');
+    oilBtns[0].textContent = t.yes;
+    oilBtns[1].textContent = t.no;
+
+    // Fuel buttons
+    const fuelBtns = document.querySelectorAll('.fuel-btn');
+    // Keep fuel levels as universal symbols
+
+    // Coolant buttons
+    const coolantBtns = document.querySelectorAll('#coolantRow .toggle-btn');
+    if (coolantBtns.length) {
+      coolantBtns[0].textContent = t.ok;
+      coolantBtns[1].textContent = t.low;
+    }
+
+    // Tires buttons
+    const tireBtns = document.querySelectorAll('#tiresRow .toggle-btn');
+    if (tireBtns.length) {
+      tireBtns[0].textContent = t.good;
+      tireBtns[1].textContent = t.attention;
+    }
+
+    // Wipers buttons
+    const wiperBtns = document.querySelectorAll('#wipersRow .toggle-btn');
+    if (wiperBtns.length) {
+      wiperBtns[0].textContent = t.good;
+      wiperBtns[1].textContent = t.replace;
+    }
+
+    // Defect buttons
+    const defectBtns = document.querySelectorAll('#defectToggleRow .toggle-btn');
+    if (defectBtns.length) {
+      defectBtns[0].textContent = t.allGood;
+      defectBtns[1].textContent = t.issueFound;
+    }
+
+    // Submit button
+    document.querySelector('.submit-btn').textContent = t.submit;
+
+    // Success panel
+    document.querySelector('.success-panel h2').textContent = t.successTitle;
+    document.querySelector('.success-panel p').textContent = t.successSub;
+    document.querySelector('.new-entry-btn').textContent = t.newEntry;
+
+    // QR section
+    document.querySelector('.qr-section h3').textContent = t.scanText;
+    document.querySelector('.qr-note').textContent = t.printText;
+
+    // SOP Panel
+    if (currentLang === 'es') {
+      document.getElementById('sopTitle').textContent = '📋 Procedimiento de Inspección de Vehículos';
+      document.getElementById('sopHow').textContent = '📝 Cómo Completar Esta Inspección';
+      document.getElementById('sopHowBody').innerHTML = `
+        <ol>
+          <li>Selecciona el número de semana actual en la cuadrícula</li>
+          <li>Selecciona el vehículo que estás inspeccionando</li>
+          <li>Elige tu nombre del menú desplegable</li>
+          <li>Registra el kilometraje anterior y actual del odómetro</li>
+          <li>Verifica todos los niveles de fluidos y el estado del vehículo</li>
+          <li>Reporta cualquier defecto inmediatamente a tu supervisor</li>
+          <li>Presiona Enviar cuando hayas terminado</li>
+        </ol>
+        <div class="tip">✅ Este formulario debe completarse al inicio de cada semana antes de usar el vehículo.</div>`;
+      document.getElementById('sopTools').textContent = '🔧 Herramientas Necesarias';
+      document.getElementById('sopToolsBody').innerHTML = `
+        <ul>
+          <li>Trapo limpio o papel para verificar la varilla de aceite</li>
+          <li>Medidor de presión de llantas</li>
+          <li>Linterna (para inspección debajo del vehículo)</li>
+          <li>Guantes (recomendados al revisar fluidos)</li>
+        </ul>`;
+      document.getElementById('sopFluids').textContent = '⚗️ Fluidos y Químicos';
+      document.getElementById('sopFluidsBody').innerHTML = `
+        <ul>
+          <li><strong>Aceite de Motor</strong> — [Escribe el tipo/grado aquí] — guardado en [ubicación]</li>
+          <li><strong>Refrigerante/Anticongelante</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
+          <li><strong>Líquido Limpiaparabrisas</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
+          <li><strong>Líquido de Frenos</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
+        </ul>
+        <div class="warning">⚠️ Siempre usa guantes al manipular fluidos. Desecha los fluidos usados correctamente — no los viertas en desagües.</div>`;
+      document.getElementById('sopSDS').textContent = '⚠️ Hojas de Datos de Seguridad (SDS)';
+      document.getElementById('sopSDSBody').innerHTML = `
+        <ul>
+          <li><strong>SDS Aceite de Motor</strong> — [Agrega enlace o ubicación]</li>
+          <li><strong>SDS Refrigerante</strong> — [Agrega enlace o ubicación]</li>
+          <li><strong>SDS Limpiaparabrisas</strong> — [Agrega enlace o ubicación]</li>
+          <li><strong>SDS Líquido de Frenos</strong> — [Agrega enlace o ubicación]</li>
+        </ul>
+        <div class="warning">⚠️ El archivo físico de SDS está ubicado en [escribe la ubicación]. En caso de exposición, contacta a tu supervisor inmediatamente y llama al 911 si es necesario.</div>`;
+      document.getElementById('sopPPE').textContent = '🦺 Equipo de Protección Personal (EPP)';
+      document.getElementById('sopPPEBody').innerHTML = `
+        <ul>
+          <li>Guantes de seguridad al manipular fluidos</li>
+          <li>Gafas de seguridad al revisar bajo el capó</li>
+          <li>Botas con punta de acero al inspeccionar llantas</li>
+        </ul>`;
+      document.getElementById('sopContacts').textContent = '📞 A Quién Contactar';
+      document.getElementById('sopContactsBody').innerHTML = `
+        <ul>
+          <li><strong>Supervisor de Mantenimiento</strong> — [Nombre] — [Teléfono]</li>
+          <li><strong>Emergencias</strong> — 911</li>
+          <li><strong>Correo de Mantenimiento</strong> — maintenance@colasanti.com</li>
+        </ul>
+        <div class="tip">✅ Si un vehículo tiene un defecto, NO lo opere hasta que haya sido inspeccionado y autorizado por el equipo de mantenimiento.</div>`;
+    } else {
+      document.getElementById('sopTitle').textContent = '📋 Vehicle Inspection SOP';
+      document.getElementById('sopHow').textContent = '📝 How to Complete This Inspection';
+      document.getElementById('sopHowBody').innerHTML = `
+        <ol>
+          <li>Select the current week number from the grid</li>
+          <li>Select the vehicle you are inspecting</li>
+          <li>Enter your name from the dropdown</li>
+          <li>Record the previous and current mileage from the odometer</li>
+          <li>Check all fluid levels and vehicle condition items</li>
+          <li>Report any defects immediately to your supervisor</li>
+          <li>Hit Submit when complete</li>
+        </ol>
+        <div class="tip">✅ This form must be completed at the start of each week before the vehicle is used.</div>`;
+      document.getElementById('sopTools').textContent = '🔧 Tools Required';
+      document.getElementById('sopToolsBody').innerHTML = `
+        <ul>
+          <li>Clean cloth or paper towel for dipstick checks</li>
+          <li>Tire pressure gauge</li>
+          <li>Flashlight (for undercarriage inspection)</li>
+          <li>Gloves (recommended when checking fluids)</li>
+        </ul>`;
+      document.getElementById('sopFluids').textContent = '⚗️ Fluids & Chemicals';
+      document.getElementById('sopFluidsBody').innerHTML = `
+        <ul>
+          <li><strong>Engine Oil</strong> — [Enter oil type/grade here] — stored in [location]</li>
+          <li><strong>Coolant/Antifreeze</strong> — [Enter product name here] — stored in [location]</li>
+          <li><strong>Windshield Washer Fluid</strong> — [Enter product name here] — stored in [location]</li>
+          <li><strong>Brake Fluid</strong> — [Enter product name here] — stored in [location]</li>
+        </ul>
+        <div class="warning">⚠️ Always wear gloves when handling fluids. Dispose of used fluids properly — do not pour down drains.</div>`;
+      document.getElementById('sopSDS').textContent = '⚠️ Safety Data Sheets (SDS)';
+      document.getElementById('sopSDSBody').innerHTML = `
+        <ul>
+          <li><strong>Engine Oil SDS</strong> — [Add link or location here]</li>
+          <li><strong>Coolant SDS</strong> — [Add link or location here]</li>
+          <li><strong>Washer Fluid SDS</strong> — [Add link or location here]</li>
+          <li><strong>Brake Fluid SDS</strong> — [Add link or location here]</li>
+        </ul>
+        <div class="warning">⚠️ Physical SDS binder is located at [enter location]. In case of exposure contact your supervisor immediately and call 911 if required.</div>`;
+      document.getElementById('sopPPE').textContent = '🦺 PPE Required';
+      document.getElementById('sopPPEBody').innerHTML = `
+        <ul>
+          <li>Safety gloves when handling fluids</li>
+          <li>Safety glasses when checking under hood</li>
+          <li>Steel toe boots when inspecting tires</li>
+        </ul>`;
+      document.getElementById('sopContacts').textContent = '📞 Who to Contact';
+      document.getElementById('sopContactsBody').innerHTML = `
+        <ul>
+          <li><strong>Maintenance Supervisor</strong> — [Name] — [Phone]</li>
+          <li><strong>Emergency</strong> — 911</li>
+          <li><strong>Maintenance Email</strong> — maintenance@colasanti.com</li>
+        </ul>
+        <div class="tip">✅ If a vehicle has a defect do NOT operate it until it has been inspected and cleared by the maintenance team.</div>`;
+    }
+  }
+
   function openSOP() {
     document.getElementById('sopPanel').classList.add('open');
     document.getElementById('sopOverlay').classList.add('open');
