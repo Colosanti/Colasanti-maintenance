@@ -944,21 +944,30 @@
   let selectedWeek = null;
   let selectedVan = null;
 
-  // BUILD WEEK GRID
+  // Auto-select current week calculation - MUST be before week grid
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const currentWeek = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+  const autoWeek = Math.min(currentWeek, 52);
+
+  // BUILD WEEK GRID - locked to current week only
   const weekGrid = document.getElementById('weekGrid');
   for (let w = 1; w <= 52; w++) {
     const btn = document.createElement('button');
     btn.className = 'week-btn';
     btn.textContent = w;
-    btn.onclick = () => selectWeek(w, btn);
+    if (w !== autoWeek) {
+      btn.disabled = true;
+      btn.style.opacity = '0.3';
+      btn.style.cursor = 'not-allowed';
+      btn.title = 'You can only submit the current week';
+    } else {
+      btn.onclick = () => selectWeek(w, btn);
+      btn.style.border = '2px solid var(--accent)';
+      btn.style.color = 'var(--accent)';
+    }
     weekGrid.appendChild(btn);
   }
-
-  // Auto-select current week
-  const now = new Date();
-  const startOfYear = new Date(now.getFullYear(), 0, 1);
-  const currentWeek = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
-  const autoWeek = Math.min(currentWeek, 52);
 
   // BUILD VAN GRID
   const vanGrid = document.getElementById('vanGrid');
@@ -1155,6 +1164,9 @@ Submitted via Colasanti's Maintenance System
       console.error('Email error:', error);
     });
 
+    // Save submitted week to prevent duplicate missed alerts
+    localStorage.setItem('lastSubmittedWeek', String(selectedWeek));
+
     document.getElementById('summaryBox').innerHTML = summary;
     document.getElementById('card-form').classList.add('hidden');
     document.getElementById('successPanel').classList.add('show');
@@ -1190,6 +1202,30 @@ Submitted via Colasanti's Maintenance System
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // CHECK FOR MISSED SUBMISSION - Monday after 9am
+  function checkMissedSubmission() {
+    const now = new Date();
+    const dayOfWeek = now.getDay(); // 0=Sun, 1=Mon
+    const hour = now.getHours();
+
+    if (dayOfWeek === 1 && hour >= 9) {
+      const lastSubmitted = localStorage.getItem('lastSubmittedWeek');
+      if (lastSubmitted !== String(autoWeek)) {
+        // Send missed submission alert
+        emailjs.send('service_a35rfka', 'template_ehen3f7', {
+          to_email: 'maintenance@colasanti.com',
+          subject: `🚨 MISSED CHECK — Vehicle Inspection Week ${autoWeek} NOT submitted!`,
+          message: `WARNING: The Weekly Vehicle Inspection for Week ${autoWeek} has not been submitted as of Monday 9:00 AM.\n\nPlease follow up with the responsible staff member immediately.\n\nColasanti's Maintenance System`,
+          from_name: 'Colasanti Maintenance System',
+        }).then(() => {
+          console.log('Missed submission alert sent');
+        }).catch((error) => {
+          console.error('Alert error:', error);
+        });
+      }
+    }
+  }
+
   // QR CODE - using Google Charts API as reliable fallback
   window.addEventListener('load', () => {
     const url = 'https://colosanti.github.io/Colasanti-maintenance/';
@@ -1201,6 +1237,9 @@ Submitted via Colasanti's Maintenance System
     img.height = 160;
     img.style.borderRadius = '4px';
     qrDiv.appendChild(img);
+
+    // Check for missed submissions
+    checkMissedSubmission();
 
     // Auto-select current week
     const weekBtns = document.querySelectorAll('.week-btn');
