@@ -1273,14 +1273,14 @@
 
   // DATA
   const vans = [
-    { name: 'Van 1', vin: 'BNAC599', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
-    { name: 'Van 2', vin: 'AFRJ129', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
-    { name: 'Van 3', vin: 'BXFM888', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
-    { name: 'Van 4 (White)', vin: 'DAAL334', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
-    { name: 'Van 5', vin: 'CDAB073', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
-    { name: 'Van 6 Promaster City', vin: '', type: 'promastercity', oil: 'SAE 0W-20', coolant: 'OAT Standard', fuel: 'Regular Unleaded', tires: '215/55R16 XL', brake: 'DOT 4 from sealed container only' },
-    { name: 'Promaster', vin: 'AT93700', type: 'promaster', oil: 'SAE 5W-20', coolant: 'OAT — 1.4 bar system', fuel: 'Regular Unleaded', tires: 'TBD' },
-    { name: 'KIA', vin: '', type: 'kia', oil: 'TBD', coolant: 'TBD', fuel: 'TBD', tires: 'TBD' },
+    { name: 'Van 1', vin: 'BNAC599', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '229484' },
+    { name: 'Van 2', vin: 'AFRJ129', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '215236' },
+    { name: 'Van 3', vin: 'BXFM888', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '230988' },
+    { name: 'Van 4 (White)', vin: 'DAAL334', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '102640' },
+    { name: 'Van 5', vin: 'CDAB073', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '117842' },
+    { name: 'Van 6 Promaster City', vin: '', type: 'promastercity', oil: 'SAE 0W-20', coolant: 'OAT Standard', fuel: 'Regular Unleaded', tires: '215/55R16 XL', brake: 'DOT 4 from sealed container only', defaultKm: '101152' },
+    { name: 'Promaster', vin: 'AT93700', type: 'promaster', oil: 'SAE 5W-20', coolant: 'OAT — 1.4 bar system', fuel: 'Regular Unleaded', tires: 'TBD', defaultKm: '264413' },
+    { name: 'KIA', vin: '', type: 'kia', oil: 'TBD', coolant: 'TBD', fuel: 'TBD', tires: 'TBD', defaultKm: '' },
   ];
 
   let selectedWeek = null;
@@ -1343,6 +1343,16 @@
     disp.textContent = '🚐 ' + selectedVan.name + (selectedVan.vin ? ' — ' + selectedVan.vin : '');
     disp.style.display = 'block';
     formCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+    // Load previous mileage from localStorage for this vehicle
+    const savedKm = localStorage.getItem('lastKm_' + selectedVan.name);
+    if (savedKm) {
+      document.getElementById('prevKm').value = savedKm;
+      checkMileageGap();
+    } else if (selectedVan.defaultKm) {
+      document.getElementById('prevKm').value = selectedVan.defaultKm;
+      checkMileageGap();
+    }
 
     // Update SOP fluids section with vehicle specific info
     const lang = currentLang;
@@ -1537,6 +1547,9 @@ Submitted via Colasanti's Maintenance System
     }).catch((error) => {
       console.error('Email error:', error);
     });
+
+    // Save current KM for next week's carry over
+    localStorage.setItem('lastKm_' + selectedVan.name, currKm);
 
     // Save submitted week to prevent duplicate missed alerts
     localStorage.setItem('lastSubmittedWeek', String(selectedWeek));
