@@ -685,7 +685,7 @@
         <ol>
           <li>Select the current week number from the grid</li>
           <li>Select the vehicle you are inspecting</li>
-          <li>Enter your name from the dropdown</li>
+          <li>Select your name from the dropdown</li>
           <li>Record the previous and current mileage from the odometer</li>
           <li>Check all fluid levels and vehicle condition items</li>
           <li>Report any defects immediately to your supervisor</li>
@@ -717,12 +717,34 @@
       </div>
       <div class="sop-section-body" id="sopFluidsBody">
         <ul>
-          <li><strong>Engine Oil</strong> — [Enter oil type/grade here] — stored in [location]</li>
-          <li><strong>Coolant/Antifreeze</strong> — [Enter product name here] — stored in [location]</li>
-          <li><strong>Windshield Washer Fluid</strong> — [Enter product name here] — stored in [location]</li>
-          <li><strong>Brake Fluid</strong> — [Enter product name here] — stored in [location]</li>
+          <li><strong>Engine Oil</strong> — SAE 5W-30 — <em>Check level only. Do not add without supervisor approval.</em></li>
+          <li><strong>Coolant/Antifreeze</strong> — OAT Orange Coolant — <em>Check level only. Do not add without supervisor approval.</em></li>
+          <li><strong>Windshield Washer Fluid</strong> — Stored in Maintenance Shop by back entrance</li>
+          <li><strong>Fuel</strong> — Regular Unleaded — See fueling procedure below</li>
         </ul>
         <div class="warning">⚠️ Always wear gloves when handling fluids. Dispose of used fluids properly — do not pour down drains.</div>
+      </div>
+    </div>
+
+    <!-- FUELING PROCEDURE -->
+    <div class="sop-section">
+      <div class="sop-section-header">
+        <h3 id="sopFuel">⛽ Fueling Procedure</h3>
+      </div>
+      <div class="sop-section-body" id="sopFuelBody">
+        <ol>
+          <li>Notify a maintenance tech or supervisor — they must be present with the key to engage the fuel switch</li>
+          <li>Drive to the back of the Zoo entrance</li>
+          <li><strong>Stop at the first gate</strong> — open it and drive through</li>
+          <li><strong>Get out and LOCK the gate behind you</strong> — must be fully locked, not just closed or ghost locked. Check it!</li>
+          <li>Proceed to the next gate — repeat the same process</li>
+          <li><strong>Only proceed to the fuel tank once ALL gates are locked behind you</strong></li>
+          <li>Supervisor/tech engages the keyed fuel switch</li>
+          <li>Fuel with regular unleaded only</li>
+          <li>When finished reverse the process — lock all gates behind you on the way out</li>
+          <li>Return key to supervisor immediately</li>
+        </ol>
+        <div class="warning">⚠️ CRITICAL — Gates must be LOCKED behind you at all times. Not just closed. Ghost locking is NOT acceptable. An unlocked gate creates a dangerous situation where customers could access restricted areas. If you are unsure if a gate is properly locked — CHECK IT AGAIN!</div>
       </div>
     </div>
 
@@ -736,9 +758,8 @@
           <li><strong>Engine Oil SDS</strong> — [Add link or location here]</li>
           <li><strong>Coolant SDS</strong> — [Add link or location here]</li>
           <li><strong>Washer Fluid SDS</strong> — [Add link or location here]</li>
-          <li><strong>Brake Fluid SDS</strong> — [Add link or location here]</li>
         </ul>
-        <div class="warning">⚠️ Physical SDS binder is located at [enter location]. In case of exposure contact your supervisor immediately and call 911 if required.</div>
+        <div class="warning">⚠️ Physical SDS binder is located in the Maintenance Shop. In case of exposure contact your supervisor immediately and call 911 if required.</div>
       </div>
     </div>
 
@@ -763,7 +784,7 @@
       </div>
       <div class="sop-section-body" id="sopContactsBody">
         <ul>
-          <li><strong>Maintenance Supervisor</strong> — [Name] — [Phone]</li>
+          <li><strong>Maintenance Supervisor</strong> — 📞 1 (519) 796-1184</li>
           <li><strong>Emergency</strong> — 911</li>
           <li><strong>Maintenance Email</strong> — maintenance@colasanti.com</li>
         </ul>
@@ -1151,10 +1172,10 @@
       document.getElementById('sopFluids').textContent = '⚗️ Fluidos y Químicos';
       document.getElementById('sopFluidsBody').innerHTML = `
         <ul>
-          <li><strong>Aceite de Motor</strong> — [Escribe el tipo/grado aquí] — guardado en [ubicación]</li>
-          <li><strong>Refrigerante/Anticongelante</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
-          <li><strong>Líquido Limpiaparabrisas</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
-          <li><strong>Líquido de Frenos</strong> — [Escribe el nombre del producto] — guardado en [ubicación]</li>
+          <li><strong>Aceite de Motor</strong> — SAE 5W-30 — <em>Solo verificar nivel. No agregar sin aprobación del supervisor.</em></li>
+          <li><strong>Refrigerante/Anticongelante</strong> — Refrigerante OAT Naranja — <em>Solo verificar nivel. No agregar sin aprobación del supervisor.</em></li>
+          <li><strong>Líquido Limpiaparabrisas</strong> — Guardado en el Taller de Mantenimiento junto a la entrada trasera</li>
+          <li><strong>Combustible</strong> — Gasolina Regular — Ver procedimiento de combustible abajo</li>
         </ul>
         <div class="warning">⚠️ Siempre usa guantes al manipular fluidos. Desecha los fluidos usados correctamente — no los viertas en desagües.</div>`;
       document.getElementById('sopSDS').textContent = '⚠️ Hojas de Datos de Seguridad (SDS)';
@@ -1163,9 +1184,8 @@
           <li><strong>SDS Aceite de Motor</strong> — [Agrega enlace o ubicación]</li>
           <li><strong>SDS Refrigerante</strong> — [Agrega enlace o ubicación]</li>
           <li><strong>SDS Limpiaparabrisas</strong> — [Agrega enlace o ubicación]</li>
-          <li><strong>SDS Líquido de Frenos</strong> — [Agrega enlace o ubicación]</li>
         </ul>
-        <div class="warning">⚠️ El archivo físico de SDS está ubicado en [escribe la ubicación]. En caso de exposición, contacta a tu supervisor inmediatamente y llama al 911 si es necesario.</div>`;
+        <div class="warning">⚠️ El archivo físico de SDS está ubicado en el Taller de Mantenimiento. En caso de exposición, contacta a tu supervisor inmediatamente y llama al 911 si es necesario.</div>`;
       document.getElementById('sopPPE').textContent = '🦺 Equipo de Protección Personal (EPP)';
       document.getElementById('sopPPEBody').innerHTML = `
         <ul>
@@ -1176,7 +1196,7 @@
       document.getElementById('sopContacts').textContent = '📞 A Quién Contactar';
       document.getElementById('sopContactsBody').innerHTML = `
         <ul>
-          <li><strong>Supervisor de Mantenimiento</strong> — [Nombre] — [Teléfono]</li>
+          <li><strong>Supervisor de Mantenimiento</strong> — 📞 1 (519) 796-1184</li>
           <li><strong>Emergencias</strong> — 911</li>
           <li><strong>Correo de Mantenimiento</strong> — maintenance@colasanti.com</li>
         </ul>
@@ -1231,7 +1251,7 @@
       document.getElementById('sopContacts').textContent = '📞 Who to Contact';
       document.getElementById('sopContactsBody').innerHTML = `
         <ul>
-          <li><strong>Maintenance Supervisor</strong> — [Name] — [Phone]</li>
+          <li><strong>Maintenance Supervisor</strong> — 📞 1 (519) 796-1184</li>
           <li><strong>Emergency</strong> — 911</li>
           <li><strong>Maintenance Email</strong> — maintenance@colasanti.com</li>
         </ul>
@@ -1253,14 +1273,14 @@
 
   // DATA
   const vans = [
-    { name: 'Van 1', vin: 'BNAC599' },
-    { name: 'Van 2', vin: 'AFRJ129' },
-    { name: 'Van 3', vin: 'BXFM888' },
-    { name: 'Van 4 (White)', vin: 'DAAL334' },
-    { name: 'Van 5', vin: 'CDAB073' },
-    { name: 'Van 6 Promaster City', vin: '' },
-    { name: 'Promaster', vin: 'AT93700' },
-    { name: 'KIA', vin: '' },
+    { name: 'Van 1', vin: 'BNAC599', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
+    { name: 'Van 2', vin: 'AFRJ129', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
+    { name: 'Van 3', vin: 'BXFM888', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
+    { name: 'Van 4 (White)', vin: 'DAAL334', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
+    { name: 'Van 5', vin: 'CDAB073', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16' },
+    { name: 'Van 6 Promaster City', vin: '', type: 'promastercity', oil: 'SAE 0W-20', coolant: 'OAT Standard', fuel: 'Regular Unleaded', tires: '215/55R16 XL', brake: 'DOT 4 from sealed container only' },
+    { name: 'Promaster', vin: 'AT93700', type: 'promaster', oil: 'SAE 5W-20', coolant: 'OAT — 1.4 bar system', fuel: 'Regular Unleaded', tires: 'TBD' },
+    { name: 'KIA', vin: '', type: 'kia', oil: 'TBD', coolant: 'TBD', fuel: 'TBD', tires: 'TBD' },
   ];
 
   let selectedWeek = null;
@@ -1323,6 +1343,38 @@
     disp.textContent = '🚐 ' + selectedVan.name + (selectedVan.vin ? ' — ' + selectedVan.vin : '');
     disp.style.display = 'block';
     formCard.scrollIntoView({ behavior: 'instant', block: 'start' });
+
+    // Update SOP fluids section with vehicle specific info
+    const lang = currentLang;
+    const v = selectedVan;
+    const brakeNote = v.brake ? `<li><strong>${lang === 'es' ? 'Líquido de Frenos' : 'Brake Fluid'}</strong> — ${v.brake}</li>` : '';
+    const kiaNote = v.type === 'kia' ? `<div class="warning">⚠️ ${lang === 'es' ? 'Especificaciones del KIA pendientes — contacta al supervisor.' : 'KIA specs pending — contact supervisor for fluid specifications.'}</div>` : '';
+
+    if (lang === 'es') {
+      document.getElementById('sopFluidsBody').innerHTML = `
+        <ul>
+          <li><strong>Aceite de Motor</strong> — ${v.oil} — <em>Solo verificar nivel. No agregar sin aprobación del supervisor.</em></li>
+          <li><strong>Refrigerante</strong> — ${v.coolant} — <em>Solo verificar nivel.</em></li>
+          <li><strong>Combustible</strong> — ${v.fuel === 'Regular Unleaded' ? 'Gasolina Regular' : v.fuel} — Ver procedimiento de combustible</li>
+          <li><strong>Llantas</strong> — ${v.tires}</li>
+          <li><strong>Líquido Limpiaparabrisas</strong> — Taller de Mantenimiento, entrada trasera</li>
+          ${brakeNote}
+        </ul>
+        ${kiaNote}
+        <div class="warning">⚠️ Siempre usa guantes al manipular fluidos.</div>`;
+    } else {
+      document.getElementById('sopFluidsBody').innerHTML = `
+        <ul>
+          <li><strong>Engine Oil</strong> — ${v.oil} — <em>Check level only. Do not add without supervisor approval.</em></li>
+          <li><strong>Coolant</strong> — ${v.coolant} — <em>Check level only.</em></li>
+          <li><strong>Fuel</strong> — ${v.fuel} — See fueling procedure</li>
+          <li><strong>Tires</strong> — ${v.tires}</li>
+          <li><strong>Washer Fluid</strong> — Maintenance Shop, back entrance</li>
+          ${brakeNote}
+        </ul>
+        ${kiaNote}
+        <div class="warning">⚠️ Always wear gloves when handling fluids.</div>`;
+    }
   }
 
   function handleNameSelect(sel) {
