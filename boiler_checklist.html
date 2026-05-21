@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Colasanti's — Steam Boiler Daily Checklist</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init('GJhqhaqE-7vM3qsyw');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1923;
+    --panel: #1a2635;
+    --panel2: #223044;
+    --accent: #f0a500;
+    --accent2: #e05c00;
+    --text: #e8edf2;
+    --muted: #7a8fa6;
+    --ok: #2ecc71;
+    --warn: #e74c3c;
+    --caution: #f39c12;
+    --border: #2d4059;
+    --radius: 12px;
+    --boiler1: #e74c3c;
+    --boiler2: #3498db;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px 0;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #0a1520 0%, #1a2c42 100%);
+    border-bottom: 3px solid var(--warn);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .header-icon { font-size: 2rem; line-height: 1; }
+
+  .header-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--warn);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .header-text p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  .lang-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .lang-btn.es { background: rgba(240,165,0,0.2); border-color: var(--accent); color: var(--accent); }
+
+  .content { padding: 16px; max-width: 700px; margin: 0 auto; }
+
+  /* CRITICAL SAFETY BANNER */
+  .safety-banner {
+    background: rgba(231,76,60,0.15);
+    border: 2px solid var(--warn);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .safety-banner .icon { font-size: 1.8rem; flex-shrink: 0; }
+
+  .safety-banner p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ff8a80;
+    line-height: 1.4;
+  }
+
+  /* STEP CARDS */
+  .step-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .step-card.active { border-color: var(--accent); }
+
+  .step-header {
+    background: var(--panel2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-num {
+    background: var(--warn);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .step-body { padding: 16px; }
+
+  /* BOILER SELECTOR */
+  .boiler-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .boiler-btn {
+    background: var(--panel2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .boiler-btn .boiler-icon { font-size: 2rem; margin-bottom: 6px; }
+
+  .boiler-btn .boiler-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .boiler-btn .boiler-sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+  .boiler-btn.b1:hover, .boiler-btn.b1.selected {
+    border-color: var(--boiler1);
+    background: rgba(231,76,60,0.1);
+  }
+  .boiler-btn.b1.selected .boiler-name { color: var(--boiler1); }
+
+  .boiler-btn.b2:hover, .boiler-btn.b2.selected {
+    border-color: var(--boiler2);
+    background: rgba(52,152,219,0.1);
+  }
+  .boiler-btn.b2.selected .boiler-name { color: var(--boiler2); }
+
+  /* FORM FIELDS */
+  .form-row { margin-bottom: 14px; }
+
+  .form-label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.05rem;
+    padding: 13px 14px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+
+  select.form-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f0a500' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  select.form-input option { background: #1a2635; color: #e8edf2; }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-header.s1 { background: rgba(231,76,60,0.1); border-bottom: 1px solid rgba(231,76,60,0.3); }
+  .section-header.s2 { background: rgba(243,156,18,0.1); border-bottom: 1px solid rgba(243,156,18,0.3); }
+  .section-header.s3 { background: rgba(46,204,113,0.1); border-bottom: 1px solid rgba(46,204,113,0.3); }
+  .section-header.s4 { background: rgba(52,152,219,0.1); border-bottom: 1px solid rgba(52,152,219,0.3); }
+
+  .section-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.8rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--warn);
+    color: #fff;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex: 1;
+  }
+
+  .section-status {
+    font-size: 0.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+  }
+
+  .section-body { padding: 14px; }
+
+  /* CHECK ITEMS */
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(45,64,89,0.5);
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item-text {
+    flex: 1;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .check-toggle {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .check-btn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--panel);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .check-btn.ok.selected { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+  .check-btn.fail.selected { background: rgba(231,76,60,0.15); border-color: var(--warn); color: var(--warn); }
+  .check-btn.na.selected { background: rgba(122,143,166,0.15); border-color: var(--muted); color: var(--muted); }
+
+  /* WEEKLY CHECK INDICATOR */
+  .weekly-badge {
+    background: rgba(108,92,231,0.2);
+    border: 1px solid #6c5ce7;
+    color: #a29bfe;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-left: 6px;
+  }
+
+  .wednesday-banner {
+    background: rgba(108,92,231,0.15);
+    border: 2px solid #6c5ce7;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wednesday-banner p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #a29bfe;
+    line-height: 1.4;
+  }
+
+  /* READING INPUTS */
+  .reading-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(45,64,89,0.5);
+  }
+
+  .reading-row:last-child { border-bottom: none; }
+
+  .reading-label { font-size: 0.88rem; line-height: 1.3; }
+
+  .reading-unit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .reading-input {
+    width: 90px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    outline: none;
+    text-align: center;
+  }
+
+  .reading-input:focus { border-color: var(--accent); }
+  .reading-input.alert { border-color: var(--caution); background: rgba(243,156,18,0.1); }
+  .reading-input.critical { border-color: var(--warn); background: rgba(231,76,60,0.15); }
+
+  /* ALERT BADGES */
+  .alert-badge {
+    display: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  .alert-badge.caution { background: rgba(243,156,18,0.2); color: var(--caution); display: inline-block; }
+  .alert-badge.critical { background: rgba(231,76,60,0.2); color: var(--warn); display: inline-block; }
+
+  /* BLOWDOWN */
+  .blowdown-row {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(45,64,89,0.5);
+  }
+
+  .blowdown-row:last-child { border-bottom: none; }
+
+  .blowdown-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .blowdown-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 80px;
+    gap: 8px;
+  }
+
+  .blowdown-input {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    outline: none;
+    width: 100%;
+  }
+
+  .blowdown-input:focus { border-color: var(--accent); }
+
+  .blowdown-input-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 3px;
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* WATER TREATMENT */
+  .treatment-row {
+    display: grid;
+    grid-template-columns: 1fr auto 80px auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(45,64,89,0.5);
+  }
+
+  .treatment-row:last-child { border-bottom: none; }
+
+  .treatment-label { font-size: 0.88rem; }
+
+  .treatment-range {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    white-space: nowrap;
+  }
+
+  /* DEFICIENCY */
+  .deficiency-row {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .deficiency-row textarea {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    padding: 10px;
+    outline: none;
+    resize: none;
+    min-height: 60px;
+    margin-top: 6px;
+  }
+
+  .deficiency-row select {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+    outline: none;
+    width: 100%;
+    margin-top: 6px;
+    -webkit-appearance: none;
+  }
+
+  .add-deficiency-btn {
+    background: rgba(231,76,60,0.1);
+    border: 1.5px solid var(--warn);
+    color: var(--warn);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+
+  /* PRESSURE ALERT */
+  .pressure-alert {
+    display: none;
+    background: rgba(231,76,60,0.15);
+    border: 2px solid var(--warn);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--warn);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .pressure-alert.show { display: block; }
+
+  /* PROGRESS */
+  .progress-bar-container {
+    background: var(--panel2);
+    border-radius: 20px;
+    height: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    background: linear-gradient(90deg, var(--warn), var(--caution));
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .progress-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--warn) 0%, var(--accent2) 100%);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 18px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  /* SUCCESS */
+  .success-panel {
+    display: none;
+    background: rgba(46,204,113,0.1);
+    border: 2px solid var(--ok);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .success-panel.show { display: block; }
+
+  .success-panel h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--ok);
+    margin-bottom: 6px;
+  }
+
+  .summary-box {
+    background: var(--panel2);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .summary-box strong {
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .action-btns { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+  .next-boiler-btn {
+    flex: 1;
+    background: rgba(52,152,219,0.15);
+    border: 2px solid #3498db;
+    color: #3498db;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .new-entry-btn {
+    flex: 1;
+    background: var(--panel2);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  /* QR */
+  .qr-section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .qr-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  #qrcode { display: inline-block; background: white; padding: 10px; border-radius: 8px; }
+  .qr-note { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+
+  .hidden { display: none; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+  /* BOILER BADGE */
+  .boiler-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .boiler-badge.b1 { background: var(--boiler1); color: #fff; }
+  .boiler-badge.b2 { background: var(--boiler2); color: #fff; }
+
+  .notes-area {
+    width: 100%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    outline: none;
+    resize: none;
+    min-height: 70px;
+    margin-top: 8px;
+  }
+
+  .notes-area:focus { border-color: var(--warn); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🔥</div>
+  <div class="header-text">
+    <h1 id="headerTitle">Boiler Room #1</h1>
+    <p id="headerSub">Low Pressure Steam Boiler — Daily Checklist</p>
+  </div>
+  <div class="header-right">
+    <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">🇲🇽 ES</button>
+    <div class="boiler-badge hidden" id="boilerBadge">B1</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SAFETY BANNER -->
+  <div class="safety-banner">
+    <div class="icon">⚠️</div>
+    <p id="safetyMsg">SAFETY CRITICAL — Operating Range 0–15 PSI. Complete ALL sections each shift. Report any abnormal readings to supervisor immediately.</p>
+  </div>
+
+  <!-- STEP 1: BOILER SELECT -->
+  <div class="step-card active" id="card-boiler">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title" id="selectBoilerTitle">Select Boiler</div>
+    </div>
+    <div class="step-body">
+      <div class="boiler-grid">
+        <button class="boiler-btn b1" onclick="selectBoiler(1, this)">
+          <div class="boiler-icon">🔥</div>
+          <div class="boiler-name" id="b1label">Steam Boiler #1</div>
+          <div class="boiler-sub" id="b1sub">Volcano ST-350E — 1999</div>
+        </button>
+        <button class="boiler-btn b2" onclick="selectBoiler(2, this)">
+          <div class="boiler-icon">🔥</div>
+          <div class="boiler-name" id="b2label">Steam Boiler #2</div>
+          <div class="boiler-sub" id="b2sub">Indeck Starfire ST-250E — 2004</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: OPERATOR -->
+  <div class="step-card" id="card-operator">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title" id="operatorTitle">Operator Information</div>
+    </div>
+    <div class="step-body">
+      <div class="form-row">
+        <label class="form-label" id="operatorLabel">👤 Operator Name</label>
+        <select class="form-input" id="operatorSelect" onchange="handleOperatorSelect(this)">
+          <option value="">— Select operator —</option>
+          <option value="Jason B">Jason B</option>
+          <option value="Jason R">Jason R</option>
+          <option value="Roman">Roman</option>
+          <option value="__other__">Other (type name)</option>
+        </select>
+        <input class="form-input" id="operatorOther" type="text" placeholder="Enter name"
+          style="margin-top:8px; display:none;" autocomplete="off">
+        <input type="hidden" id="operatorName">
+      </div>
+      <div class="form-row">
+        <label class="form-label" id="shiftLabel">⏰ Shift</label>
+        <select class="form-input" id="shiftSelect">
+          <option value="">— Select shift —</option>
+          <option value="Day">☀️ Day Shift</option>
+          <option value="Afternoon">🌙 Afternoon Shift</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" id="locationLabel">📍 Location / Building</label>
+        <input class="form-input" id="location" type="text" value="Boiler Room #1" readonly style="opacity:0.7;">
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: CHECKLIST -->
+  <div class="step-card hidden" id="card-checklist">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title" id="checklistTitle">Complete Checklist</div>
+    </div>
+    <div class="step-body">
+
+      <div class="progress-text" id="progressText">0 of 10 sections completed</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <!-- WEDNESDAY BANNER -->
+      <div class="wednesday-banner hidden" id="wednesdayBanner">
+        <div style="font-size:1.5rem">📅</div>
+        <p id="wednesdayMsg">It's Wednesday! Weekly Safety Device Checks and Water Treatment checks are required today.</p>
+      </div>
+
+      <!-- SECTION 1: BOILER INFO -->
+      <div class="section-card">
+        <div class="section-header s1">
+          <div class="section-num">1</div>
+          <div class="section-title" id="s1title">📋 Boiler Information</div>
+          <div class="section-status" id="s1status">—</div>
+        </div>
+        <div class="section-body">
+          <div class="form-row">
+            <label class="form-label" id="mfgLabel">Manufacturer</label>
+            <input class="form-input" id="manufacturer" type="text" placeholder="[Add manufacturer]">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="modelLabel">Model</label>
+            <input class="form-input" id="model" type="text" placeholder="[Add model]">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="serialLabel">Serial Number</label>
+            <input class="form-input" id="serial" type="text" placeholder="[Add serial number]">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="waterMeterLabel">💧 Water Meter Reading — GAL (today)</label>
+            <input class="form-input" id="waterMeter" type="number" placeholder="e.g. 116799" inputmode="numeric" oninput="checkWaterMeter(); calcWaterUsage()">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="prevWaterLabel">💧 Previous Reading — GAL (auto)</label>
+            <input class="form-input" id="prevWater" type="number" placeholder="Auto-filled from last entry" inputmode="numeric" oninput="calcWaterUsage()" style="opacity:0.8;">
+          </div>
+          <div style="background:rgba(52,152,219,0.1); border:1px solid #3498db; border-radius:8px; padding:10px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.9rem; color:#74b9ff;" id="waterUsageLabel">💧 Daily Water Usage (GAL)</span>
+            <span style="font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.1rem; color:#74b9ff;" id="waterUsageDisplay">— </span>
+          </div>
+          <div id="waterMeterAlert" class="pressure-alert">⚠️ Water meter reading is required — this field cannot be skipped!</div>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin: 14px 0;">
+
+          <!-- CYCLE COUNTER -->
+          <div class="form-row">
+            <label class="form-label" id="cycleLabel">🔄 Total Cycles Today (cumulative)</label>
+            <input class="form-input" id="cyclesToday" type="number" placeholder="Enter current cycle count" inputmode="numeric" oninput="calcCycles()">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="prevCycleLabel">🔄 Previous Cycle Count (auto)</label>
+            <input class="form-input" id="cyclesPrev" type="number" placeholder="Auto-filled from last entry" inputmode="numeric" oninput="calcCycles()" style="opacity:0.8;">
+          </div>
+          <div style="background:rgba(231,76,60,0.1); border:1px solid var(--warn); border-radius:8px; padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.9rem; color:#ff8a80;" id="cycleUsageLabel">🔄 Daily Cycles</span>
+            <span style="font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:1.1rem; color:#ff8a80;" id="cycleDisplay">—</span>
+          </div>
+          <div class="pressure-alert" id="cycleAlert"></div>
+
+          <div class="form-row">
+            <label class="form-label" id="opTempLabel">🌡️ Operating Temperature (°F)</label>
+            <input class="form-input" id="opTemp" type="number" placeholder="Enter temperature" inputmode="numeric">
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="stackTempInfoLabel">🌡️ Stack Temperature (°F)</label>
+            <input class="form-input" id="stackTempInfo" type="number" placeholder="Normal: ~140°F" inputmode="numeric">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: PRE-START VISUAL -->
+      <div class="section-card">
+        <div class="section-header s2">
+          <div class="section-num">2</div>
+          <div class="section-title" id="s2title">👁️ Pre-Start Visual Inspection</div>
+          <div class="section-status" id="s2status">—</div>
+        </div>
+        <div class="section-body" id="s2body">
+          <!-- Built by JS -->
+        </div>
+      </div>
+
+      <!-- SECTION 3: SAFETY DEVICES - WEDNESDAY ONLY -->
+      <div class="section-card hidden" id="section3card">
+        <div class="section-header s1">
+          <div class="section-num">3</div>
+          <div class="section-title" id="s3title">🔒 Safety Device Checks</div>
+          <span class="weekly-badge" id="weeklyBadge3">📅 Weekly</span>
+          <div class="section-status" id="s3status">—</div>
+        </div>
+        <div class="section-body" id="s3body"></div>
+      </div>
+
+      <!-- SECTION 4: OPERATING READINGS -->
+      <div class="section-card">
+        <div class="section-header s4">
+          <div class="section-num">4</div>
+          <div class="section-title" id="s4title">📊 Operating Readings</div>
+          <div class="section-status" id="s4status">—</div>
+        </div>
+        <div class="section-body" id="s4body"></div>
+        <div style="padding: 0 14px 14px;">
+          <div class="pressure-alert" id="pressureAlert">⚠️ PRESSURE WARNING — Reading above normal operating range! Monitor closely and notify supervisor if pressure continues to rise.</div>
+          <div class="pressure-alert" id="pressureCritical">🚨 CRITICAL — PRESSURE APPROACHING HIGH LIMIT! Notify supervisor IMMEDIATELY. Do not leave boiler unattended.</div>
+        </div>
+      </div>
+
+      <!-- SECTION 5: BURNER OPERATION -->
+      <div class="section-card">
+        <div class="section-header s3">
+          <div class="section-num">5</div>
+          <div class="section-title" id="s5title">🔥 Burner Operation</div>
+          <div class="section-status" id="s5status">—</div>
+        </div>
+        <div class="section-body" id="s5body"></div>
+      </div>
+
+      <!-- SECTION 6: BLOWDOWN LOG -->
+      <div class="section-card">
+        <div class="section-header s4">
+          <div class="section-num">6</div>
+          <div class="section-title" id="s6title">💧 Blowdown Log</div>
+          <div class="section-status" id="s6status">—</div>
+        </div>
+        <div class="section-body" id="s6body"></div>
+      </div>
+
+      <!-- SECTION 7: WATER TREATMENT - WEDNESDAY ONLY -->
+      <div class="section-card hidden" id="section7card">
+        <div class="section-header s2">
+          <div class="section-num">7</div>
+          <div class="section-title" id="s7title">⚗️ Water Treatment</div>
+          <span class="weekly-badge" id="weeklyBadge7">📅 Weekly</span>
+          <div class="section-status" id="s7status">—</div>
+        </div>
+        <div class="section-body" id="s7body"></div>
+      </div>
+
+      <!-- SECTION 8: GENERAL INSPECTION -->
+      <div class="section-card">
+        <div class="section-header s3">
+          <div class="section-num">8</div>
+          <div class="section-title" id="s8title">🔍 General Inspection</div>
+          <div class="section-status" id="s8status">—</div>
+        </div>
+        <div class="section-body" id="s8body"></div>
+      </div>
+
+      <!-- SECTION 9: DEFICIENCIES -->
+      <div class="section-card">
+        <div class="section-header s1">
+          <div class="section-num">9</div>
+          <div class="section-title" id="s9title">⚠️ Deficiencies & Corrective Actions</div>
+          <div class="section-status" id="s9status">—</div>
+        </div>
+        <div class="section-body">
+          <div id="deficiencyList"></div>
+          <button class="add-deficiency-btn" onclick="addDeficiency()" id="addDefBtn">+ Add Deficiency</button>
+          <div class="form-row" style="margin-top:12px;">
+            <label class="form-label" id="overallLabel">Overall Boiler Status</label>
+            <select class="form-input" id="overallStatus">
+              <option value="">— Select status —</option>
+              <option value="Normal Operation">✅ Normal Operation</option>
+              <option value="Monitor Required">⚠️ Monitor Required</option>
+              <option value="Immediate Attention Required">🚨 Immediate Attention Required</option>
+              <option value="Shut Down">🔴 Shut Down</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="commentsLabel">Comments / Notes</label>
+            <textarea class="notes-area" id="shiftComments" placeholder="Any additional notes for this shift..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 10: SIGN OFF -->
+      <div class="section-card">
+        <div class="section-header s3">
+          <div class="section-num">10</div>
+          <div class="section-title" id="s10title">✍️ Shift Sign-Off</div>
+          <div class="section-status" id="s10status">—</div>
+        </div>
+        <div class="section-body">
+          <div class="form-row">
+            <label class="form-label" id="supNotifiedLabel">Supervisor Notified?</label>
+            <div style="display:flex; gap:10px;">
+              <button class="check-btn ok" id="supYes" onclick="setSupNotified('yes',this)" style="flex:1; padding:13px;">✅ YES</button>
+              <button class="check-btn fail" id="supNo" onclick="setSupNotified('no',this)" style="flex:1; padding:13px;">❌ NO</button>
+            </div>
+            <input type="hidden" id="supNotifiedVal">
+          </div>
+          <div class="form-row" id="supNameRow" style="display:none;">
+            <label class="form-label" id="supNameLabel">Supervisor Name</label>
+            <input class="form-input" id="supName" type="text" placeholder="Enter supervisor name">
+          </div>
+          <div style="background: rgba(46,204,113,0.1); border: 1px solid var(--ok); border-radius: 8px; padding: 12px; margin-top: 8px;">
+            <p style="font-size:0.85rem; color: #69f0ae;" id="signoffNote">By submitting this checklist you confirm that all inspections have been completed accurately and any deficiencies have been documented and reported.</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitBoiler()" id="submitBtn">🔥 SUBMIT BOILER CHECKLIST</button>
+
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="successPanel">
+    <h2 id="successTitle">✅ Boiler Check Logged!</h2>
+    <p id="successSub">Record submitted successfully</p>
+    <div class="summary-box" id="summaryBox"></div>
+    <div class="action-btns">
+      <button class="next-boiler-btn" id="nextBoilerBtn" onclick="startNextBoiler()">🔥 Check Boiler #2</button>
+      <button class="new-entry-btn" onclick="resetForm()" id="newEntryBtn">+ New Check</button>
+    </div>
+  </div>
+
+  <!-- QR -->
+  <div class="qr-section">
+    <h3 id="qrText">📲 Scan to open this checklist</h3>
+    <div id="qrcode"></div>
+    <p class="qr-note" id="qrNote">Post this QR code in Boiler Room #1</p>
+  </div>
+
+</div>
+
+<script>
+  let currentLang = 'en';
+  let selectedBoiler = null;
+  let supNotified = null;
+  let deficiencyCount = 0;
+  let completedBoilers = [];
+
+  // CYCLE & WATER CARRY-OVER
+  function loadCarryOver() {
+    const boilerKey = `boiler${selectedBoiler}`;
+    const prevWater = localStorage.getItem(`${boilerKey}_waterMeter`);
+    const prevCycles = localStorage.getItem(`${boilerKey}_cycles`);
+    if (prevWater) {
+      document.getElementById('prevWater').value = prevWater;
+      calcWaterUsage();
+    }
+    if (prevCycles) {
+      document.getElementById('cyclesPrev').value = prevCycles;
+      calcCycles();
+    }
+  }
+
+  function calcWaterUsage() {
+    const today = parseFloat(document.getElementById('waterMeter').value) || 0;
+    const prev = parseFloat(document.getElementById('prevWater').value) || 0;
+    const display = document.getElementById('waterUsageDisplay');
+    if (today > 0 && prev > 0) {
+      const usage = today - prev;
+      display.textContent = usage.toLocaleString() + ' GAL';
+      display.style.color = usage > 100 ? 'var(--warn)' : '#74b9ff';
+    } else {
+      display.textContent = '—';
+    }
+  }
+
+  function calcCycles() {
+    const today = parseFloat(document.getElementById('cyclesToday').value) || 0;
+    const prev = parseFloat(document.getElementById('cyclesPrev').value) || 0;
+    const display = document.getElementById('cycleDisplay');
+    const alert = document.getElementById('cycleAlert');
+    const month = new Date().getMonth();
+    const isWinter = month >= 10 || month <= 2; // Nov-Mar
+    const warnThreshold = isWinter ? 55 : 35;
+    const criticalThreshold = isWinter ? 60 : 45;
+
+    if (today > 0 && prev > 0) {
+      const daily = today - prev;
+      display.textContent = daily + ' cycles';
+
+      if (daily >= criticalThreshold) {
+        display.style.color = 'var(--warn)';
+        alert.classList.add('show');
+        alert.textContent = `🚨 CRITICAL — ${daily} cycles today is well above normal! Investigate immediately — possible pressure control issue, short cycling or heat loss. Notify supervisor!`;
+      } else if (daily >= warnThreshold) {
+        display.style.color = 'var(--caution)';
+        alert.classList.add('show');
+        alert.textContent = `⚠️ WARNING — ${daily} cycles today is above normal range. Monitor closely and investigate if trend continues.`;
+      } else {
+        display.style.color = '#ff8a80';
+        alert.classList.remove('show');
+      }
+    } else {
+      display.textContent = '—';
+      alert.classList.remove('show');
+    }
+  }
+
+  // WEDNESDAY CHECK
+  const isWednesday = new Date().getDay() === 3;
+
+  function initWeeklyChecks() {
+    if (isWednesday) {
+      document.getElementById('wednesdayBanner').classList.remove('hidden');
+      document.getElementById('section3card').classList.remove('hidden');
+      document.getElementById('section7card').classList.remove('hidden');
+    }
+  }
+
+  // CHECK ITEMS DATA
+  const preStartItems = [
+    { en: 'Water level visible in sight glass', es: 'Nivel de agua visible en el visor' },
+    { en: 'Boiler room ventilation and combustion air adequate', es: 'Ventilación de sala de calderas y aire de combustión adecuados' },
+    { en: 'Gas supply valve open and pressure normal', es: 'Válvula de suministro de gas abierta y presión normal' },
+    { en: 'Electrical supply and disconnect in ON position', es: 'Suministro eléctrico y desconectador en posición ON' },
+    { en: 'Area around boiler clear of combustibles and obstructions', es: 'Área alrededor de la caldera libre de combustibles y obstrucciones' },
+    { en: 'Condensate return tank level adequate', es: 'Nivel del tanque de retorno de condensado adecuado' },
+    { en: 'Feedwater pump operational', es: 'Bomba de agua de alimentación operacional' },
+    { en: 'Chemical feed system operational', es: 'Sistema de alimentación química operacional' },
+    { en: 'Flue/stack/breeching condition — no blockage or damage', es: 'Condición del ducto/chimenea — sin bloqueo ni daño' },
+    { en: 'Boiler room lighting adequate', es: 'Iluminación de sala de calderas adecuada' },
+  ];
+
+  const safetyItems = [
+    { en: 'Low water cutoff (LWCO) tested and functional', es: 'Corte de bajo nivel de agua (LWCO) probado y funcional' },
+    { en: 'Safety/relief valve — not leaking, not wired/blocked shut', es: 'Válvula de seguridad/alivio — sin fugas, no bloqueada' },
+    { en: 'Operating pressure control functional', es: 'Control de presión operativa funcional' },
+    { en: 'High limit pressure control functional', es: 'Control de presión límite alta funcional' },
+    { en: 'Flame safeguard/scanner operational', es: 'Protección de llama/escáner operacional' },
+    { en: 'Manual gas shut-off valve accessible', es: 'Válvula manual de cierre de gas accesible' },
+    { en: 'Emergency shut-off switch accessible and labeled', es: 'Interruptor de apagado de emergencia accesible y etiquetado' },
+    { en: 'Low gas pressure switch functional', es: 'Interruptor de baja presión de gas funcional' },
+    { en: 'High gas pressure switch functional', es: 'Interruptor de alta presión de gas funcional' },
+    { en: 'Combustion air proving switch functional', es: 'Interruptor de verificación de aire de combustión funcional' },
+  ];
+
+  const burnerItems = [
+    { en: 'Flame appearance and color (steady blue)', es: 'Apariencia y color de la llama (azul estable)' },
+    { en: 'Ignition sequence — normal startup', es: 'Secuencia de ignición — arranque normal' },
+    { en: 'Burner cycling — normal on/off', es: 'Ciclo del quemador — encendido/apagado normal' },
+    { en: 'No unusual sounds or vibrations', es: 'Sin sonidos ni vibraciones inusuales' },
+    { en: 'Combustion air damper operating properly', es: 'Amortiguador de aire de combustión funcionando correctamente' },
+    { en: 'Pilot/igniter functioning', es: 'Piloto/encendedor funcionando' },
+    { en: 'Burner gaskets — no gas or flue gas leaks', es: 'Juntas del quemador — sin fugas de gas o gases de combustión' },
+  ];
+
+  const generalItems = [
+    { en: 'No steam leaks at fittings or valves', es: 'Sin fugas de vapor en accesorios o válvulas' },
+    { en: 'No water leaks at piping or connections', es: 'Sin fugas de agua en tuberías o conexiones' },
+    { en: 'No gas leaks detected (smell/soap test)', es: 'Sin fugas de gas detectadas (prueba de olfato/jabón)' },
+    { en: 'All gauges and instruments functioning', es: 'Todos los manómetros e instrumentos funcionando' },
+    { en: 'Piping and valve insulation intact', es: 'Aislamiento de tuberías y válvulas intacto' },
+    { en: 'Steam traps operating properly', es: 'Trampas de vapor funcionando correctamente' },
+    { en: 'Boiler room floor dry and drainage clear', es: 'Piso de sala de calderas seco y drenaje despejado' },
+    { en: 'Fire extinguisher present and inspected', es: 'Extintor de incendios presente e inspeccionado' },
+    { en: 'First aid kit accessible', es: 'Botiquín de primeros auxilios accesible' },
+    { en: 'Boiler log book up to date', es: 'Libro de registro de caldera actualizado' },
+  ];
+
+  const readings = [
+    { en: 'Steam pressure', es: 'Presión de vapor', unit: 'PSI', id: 'r_pressure', warn: 12, critical: 14 },
+    { en: 'Water level — sight glass reading', es: 'Nivel de agua — lectura del visor', unit: '—', id: 'r_waterlevel' },
+    { en: 'Stack/flue gas temperature', es: 'Temperatura del ducto/gases de combustión', unit: '°F', id: 'r_stacktemp', warn: 180 },
+    { en: 'Gas supply pressure', es: 'Presión de suministro de gas', unit: 'in.W.C.', id: 'r_gassupply' },
+    { en: 'Manifold/burner gas pressure', es: 'Presión de gas del manifold/quemador', unit: 'in.W.C.', id: 'r_manifold' },
+    { en: 'Feedwater temperature', es: 'Temperatura del agua de alimentación', unit: '°F', id: 'r_feedwater' },
+    { en: 'Condensate return temperature', es: 'Temperatura de retorno de condensado', unit: '°F', id: 'r_condensate' },
+    { en: 'Boiler room ambient temperature', es: 'Temperatura ambiente de sala de calderas', unit: '°F', id: 'r_ambient' },
+    { en: 'Operating control setpoint', es: 'Punto de ajuste del control operativo', unit: 'PSI', id: 'r_opsetpoint', default: '10' },
+    { en: 'High limit control setpoint', es: 'Punto de ajuste del límite alto', unit: 'PSI', id: 'r_highlimit', default: '15' },
+  ];
+
+  const blowdowns = [
+    { en: 'Bottom blowdown', es: 'Purga inferior', id: 'bd_bottom' },
+    { en: 'Surface/skimmer blowdown', es: 'Purga superficial', id: 'bd_surface' },
+    { en: 'LWCO blowdown test', es: 'Prueba de purga LWCO', id: 'bd_lwco' },
+    { en: 'Water column blowdown', es: 'Purga de columna de agua', id: 'bd_column' },
+  ];
+
+  const waterTreatment = [
+    { en: 'pH level', es: 'Nivel de pH', id: 'wt_ph', range: '7.0 – 9.5', unit: '—' },
+    { en: 'TDS / Conductivity', es: 'TDS / Conductividad', id: 'wt_tds', range: 'Per spec', unit: 'ppm' },
+    { en: 'Sulfite residual', es: 'Residual de sulfito', id: 'wt_sulfite', range: '20 – 40', unit: 'ppm' },
+    { en: 'Alkalinity', es: 'Alcalinidad', id: 'wt_alkalinity', range: '200 – 800', unit: 'ppm' },
+    { en: 'Hardness', es: 'Dureza', id: 'wt_hardness', range: '0', unit: 'ppm' },
+    { en: 'Condensate pH', es: 'pH del condensado', id: 'wt_condph', range: '7.0 – 9.0', unit: '—' },
+    { en: 'Chemical feed rate adjusted', es: 'Tasa de alimentación química ajustada', id: 'wt_feedrate', range: '—', unit: '—' },
+  ];
+
+  let sectionResults = {};
+
+  function buildSections() {
+    buildCheckSection('s2body', preStartItems, 's2', 2);
+    buildCheckSection('s3body', safetyItems, 's3', 3);
+    buildReadings();
+    buildCheckSection('s5body', burnerItems, 's5', 5);
+    buildBlowdowns();
+    buildWaterTreatment();
+    buildCheckSection('s8body', generalItems, 's8', 8);
+  }
+
+  function buildCheckSection(containerId, items, sectionId, sectionNum) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach((item, i) => {
+      const lang = currentLang;
+      const div = document.createElement('div');
+      div.className = 'check-item';
+      div.innerHTML = `
+        <div class="check-item-text">${lang === 'es' ? item.es : item.en}</div>
+        <div class="check-toggle">
+          <button class="check-btn ok" onclick="setCheck('${sectionId}',${i},'ok',this,${sectionNum})">✅</button>
+          <button class="check-btn fail" onclick="setCheck('${sectionId}',${i},'fail',this,${sectionNum})">⚠️</button>
+          <button class="check-btn na" onclick="setCheck('${sectionId}',${i},'na',this,${sectionNum})">N/A</button>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function buildReadings() {
+    const container = document.getElementById('s4body');
+    container.innerHTML = '';
+    readings.forEach(r => {
+      const lang = currentLang;
+      const div = document.createElement('div');
+      div.className = 'reading-row';
+      div.innerHTML = `
+        <div class="reading-label">${lang === 'es' ? r.es : r.en}</div>
+        <div class="reading-unit">${r.unit}</div>
+        <input class="reading-input" type="number" id="${r.id}" 
+          placeholder="${r.default || '—'}" inputmode="decimal"
+          onchange="checkReading('${r.id}', ${r.warn || 0}, ${r.critical || 0})"
+          oninput="checkReading('${r.id}', ${r.warn || 0}, ${r.critical || 0})">`;
+      container.appendChild(div);
+    });
+  }
+
+  function buildBlowdowns() {
+    const container = document.getElementById('s6body');
+    container.innerHTML = '';
+    const lang = currentLang;
+    blowdowns.forEach(b => {
+      const div = document.createElement('div');
+      div.className = 'blowdown-row';
+      div.innerHTML = `
+        <div class="blowdown-label">${lang === 'es' ? b.es : b.en}</div>
+        <div class="blowdown-inputs">
+          <div>
+            <div class="blowdown-input-label">${lang === 'es' ? 'Estado' : 'Status'}</div>
+            <select class="blowdown-input" id="${b.id}_status" onchange="checkBlowdownSection()">
+              <option value="">—</option>
+              <option value="Complete">✅ ${lang === 'es' ? 'Completo' : 'Complete'}</option>
+              <option value="N/A">— N/A</option>
+            </select>
+          </div>
+          <div>
+            <div class="blowdown-input-label">${lang === 'es' ? 'Hora' : 'Time'}</div>
+            <input class="blowdown-input" type="time" id="${b.id}_time">
+          </div>
+          <div>
+            <div class="blowdown-input-label">${lang === 'es' ? 'Dur. (seg)' : 'Dur. (sec)'}</div>
+            <input class="blowdown-input" type="number" id="${b.id}_dur" placeholder="0">
+          </div>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function buildWaterTreatment() {
+    const container = document.getElementById('s7body');
+    container.innerHTML = '';
+    const lang = currentLang;
+    waterTreatment.forEach(w => {
+      const div = document.createElement('div');
+      div.className = 'treatment-row';
+      div.innerHTML = `
+        <div class="treatment-label">${lang === 'es' ? w.es : w.en}</div>
+        <div class="treatment-range">${w.range} ${w.unit !== '—' ? w.unit : ''}</div>
+        <input class="reading-input" type="number" id="${w.id}" placeholder="—" inputmode="decimal" onchange="checkWaterTreatmentSection()" oninput="checkWaterTreatmentSection()">
+        <div class="reading-unit">${w.unit}</div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function setCheck(sectionId, index, value, btn, sectionNum) {
+    const siblings = btn.parentElement.querySelectorAll('.check-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    if (!sectionResults[sectionId]) sectionResults[sectionId] = {};
+    sectionResults[sectionId][index] = value;
+    updateSectionStatus(sectionId, sectionNum);
+    updateProgress();
+  }
+
+  function updateSectionStatus(sectionId, sectionNum) {
+    const results = sectionResults[sectionId] || {};
+    const total = sectionId === 's2' ? preStartItems.length :
+                  sectionId === 's3' ? safetyItems.length :
+                  sectionId === 's5' ? burnerItems.length :
+                  generalItems.length;
+    const done = Object.keys(results).length;
+    const hasFail = Object.values(results).includes('fail');
+    const status = document.getElementById(`${sectionId}status`);
+    if (!status) return;
+    if (done >= total) {
+      status.textContent = hasFail ? '⚠️ Issues' : '✅ Done';
+      status.style.color = hasFail ? 'var(--warn)' : 'var(--ok)';
+    } else {
+      status.textContent = `${done}/${total}`;
+      status.style.color = 'var(--muted)';
+    }
+  }
+
+  function checkReading(id, warn, critical) {
+    const input = document.getElementById(id);
+    const val = parseFloat(input.value);
+    input.classList.remove('alert', 'critical');
+    if (id === 'r_pressure') {
+      document.getElementById('pressureAlert').classList.remove('show');
+      document.getElementById('pressureCritical').classList.remove('show');
+      if (val >= critical && critical > 0) {
+        input.classList.add('critical');
+        document.getElementById('pressureCritical').classList.add('show');
+      } else if (val >= warn && warn > 0) {
+        input.classList.add('alert');
+        document.getElementById('pressureAlert').classList.add('show');
+      }
+    } else if (warn > 0 && val >= warn) {
+      input.classList.add('alert');
+    }
+    checkReadingsSection();
+  }
+
+  function checkReadingsSection() {
+    const filled = readings.filter(r => document.getElementById(r.id)?.value).length;
+    const status = document.getElementById('s4status');
+    if (filled >= readings.length) {
+      status.textContent = '✅ Done';
+      status.style.color = 'var(--ok)';
+    } else {
+      status.textContent = `${filled}/${readings.length}`;
+      status.style.color = 'var(--muted)';
+    }
+    updateProgress();
+  }
+
+  function checkBlowdownSection() {
+    const filled = blowdowns.filter(b => document.getElementById(`${b.id}_status`)?.value).length;
+    const status = document.getElementById('s6status');
+    if (filled >= blowdowns.length) {
+      status.textContent = '✅ Done';
+      status.style.color = 'var(--ok)';
+    } else {
+      status.textContent = `${filled}/${blowdowns.length}`;
+      status.style.color = 'var(--muted)';
+    }
+    updateProgress();
+  }
+
+  function checkWaterTreatmentSection() {
+    const filled = waterTreatment.filter(w => document.getElementById(w.id)?.value).length;
+    const status = document.getElementById('s7status');
+    if (filled >= waterTreatment.length) {
+      status.textContent = '✅ Done';
+      status.style.color = 'var(--ok)';
+    } else {
+      status.textContent = `${filled}/${waterTreatment.length}`;
+      status.style.color = 'var(--muted)';
+    }
+    updateProgress();
+  }
+
+  function checkWaterMeter() {
+    const val = document.getElementById('waterMeter').value;
+    const alert = document.getElementById('waterMeterAlert');
+    if (val) {
+      alert.classList.remove('show');
+    }
+  }
+
+  function updateProgress() {
+    const dailySections = ['s2','s4','s5','s6','s8'];
+    const weeklySections = ['s3','s7'];
+    const total = isWednesday ? 10 : 8;
+    let done = 0;
+    dailySections.forEach(s => {
+      const status = document.getElementById(`${s}status`);
+      if (status && status.textContent.includes('Done')) done++;
+    });
+    if (isWednesday) {
+      weeklySections.forEach(s => {
+        const status = document.getElementById(`${s}status`);
+        if (status && status.textContent.includes('Done')) done++;
+      });
+    }
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    const lang = currentLang;
+    document.getElementById('progressText').textContent = lang === 'es'
+      ? `${done} de ${total} secciones completadas`
+      : `${done} of ${total} sections completed`;
+  }
+
+  function addDeficiency() {
+    deficiencyCount++;
+    const list = document.getElementById('deficiencyList');
+    const div = document.createElement('div');
+    div.className = 'deficiency-row';
+    div.id = `def_${deficiencyCount}`;
+    div.innerHTML = `
+      <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; color:var(--warn); text-transform:uppercase; font-size:0.9rem;">
+        Deficiency #${deficiencyCount}
+      </div>
+      <textarea placeholder="Describe the deficiency..." id="def_desc_${deficiencyCount}"></textarea>
+      <div class="blowdown-input-label" style="margin-top:8px;">Priority</div>
+      <select id="def_priority_${deficiencyCount}">
+        <option value="">— Select priority —</option>
+        <option value="Low">🟡 Low</option>
+        <option value="Medium">🟠 Medium</option>
+        <option value="High">🔴 High — Immediate Action</option>
+      </select>
+      <div class="blowdown-input-label" style="margin-top:8px;">Corrective Action Taken</div>
+      <textarea placeholder="Describe corrective action taken..." id="def_action_${deficiencyCount}"></textarea>`;
+    list.appendChild(div);
+    document.getElementById('s9status').textContent = `${deficiencyCount} item${deficiencyCount > 1 ? 's' : ''}`;
+    document.getElementById('s9status').style.color = 'var(--warn)';
+  }
+
+  function setSupNotified(val, btn) {
+    supNotified = val;
+    document.getElementById('supYes').classList.remove('selected');
+    document.getElementById('supNo').classList.remove('selected');
+    btn.classList.add('selected');
+    document.getElementById('supNotifiedVal').value = val;
+    document.getElementById('supNameRow').style.display = val === 'yes' ? 'block' : 'none';
+    document.getElementById('s10status').textContent = '✅ Done';
+    document.getElementById('s10status').style.color = 'var(--ok)';
+    updateProgress();
+  }
+
+  function selectBoiler(num, btn) {
+    selectedBoiler = num;
+    document.querySelectorAll('.boiler-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    const badge = document.getElementById('boilerBadge');
+    badge.textContent = `B${num}`;
+    badge.className = `boiler-badge b${num}`;
+    badge.classList.remove('hidden');
+    document.getElementById('card-boiler').classList.remove('active');
+    document.getElementById('card-operator').classList.add('active');
+    document.getElementById('card-operator').scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function handleOperatorSelect(sel) {
+    const other = document.getElementById('operatorOther');
+    const hidden = document.getElementById('operatorName');
+    if (sel.value === '__other__') {
+      other.style.display = 'block';
+      other.focus();
+      hidden.value = '';
+      other.oninput = () => hidden.value = other.value.trim();
+    } else {
+      other.style.display = 'none';
+      hidden.value = sel.value;
+      if (sel.value) showChecklist();
+    }
+  }
+
+  function showChecklist() {
+    document.getElementById('card-operator').classList.remove('active');
+    const cl = document.getElementById('card-checklist');
+    cl.classList.remove('hidden');
+    cl.classList.add('active');
+    buildSections();
+    initWeeklyChecks();
+    loadCarryOver();
+
+    // Populate boiler nameplate info
+    const boilerData = {
+      1: { mfg: 'Volcano (Indeck)', model: 'ST-350E', serial: '4368-G' },
+      2: { mfg: 'Indeck Boiler Corporation', model: 'Volcano Starfire ST-250E-WP12', serial: '4407-GB' }
+    };
+    const data = boilerData[selectedBoiler];
+    document.getElementById('manufacturer').value = data.mfg;
+    document.getElementById('model').value = data.model;
+    document.getElementById('serial').value = data.serial;
+
+    cl.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function submitBoiler() {
+    const operator = document.getElementById('operatorName').value.trim() || document.getElementById('operatorSelect').value;
+    const shift = document.getElementById('shiftSelect').value;
+    const waterMeter = document.getElementById('waterMeter').value;
+    const overallStatus = document.getElementById('overallStatus').value;
+
+    if (!selectedBoiler) return alert('Please select a boiler.');
+    if (!operator) return alert('Please select operator name.');
+    if (!shift) return alert('Please select a shift.');
+    if (!waterMeter) {
+      document.getElementById('waterMeterAlert').classList.add('show');
+      document.getElementById('waterMeter').scrollIntoView({ behavior: 'instant', block: 'center' });
+      return alert('⚠️ Water meter reading is required and cannot be skipped!');
+    }
+    if (!overallStatus) return alert('Please select overall boiler status.');
+    if (!supNotified) return alert('Please indicate if supervisor was notified.');
+
+    const timestamp = new Date().toLocaleString('en-CA', {
+      weekday: 'long', year: 'numeric', month: 'long',
+      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    const pressure = document.getElementById('r_pressure').value;
+    const hasIssues = pressure >= 14 || deficiencyCount > 0 || overallStatus.includes('Attention') || overallStatus.includes('Shut');
+
+    const subject = hasIssues
+      ? `🚨 Colasanti's BOILER ALERT — Steam Boiler #${selectedBoiler} Issues Found | ${operator} | ${timestamp}`
+      : `✅ Colasanti's Boiler Check — Steam Boiler #${selectedBoiler} Normal | ${operator} | ${timestamp}`;
+
+    const emailBody = `
+COLASANTI'S STEAM BOILER DAILY CHECKLIST
+==========================================
+Submitted: ${timestamp}
+
+BOILER: Steam Boiler #${selectedBoiler}
+OPERATOR: ${operator}
+SHIFT: ${shift}
+LOCATION: Boiler Room #1
+OPERATING RANGE: 0-15 PSI
+
+OPERATING READINGS
+------------------
+Steam Pressure: ${document.getElementById('r_pressure').value || '—'} PSI
+Water Level: ${document.getElementById('r_waterlevel').value || '—'}
+Stack Temperature: ${document.getElementById('r_stacktemp').value || '—'} °F
+Gas Supply Pressure: ${document.getElementById('r_gassupply').value || '—'} in.W.C.
+Operating Setpoint: ${document.getElementById('r_opsetpoint').value || '10'} PSI
+High Limit Setpoint: ${document.getElementById('r_highlimit').value || '15'} PSI
+
+WATER METER
+-----------
+Today's Reading: ${waterMeter}
+Previous Reading: ${document.getElementById('prevWater').value || '—'}
+Daily Usage: ${document.getElementById('waterUsageDisplay').textContent}
+
+BOILER CYCLES
+-------------
+Today's Count: ${document.getElementById('cyclesToday').value || '—'}
+Previous Count: ${document.getElementById('cyclesPrev').value || '—'}
+Daily Cycles: ${document.getElementById('cycleDisplay').textContent}
+
+WATER TREATMENT
+---------------
+pH: ${document.getElementById('wt_ph').value || '—'} (Range: 7.0-9.5)
+TDS/Conductivity: ${document.getElementById('wt_tds').value || '—'} ppm
+Sulfite Residual: ${document.getElementById('wt_sulfite').value || '—'} ppm (Range: 20-40)
+Alkalinity: ${document.getElementById('wt_alkalinity').value || '—'} ppm (Range: 200-800)
+Hardness: ${document.getElementById('wt_hardness').value || '—'} ppm (Target: 0)
+
+OVERALL STATUS: ${overallStatus}
+SUPERVISOR NOTIFIED: ${supNotified === 'yes' ? 'Yes — ' + (document.getElementById('supName').value || 'Name not provided') : 'No'}
+
+${deficiencyCount > 0 ? '⚠️ DEFICIENCIES FOUND: ' + deficiencyCount + ' item(s) — see details above' : '✅ No deficiencies reported'}
+
+COMMENTS: ${document.getElementById('shiftComments').value || 'None'}
+
+==========================================
+Submitted via Colasanti Maintenance System
+    `;
+
+    emailjs.send('service_a35rfka', 'template_ehen3f7', {
+      to_email: 'maintenance@colasanti.com',
+      subject: subject,
+      message: emailBody,
+      from_name: 'Colasanti Maintenance System',
+    }).then(() => console.log('Email sent'))
+      .catch(err => console.error('Email error:', err));
+
+    // Save carry-over readings for next shift
+    const boilerKey = `boiler${selectedBoiler}`;
+    if (document.getElementById('waterMeter').value) {
+      localStorage.setItem(`${boilerKey}_waterMeter`, document.getElementById('waterMeter').value);
+    }
+    if (document.getElementById('cyclesToday').value) {
+      localStorage.setItem(`${boilerKey}_cycles`, document.getElementById('cyclesToday').value);
+    }
+
+    completedBoilers.push(selectedBoiler);
+
+    document.getElementById('summaryBox').innerHTML = `
+      <strong>Boiler</strong> Steam Boiler #${selectedBoiler}<br>
+      <strong>Operator</strong> ${operator}<br>
+      <strong>Shift</strong> ${shift}<br>
+      <strong>Submitted</strong> ${timestamp}<br>
+      <strong>Steam Pressure</strong> ${pressure || '—'} PSI<br>
+      <strong>Water Meter</strong> ${waterMeter} — Daily Usage: ${document.getElementById('waterUsageDisplay').textContent}<br>
+      <strong>Daily Cycles</strong> ${document.getElementById('cycleDisplay').textContent}<br>
+      <strong>Overall Status</strong> ${overallStatus}<br>
+      <strong>Deficiencies</strong> ${deficiencyCount > 0 ? '⚠️ ' + deficiencyCount + ' item(s)' : '✅ None'}
+    `;
+
+    const nextBtn = document.getElementById('nextBoilerBtn');
+    if (completedBoilers.includes(1) && completedBoilers.includes(2)) {
+      nextBtn.style.display = 'none';
+    } else {
+      nextBtn.textContent = completedBoilers.includes(1) ? '🔥 Check Boiler #2' : '🔥 Check Boiler #1';
+    }
+
+    document.getElementById('card-checklist').classList.add('hidden');
+    document.getElementById('successPanel').classList.add('show');
+    document.getElementById('successPanel').scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function startNextBoiler() {
+    const next = completedBoilers.includes(1) ? 2 : 1;
+    selectedBoiler = null;
+    supNotified = null;
+    deficiencyCount = 0;
+    sectionResults = {};
+    document.getElementById('operatorSelect').value = '';
+    document.getElementById('operatorName').value = '';
+    document.getElementById('shiftSelect').value = '';
+    document.getElementById('waterMeter').value = '';
+    document.getElementById('prevWater').value = '';
+    document.getElementById('overallStatus').value = '';
+    document.getElementById('shiftComments').value = '';
+    document.getElementById('deficiencyList').innerHTML = '';
+    document.getElementById('supNotifiedVal').value = '';
+    document.getElementById('supNameRow').style.display = 'none';
+    document.getElementById('supYes').classList.remove('selected');
+    document.getElementById('supNo').classList.remove('selected');
+    document.getElementById('pressureAlert').classList.remove('show');
+    document.getElementById('pressureCritical').classList.remove('show');
+    document.getElementById('waterMeterAlert').classList.remove('show');
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('card-checklist').classList.add('hidden');
+    document.getElementById('card-boiler').classList.add('active');
+    document.querySelectorAll('.boiler-btn').forEach(b => b.classList.remove('selected'));
+    const btn = document.querySelector(`.boiler-btn.b${next}`);
+    if (btn) selectBoiler(next, btn);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function resetForm() {
+    completedBoilers = [];
+    selectedBoiler = null;
+    supNotified = null;
+    deficiencyCount = 0;
+    sectionResults = {};
+    document.getElementById('operatorSelect').value = '';
+    document.getElementById('operatorName').value = '';
+    document.getElementById('shiftSelect').value = '';
+    document.getElementById('waterMeter').value = '';
+    document.getElementById('prevWater').value = '';
+    document.getElementById('overallStatus').value = '';
+    document.getElementById('shiftComments').value = '';
+    document.getElementById('deficiencyList').innerHTML = '';
+    document.getElementById('supNotifiedVal').value = '';
+    document.getElementById('supNameRow').style.display = 'none';
+    document.getElementById('supYes').classList.remove('selected');
+    document.getElementById('supNo').classList.remove('selected');
+    document.getElementById('pressureAlert').classList.remove('show');
+    document.getElementById('pressureCritical').classList.remove('show');
+    document.getElementById('waterMeterAlert').classList.remove('show');
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('card-checklist').classList.add('hidden');
+    document.getElementById('card-boiler').classList.add('active');
+    document.getElementById('boilerBadge').classList.add('hidden');
+    document.querySelectorAll('.boiler-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('nextBoilerBtn').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    const btn = document.getElementById('langBtn');
+    const lang = currentLang;
+    if (lang === 'es') {
+      btn.textContent = '🇨🇦 EN';
+      btn.classList.add('es');
+      document.getElementById('safetyMsg').textContent = 'SEGURIDAD CRÍTICA — Rango operativo 0-15 PSI. Complete TODAS las secciones cada turno. Reporte cualquier lectura anormal al supervisor inmediatamente.';
+      document.getElementById('selectBoilerTitle').textContent = 'Seleccionar Caldera';
+      document.getElementById('b1label').textContent = 'Caldera de Vapor #1';
+      document.getElementById('b1sub').textContent = 'Unidad Izquierda';
+      document.getElementById('b2label').textContent = 'Caldera de Vapor #2';
+      document.getElementById('b2sub').textContent = 'Unidad Derecha';
+      document.getElementById('operatorTitle').textContent = 'Información del Operador';
+      document.getElementById('operatorLabel').textContent = '👤 Nombre del Operador';
+      document.getElementById('shiftLabel').textContent = '⏰ Turno';
+      document.getElementById('locationLabel').textContent = '📍 Ubicación / Edificio';
+      document.getElementById('checklistTitle').textContent = 'Completar Lista de Verificación';
+      document.getElementById('operatorSelect').options[0].textContent = '— Selecciona operador —';
+      document.getElementById('operatorSelect').options[4].textContent = 'Otro (escribe nombre)';
+      document.getElementById('operatorOther').placeholder = 'Escribe tu nombre';
+      document.getElementById('shiftSelect').options[0].textContent = '— Selecciona turno —';
+      document.getElementById('shiftSelect').options[1].textContent = '☀️ Turno de Día';
+      document.getElementById('shiftSelect').options[2].textContent = '🌙 Turno de Tarde';
+      document.getElementById('mfgLabel').textContent = 'Fabricante';
+      document.getElementById('modelLabel').textContent = 'Modelo';
+      document.getElementById('serialLabel').textContent = 'Número de Serie';
+      document.getElementById('waterMeterLabel').textContent = '💧 Lectura del Medidor de Agua (hoy)';
+      document.getElementById('prevWaterLabel').textContent = '💧 Lectura Anterior del Medidor';
+      document.getElementById('opTempLabel').textContent = '🌡️ Temperatura de Operación (°F)';
+      document.getElementById('stackTempInfoLabel').textContent = '🌡️ Temperatura del Ducto (°F)';
+      document.getElementById('overallLabel').textContent = 'Estado General de la Caldera';
+      document.getElementById('commentsLabel').textContent = 'Comentarios / Notas';
+      document.getElementById('supNotifiedLabel').textContent = '¿Supervisor Notificado?';
+      document.getElementById('supNameLabel').textContent = 'Nombre del Supervisor';
+      document.getElementById('addDefBtn').textContent = '+ Agregar Deficiencia';
+      document.getElementById('submitBtn').textContent = '🔥 ENVIAR LISTA DE CALDERAS';
+      document.getElementById('successTitle').textContent = '✅ ¡Inspección Registrada!';
+      document.getElementById('successSub').textContent = 'Registro enviado exitosamente';
+      document.getElementById('nextBoilerBtn').textContent = '🔥 Verificar Caldera #2';
+      document.getElementById('newEntryBtn').textContent = '+ Nueva Inspección';
+      document.getElementById('qrText').textContent = '📲 Escanear para abrir esta lista';
+      document.getElementById('qrNote').textContent = 'Coloca este código QR en la Sala de Calderas #1';
+      document.getElementById('signoffNote').textContent = 'Al enviar esta lista confirma que todas las inspecciones se han completado con precisión y cualquier deficiencia ha sido documentada y reportada.';
+      document.getElementById('s1title').textContent = '📋 Información de la Caldera';
+      document.getElementById('s2title').textContent = '👁️ Inspección Visual Pre-Arranque';
+      document.getElementById('s3title').textContent = '🔒 Verificación de Dispositivos de Seguridad';
+      document.getElementById('s4title').textContent = '📊 Lecturas Operativas';
+      document.getElementById('s5title').textContent = '🔥 Operación del Quemador';
+      document.getElementById('s6title').textContent = '💧 Registro de Purga';
+      document.getElementById('s7title').textContent = '⚗️ Tratamiento de Agua';
+      document.getElementById('s8title').textContent = '🔍 Inspección General';
+      document.getElementById('s9title').textContent = '⚠️ Deficiencias y Acciones Correctivas';
+      document.getElementById('s10title').textContent = '✍️ Firma de Turno';
+      if (isWednesday) {
+        document.getElementById('wednesdayMsg').textContent = '¡Es miércoles! Las verificaciones semanales de dispositivos de seguridad y tratamiento de agua son requeridas hoy.';
+        document.getElementById('weeklyBadge3').textContent = '📅 Semanal';
+        document.getElementById('weeklyBadge7').textContent = '📅 Semanal';
+      }
+    } else {
+      btn.textContent = '🇲🇽 ES';
+      btn.classList.remove('es');
+      document.getElementById('safetyMsg').textContent = 'SAFETY CRITICAL — Operating Range 0–15 PSI. Complete ALL sections each shift. Report any abnormal readings to supervisor immediately.';
+      document.getElementById('selectBoilerTitle').textContent = 'Select Boiler';
+      document.getElementById('b1label').textContent = 'Steam Boiler #1';
+      document.getElementById('b1sub').textContent = 'Left Unit';
+      document.getElementById('b2label').textContent = 'Steam Boiler #2';
+      document.getElementById('b2sub').textContent = 'Right Unit';
+      document.getElementById('operatorTitle').textContent = 'Operator Information';
+      document.getElementById('operatorLabel').textContent = '👤 Operator Name';
+      document.getElementById('shiftLabel').textContent = '⏰ Shift';
+      document.getElementById('locationLabel').textContent = '📍 Location / Building';
+      document.getElementById('checklistTitle').textContent = 'Complete Checklist';
+      document.getElementById('operatorSelect').options[0].textContent = '— Select operator —';
+      document.getElementById('operatorSelect').options[4].textContent = 'Other (type name)';
+      document.getElementById('operatorOther').placeholder = 'Enter name';
+      document.getElementById('shiftSelect').options[0].textContent = '— Select shift —';
+      document.getElementById('shiftSelect').options[1].textContent = '☀️ Day Shift';
+      document.getElementById('shiftSelect').options[2].textContent = '🌙 Afternoon Shift';
+      document.getElementById('mfgLabel').textContent = 'Manufacturer';
+      document.getElementById('modelLabel').textContent = 'Model';
+      document.getElementById('serialLabel').textContent = 'Serial Number';
+      document.getElementById('waterMeterLabel').textContent = '💧 Water Meter Reading (today)';
+      document.getElementById('prevWaterLabel').textContent = '💧 Previous Water Meter Reading';
+      document.getElementById('opTempLabel').textContent = '🌡️ Operating Temperature (°F)';
+      document.getElementById('stackTempInfoLabel').textContent = '🌡️ Stack Temperature (°F)';
+      document.getElementById('overallLabel').textContent = 'Overall Boiler Status';
+      document.getElementById('commentsLabel').textContent = 'Comments / Notes';
+      document.getElementById('supNotifiedLabel').textContent = 'Supervisor Notified?';
+      document.getElementById('supNameLabel').textContent = 'Supervisor Name';
+      document.getElementById('addDefBtn').textContent = '+ Add Deficiency';
+      document.getElementById('submitBtn').textContent = '🔥 SUBMIT BOILER CHECKLIST';
+      document.getElementById('successTitle').textContent = '✅ Boiler Check Logged!';
+      document.getElementById('successSub').textContent = 'Record submitted successfully';
+      document.getElementById('nextBoilerBtn').textContent = '🔥 Check Boiler #2';
+      document.getElementById('newEntryBtn').textContent = '+ New Check';
+      document.getElementById('qrText').textContent = '📲 Scan to open this checklist';
+      document.getElementById('qrNote').textContent = 'Post this QR code in Boiler Room #1';
+      document.getElementById('signoffNote').textContent = 'By submitting this checklist you confirm that all inspections have been completed accurately and any deficiencies have been documented and reported.';
+      document.getElementById('s1title').textContent = '📋 Boiler Information';
+      document.getElementById('s2title').textContent = '👁️ Pre-Start Visual Inspection';
+      document.getElementById('s3title').textContent = '🔒 Safety Device Checks';
+      document.getElementById('s4title').textContent = '📊 Operating Readings';
+      document.getElementById('s5title').textContent = '🔥 Burner Operation';
+      document.getElementById('s6title').textContent = '💧 Blowdown Log';
+      document.getElementById('s7title').textContent = '⚗️ Water Treatment';
+      document.getElementById('s8title').textContent = '🔍 General Inspection';
+      document.getElementById('s9title').textContent = '⚠️ Deficiencies & Corrective Actions';
+      document.getElementById('s10title').textContent = '✍️ Shift Sign-Off';
+      if (isWednesday) {
+        document.getElementById('wednesdayMsg').textContent = "It's Wednesday! Weekly Safety Device Checks and Water Treatment checks are required today.";
+        document.getElementById('weeklyBadge3').textContent = '📅 Weekly';
+        document.getElementById('weeklyBadge7').textContent = '📅 Weekly';
+      }
+    }
+    if (!document.getElementById('card-checklist').classList.contains('hidden')) {
+      buildSections();
+    }
+  }
+
+  // QR CODE
+  window.addEventListener('load', () => {
+    const url = 'https://colosanti.github.io/Colasanti-maintenance/boiler';
+    const qrDiv = document.getElementById('qrcode');
+    const img = document.createElement('img');
+    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
+    img.alt = 'QR Code';
+    img.width = 160;
+    img.height = 160;
+    img.style.borderRadius = '4px';
+    qrDiv.appendChild(img);
+  });
+</script>
+</body>
+</html>
