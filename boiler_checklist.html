@@ -1243,15 +1243,15 @@
         <div class="blowdown-inputs">
           <div>
             <div class="blowdown-input-label">${lang === 'es' ? 'Estado' : 'Status'}</div>
-            <select class="blowdown-input" id="${b.id}_status" onchange="checkBlowdownSection()">
+            <select class="blowdown-input" id="${b.id}_status" onchange="handleBlowdownStatus('${b.id}', this)">
               <option value="">—</option>
               <option value="Complete">✅ ${lang === 'es' ? 'Completo' : 'Complete'}</option>
               <option value="N/A">— N/A</option>
             </select>
           </div>
           <div>
-            <div class="blowdown-input-label">${lang === 'es' ? 'Hora' : 'Time'}</div>
-            <input class="blowdown-input" type="time" id="${b.id}_time">
+            <div class="blowdown-input-label">${lang === 'es' ? 'Hora (auto)' : 'Time (auto)'}</div>
+            <input class="blowdown-input" type="text" id="${b.id}_time" placeholder="—" readonly style="opacity:0.8; cursor:not-allowed;">
           </div>
           <div>
             <div class="blowdown-input-label">${lang === 'es' ? 'Dur. (seg)' : 'Dur. (sec)'}</div>
@@ -1260,6 +1260,22 @@
         </div>`;
       container.appendChild(div);
     });
+  }
+
+  function handleBlowdownStatus(id, sel) {
+    const timeInput = document.getElementById(`${id}_time`);
+    if (sel.value === 'Complete') {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      timeInput.value = `${hours}:${minutes}:${seconds}`;
+      timeInput.style.color = 'var(--ok)';
+    } else {
+      timeInput.value = '';
+      timeInput.style.color = '';
+    }
+    checkBlowdownSection();
   }
 
   function buildWaterTreatment() {
