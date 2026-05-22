@@ -828,6 +828,9 @@
     <div class="step-body">
 
       <div class="selected-van-display" id="selectedVanDisplay"></div>
+      <div class="pressure-alert show" id="dieselWarning" style="display:none; background:rgba(231,76,60,0.15); border:2px solid var(--warn); border-radius:8px; padding:12px 14px; margin-bottom:14px; font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; color:var(--warn); letter-spacing:0.5px;">
+        🚨 DIESEL FUEL ONLY — This vehicle takes DIESEL. Using regular unleaded will cause serious engine damage. Fuels off-site only — supervisor must authorize.
+      </div>
 
       <!-- STAFF NAME -->
       <div class="form-row">
@@ -1280,7 +1283,8 @@
     { name: 'Van 5', vin: 'CDAB073', type: 'dodge', oil: 'SAE 5W-30', coolant: 'OAT Orange', fuel: 'Regular Unleaded', tires: '225/65R16', defaultKm: '117842' },
     { name: 'Van 6 Promaster City', vin: '', type: 'promastercity', oil: 'SAE 0W-20', coolant: 'OAT Standard', fuel: 'Regular Unleaded', tires: '215/55R16 XL', brake: 'DOT 4 from sealed container only', defaultKm: '101152' },
     { name: 'Promaster', vin: 'AT93700', type: 'promaster', oil: 'SAE 5W-20', coolant: 'OAT — 1.4 bar system', fuel: 'Regular Unleaded', tires: 'TBD', defaultKm: '264413' },
-    { name: 'KIA', vin: '', type: 'kia', oil: 'TBD', coolant: 'TBD', fuel: 'TBD', tires: 'TBD', defaultKm: '' },
+    { name: 'KIA', vin: 'KNDEP2AA7T7833794', type: 'kia', oil: 'External Service Only', coolant: 'Check Level Only', fuel: 'Regular Unleaded', tires: '215/55R17', defaultKm: '22873' },
+    { name: 'Ford Cargo Truck', vin: '1FDPF6DC7RDF05470', type: 'ford', oil: 'External Service Only', coolant: 'Check Level Only', fuel: 'DIESEL ONLY', tires: 'TBD', defaultKm: '60290', diesel: true },
   ];
 
   let selectedWeek = null;
@@ -1352,6 +1356,14 @@
     } else if (selectedVan.defaultKm) {
       document.getElementById('prevKm').value = selectedVan.defaultKm;
       checkMileageGap();
+    }
+
+    // Show diesel warning if Ford selected
+    const dieselWarning = document.getElementById('dieselWarning');
+    if (v.diesel) {
+      dieselWarning.style.display = 'block';
+    } else {
+      dieselWarning.style.display = 'none';
     }
 
     // Update SOP fluids section with vehicle specific info
@@ -1547,6 +1559,33 @@ Submitted via Colasanti's Maintenance System
     }).catch((error) => {
       console.error('Email error:', error);
     });
+
+    // Send to Google Sheets
+    const sheetsData = {
+      timestamp,
+      week: selectedWeek,
+      vehicle: selectedVan.name,
+      vin: selectedVan.vin || '—',
+      staff,
+      prevKm: parseInt(prevKm).toLocaleString(),
+      currKm: parseInt(currKm).toLocaleString(),
+      kmThisWeek: (parseInt(currKm) - parseInt(prevKm)).toLocaleString(),
+      oil: oil === 'yes' ? 'Yes' : 'No',
+      fuel,
+      coolant: coolant === 'ok' ? 'OK' : 'Low',
+      tires: tires === 'good' ? 'Good' : 'Needs Attention',
+      wipers: wipers === 'good' ? 'Good' : 'Needs Replacing',
+      defects: defectToggle === 'yes' ? 'None' : (defectText || 'See notes'),
+      notes: defectToggle === 'no' ? (defectText || '') : ''
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbxFCB4bIGWikyV2NXRWpwBdw54KgSvu3K4P7CymNR3cQVw2pXNqgqqEonNimTahl5Gn/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sheetsData)
+    }).then(() => console.log('Google Sheets updated'))
+      .catch(err => console.error('Sheets error:', err));
 
     // Save current KM for next week's carry over
     localStorage.setItem('lastKm_' + selectedVan.name, currKm);
