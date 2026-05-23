@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Colasanti's — Playground Daily Inspection</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init('GJhqhaqE-7vM3qsyw');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1923;
+    --panel: #1a2635;
+    --panel2: #223044;
+    --accent: #2ecc71;
+    --accent2: #27ae60;
+    --text: #e8edf2;
+    --muted: #7a8fa6;
+    --ok: #2ecc71;
+    --warn: #e74c3c;
+    --caution: #f39c12;
+    --border: #2d4059;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 60px 0; }
+
+  .header { background: linear-gradient(135deg, #0a1520 0%, #1a2c42 100%); border-bottom: 3px solid var(--accent); padding: 14px 16px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  .header-icon { font-size: 2rem; }
+  .header-text h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent); text-transform: uppercase; line-height: 1; }
+  .header-text p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+  .lang-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+  .lang-btn.es { background: rgba(46,204,113,0.2); border-color: var(--accent); color: var(--accent); }
+
+  .content { padding: 16px; max-width: 700px; margin: 0 auto; }
+
+  .safety-banner { background: rgba(231,76,60,0.15); border: 2px solid var(--warn); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .safety-banner p { font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; color: #ff8a80; line-height: 1.4; }
+
+  .step-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; overflow: hidden; }
+  .step-card.active { border-color: var(--accent); }
+  .step-header { background: var(--panel2); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .step-num { background: var(--accent); color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.85rem; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .step-body { padding: 16px; }
+
+  .form-row { margin-bottom: 14px; }
+  .form-label { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .form-input { width: 100%; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 1.05rem; padding: 13px 14px; outline: none; -webkit-appearance: none; }
+  .form-input:focus { border-color: var(--accent); }
+  select.form-input { cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%232ecc71' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  select.form-input option { background: #1a2635; color: #e8edf2; }
+
+  .check-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(45,64,89,0.5); }
+  .check-item:last-child { border-bottom: none; }
+  .check-item-text { flex: 1; font-size: 0.9rem; line-height: 1.3; }
+  .check-toggle { display: flex; gap: 6px; flex-shrink: 0; }
+  .check-btn { padding: 8px 12px; border-radius: 6px; border: 1.5px solid var(--border); background: var(--panel); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .check-btn.ok.selected { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+  .check-btn.fail.selected { background: rgba(231,76,60,0.15); border-color: var(--warn); color: var(--warn); }
+  .check-btn.na.selected { background: rgba(122,143,166,0.15); border-color: var(--muted); color: var(--muted); }
+
+  .toggle-group { display: flex; gap: 10px; }
+  .toggle-btn { flex: 1; padding: 13px; border-radius: 8px; border: 2px solid var(--border); background: var(--panel2); color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.15s; }
+  .toggle-btn.yes.selected { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+  .toggle-btn.no.selected { background: rgba(231,76,60,0.15); border-color: var(--warn); color: var(--warn); }
+
+  .defect-area { width: 100%; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.9rem; padding: 10px 12px; outline: none; resize: none; min-height: 70px; margin-top: 8px; }
+  .defect-area:focus { border-color: var(--warn); }
+
+  .progress-bar-container { background: var(--panel2); border-radius: 20px; height: 8px; margin-bottom: 8px; overflow: hidden; }
+  .progress-bar { background: linear-gradient(90deg, var(--accent), #27ae60); height: 100%; border-radius: 20px; transition: width 0.3s ease; width: 0%; }
+  .progress-text { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; color: var(--muted); text-align: center; margin-bottom: 14px; }
+
+  .submit-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 18px; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 6px; }
+
+  .success-panel { display: none; background: rgba(46,204,113,0.1); border: 2px solid var(--ok); border-radius: var(--radius); padding: 24px; text-align: center; margin-top: 10px; }
+  .success-panel.show { display: block; }
+  .success-panel h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--ok); margin-bottom: 6px; }
+  .summary-box { background: var(--panel2); border-radius: 10px; padding: 14px; margin: 14px 0; text-align: left; font-size: 0.9rem; line-height: 1.8; }
+  .summary-box strong { color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; }
+  .new-entry-btn { background: var(--panel2); border: 2px solid var(--accent); color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; padding: 12px 28px; border-radius: 8px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+
+  .qr-section { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; margin-bottom: 14px; }
+  .qr-section h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; }
+  #qrcode { display: inline-block; background: white; padding: 10px; border-radius: 8px; }
+  .qr-note { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+  .hidden { display: none; }
+
+  .section-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .section-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; background: rgba(46,204,113,0.1); border-bottom: 1px solid rgba(46,204,113,0.3); }
+  .section-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.8rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--accent); color: #000; }
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; flex: 1; }
+  .section-status { font-size: 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
+  .section-body { padding: 14px; }
+
+  .closed-banner { background: rgba(231,76,60,0.15); border: 2px solid var(--warn); border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; display: none; }
+  .closed-banner.show { display: block; }
+  .closed-banner p { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--warn); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🛝</div>
+  <div class="header-text">
+    <h1 id="headerTitle">Colasanti's</h1>
+    <p id="headerSub">Playground Daily Inspection</p>
+  </div>
+  <div class="header-right">
+    <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">🇲🇽 ES</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="safety-banner">
+    <div style="font-size:1.8rem">⚠️</div>
+    <p id="safetyMsg">PUBLIC SAFETY — This inspection must be completed before the playground opens to the public each day. If any safety issue is found the playground must be closed until corrected.</p>
+  </div>
+
+  <!-- STEP 1: INSPECTOR INFO -->
+  <div class="step-card active" id="card-operator">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title" id="operatorTitle">Inspector Information</div>
+    </div>
+    <div class="step-body">
+      <div class="form-row">
+        <label class="form-label" id="operatorLabel">👤 Inspector Name</label>
+        <select class="form-input" id="operatorSelect" onchange="handleOperatorSelect(this)">
+          <option value="">— Select your name —</option>
+          <option value="Jason B">Jason B</option>
+          <option value="Jason R">Jason R</option>
+          <option value="Roman">Roman</option>
+          <option value="__other__">Other (type name)</option>
+        </select>
+        <input class="form-input" id="operatorOther" type="text" placeholder="Enter name" style="margin-top:8px; display:none;" autocomplete="off">
+        <input type="hidden" id="operatorName">
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: INSPECTION -->
+  <div class="step-card hidden" id="card-checklist">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title" id="checklistTitle">Complete Inspection</div>
+    </div>
+    <div class="step-body">
+
+      <div class="progress-text" id="progressText">0 of 11 items completed</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <!-- GROUND & SURFACE -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">1</div>
+          <div class="section-title" id="s1title">🌱 Ground & Surface</div>
+          <div class="section-status" id="s1status">—</div>
+        </div>
+        <div class="section-body" id="s1body"></div>
+      </div>
+
+      <!-- STRUCTURES -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">2</div>
+          <div class="section-title" id="s2title">🏗️ Structures & Equipment</div>
+          <div class="section-status" id="s2status">—</div>
+        </div>
+        <div class="section-body" id="s2body"></div>
+      </div>
+
+      <!-- PERIMETER -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-num">3</div>
+          <div class="section-title" id="s3title">🚧 Perimeter & Access</div>
+          <div class="section-status" id="s3status">—</div>
+        </div>
+        <div class="section-body" id="s3body"></div>
+      </div>
+
+      <!-- PLAYGROUND STATUS -->
+      <div class="form-row">
+        <label class="form-label" id="statusLabel">🛝 Playground Status After Inspection</label>
+        <div class="toggle-group">
+          <button class="toggle-btn yes" onclick="setPlaygroundStatus('open', this)" id="statusOpen">✅ SAFE TO OPEN</button>
+          <button class="toggle-btn no" onclick="setPlaygroundStatus('closed', this)" id="statusClosed">🚫 CLOSE PLAYGROUND</button>
+        </div>
+        <input type="hidden" id="playgroundStatus">
+      </div>
+
+      <div class="closed-banner" id="closedBanner">
+        <p id="closedMsg">⚠️ PLAYGROUND CLOSED — Document all issues below and notify supervisor immediately. Do not allow public access until all safety issues are corrected and cleared by supervisor.</p>
+      </div>
+
+      <!-- ISSUES -->
+      <div class="form-row">
+        <label class="form-label" id="issuesLabel">⚠️ Issues Found / Notes</label>
+        <textarea class="defect-area" id="issuesText" placeholder="Describe any issues found, location and severity..."></textarea>
+      </div>
+
+      <!-- CORRECTIVE ACTION -->
+      <div class="form-row">
+        <label class="form-label" id="actionLabel">🔧 Corrective Action Taken</label>
+        <textarea class="defect-area" id="actionText" placeholder="Describe any corrective actions taken..."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()" id="submitBtn">✔ SUBMIT INSPECTION</button>
+
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="successPanel">
+    <h2 id="successTitle">✅ Inspection Logged!</h2>
+    <p id="successSub">Record submitted successfully</p>
+    <div class="summary-box" id="summaryBox"></div>
+    <button class="new-entry-btn" onclick="resetForm()" id="newEntryBtn">+ New Inspection</button>
+  </div>
+
+  <!-- QR -->
+  <div class="qr-section">
+    <h3 id="qrText">📲 Scan to open this checklist</h3>
+    <div id="qrcode"></div>
+    <p class="qr-note" id="qrNote">Post this QR code at the playground entrance</p>
+  </div>
+
+</div>
+
+<script>
+  let currentLang = 'en';
+  let playgroundStatusVal = null;
+  let sectionResults = {};
+
+  const groundItems = [
+    { en: 'Inspect ground for stumps or hazards', es: 'Inspeccionar el suelo por tocones o peligros' },
+    { en: 'Check for ants in mulch', es: 'Verificar la presencia de hormigas en el mantillo' },
+    { en: 'Check mulch depth adequate and distributed evenly', es: 'Verificar profundidad de mantillo adecuada y distribuida uniformemente' },
+    { en: 'Check walkways — clear, no trip hazards', es: 'Verificar caminos — despejados, sin peligros de tropiezo' },
+  ];
+
+  const structureItems = [
+    { en: 'Inspect climbing structure for sturdiness', es: 'Inspeccionar estructura de escalada por solidez' },
+    { en: 'Check stairs for sturdiness and condition', es: 'Verificar escaleras por solidez y condición' },
+    { en: 'Check under slide for splinters', es: 'Verificar debajo del tobogán por astillas' },
+    { en: 'Check green handles — secure and functional', es: 'Verificar manijas verdes — seguras y funcionales' },
+    { en: 'Wipe down structure — clean and free of debris', es: 'Limpiar estructura — limpia y libre de desechos' },
+  ];
+
+  const perimeterItems = [
+    { en: 'Check fencing — secure, no damage or gaps', es: 'Verificar cercado — seguro, sin daños ni brechas' },
+    { en: 'Check enclosing structure for sturdiness', es: 'Verificar estructura de cierre por solidez' },
+  ];
+
+  function buildSections() {
+    buildSection('s1body', groundItems, 's1', groundItems.length);
+    buildSection('s2body', structureItems, 's2', structureItems.length);
+    buildSection('s3body', perimeterItems, 's3', perimeterItems.length);
+  }
+
+  function buildSection(containerId, items, sectionId, total) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'check-item';
+      div.innerHTML = `
+        <div class="check-item-text">${currentLang === 'es' ? item.es : item.en}</div>
+        <div class="check-toggle">
+          <button class="check-btn ok" onclick="setCheck('${sectionId}',${i},'ok',this,${total})">✅</button>
+          <button class="check-btn fail" onclick="setCheck('${sectionId}',${i},'fail',this,${total})">⚠️</button>
+          <button class="check-btn na" onclick="setCheck('${sectionId}',${i},'na',this,${total})">N/A</button>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  function setCheck(sectionId, index, value, btn, total) {
+    const siblings = btn.parentElement.querySelectorAll('.check-btn');
+    siblings.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    if (!sectionResults[sectionId]) sectionResults[sectionId] = {};
+    sectionResults[sectionId][index] = value;
+    const done = Object.keys(sectionResults[sectionId]).length;
+    const hasFail = Object.values(sectionResults[sectionId]).includes('fail');
+    const status = document.getElementById(`${sectionId}status`);
+    if (done >= total) {
+      status.textContent = hasFail ? '⚠️ Issues' : '✅ Done';
+      status.style.color = hasFail ? 'var(--warn)' : 'var(--ok)';
+    } else {
+      status.textContent = `${done}/${total}`;
+      status.style.color = 'var(--muted)';
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = groundItems.length + structureItems.length + perimeterItems.length;
+    const done = Object.values(sectionResults).reduce((sum, sec) => sum + Object.keys(sec).length, 0);
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = currentLang === 'es'
+      ? `${done} de ${total} elementos completados`
+      : `${done} of ${total} items completed`;
+  }
+
+  function setPlaygroundStatus(val, btn) {
+    playgroundStatusVal = val;
+    document.getElementById('statusOpen').classList.remove('selected');
+    document.getElementById('statusClosed').classList.remove('selected');
+    btn.classList.add('selected');
+    document.getElementById('playgroundStatus').value = val;
+    document.getElementById('closedBanner').classList.toggle('show', val === 'closed');
+  }
+
+  function handleOperatorSelect(sel) {
+    const other = document.getElementById('operatorOther');
+    const hidden = document.getElementById('operatorName');
+    if (sel.value === '__other__') {
+      other.style.display = 'block';
+      other.focus();
+      hidden.value = '';
+      other.oninput = () => hidden.value = other.value.trim();
+    } else {
+      other.style.display = 'none';
+      hidden.value = sel.value;
+      if (sel.value) showChecklist();
+    }
+  }
+
+  function showChecklist() {
+    document.getElementById('card-operator').classList.remove('active');
+    const cl = document.getElementById('card-checklist');
+    cl.classList.remove('hidden');
+    cl.classList.add('active');
+    buildSections();
+    cl.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function submitForm() {
+    const operator = document.getElementById('operatorName').value.trim() || document.getElementById('operatorSelect').value;
+    const status = document.getElementById('playgroundStatus').value;
+
+    if (!operator) return alert('Please select your name.');
+    if (!status) return alert('Please set the playground status after inspection.');
+
+    const total = groundItems.length + structureItems.length + perimeterItems.length;
+    const done = Object.values(sectionResults).reduce((sum, sec) => sum + Object.keys(sec).length, 0);
+    if (done < total) return alert(`Please complete all ${total} inspection items before submitting.`);
+
+    const timestamp = new Date().toLocaleString('en-CA', {
+      weekday: 'long', year: 'numeric', month: 'long',
+      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    const hasIssues = status === 'closed' ||
+      Object.values(sectionResults).some(sec => Object.values(sec).includes('fail'));
+
+    const subject = hasIssues
+      ? `🚫 Colasanti's PLAYGROUND CLOSED — Issues Found | ${operator} | ${timestamp}`
+      : `✅ Colasanti's Playground Inspection — Safe to Open | ${operator} | ${timestamp}`;
+
+    const emailBody = `
+COLASANTI'S PLAYGROUND DAILY INSPECTION
+=========================================
+Submitted: ${timestamp}
+
+INSPECTOR: ${operator}
+PLAYGROUND STATUS: ${status === 'open' ? '✅ SAFE TO OPEN' : '🚫 CLOSED — DO NOT ALLOW PUBLIC ACCESS'}
+
+GROUND & SURFACE: ${Object.values(sectionResults['s1']||{}).includes('fail') ? '⚠️ Issues Found' : '✅ All Clear'}
+STRUCTURES & EQUIPMENT: ${Object.values(sectionResults['s2']||{}).includes('fail') ? '⚠️ Issues Found' : '✅ All Clear'}
+PERIMETER & ACCESS: ${Object.values(sectionResults['s3']||{}).includes('fail') ? '⚠️ Issues Found' : '✅ All Clear'}
+
+ISSUES FOUND: ${document.getElementById('issuesText').value || 'None'}
+CORRECTIVE ACTION: ${document.getElementById('actionText').value || 'None required'}
+
+${status === 'closed' ? '⚠️ PLAYGROUND IS CLOSED — Supervisor must clear before reopening to public!' : ''}
+=========================================
+Submitted via Colasanti Maintenance System
+    `;
+
+    emailjs.send('service_a35rfka', 'template_ehen3f7', {
+      to_email: 'maintenance@colasanti.com',
+      subject: subject,
+      message: emailBody,
+      from_name: 'Colasanti Maintenance System',
+    }).then(() => console.log('Email sent'))
+      .catch(err => console.error('Email error:', err));
+
+    document.getElementById('summaryBox').innerHTML = `
+      <strong>Inspector</strong> ${operator}<br>
+      <strong>Submitted</strong> ${timestamp}<br>
+      <strong>Playground Status</strong> ${status === 'open' ? '✅ Safe to Open' : '🚫 CLOSED'}<br>
+      <strong>Ground & Surface</strong> ${Object.values(sectionResults['s1']||{}).includes('fail') ? '⚠️ Issues' : '✅ Clear'}<br>
+      <strong>Structures</strong> ${Object.values(sectionResults['s2']||{}).includes('fail') ? '⚠️ Issues' : '✅ Clear'}<br>
+      <strong>Perimeter</strong> ${Object.values(sectionResults['s3']||{}).includes('fail') ? '⚠️ Issues' : '✅ Clear'}
+    `;
+
+    document.getElementById('card-checklist').classList.add('hidden');
+    document.getElementById('successPanel').classList.add('show');
+    document.getElementById('successPanel').scrollIntoView({ behavior: 'instant', block: 'start' });
+  }
+
+  function resetForm() {
+    playgroundStatusVal = null;
+    sectionResults = {};
+    document.getElementById('operatorSelect').value = '';
+    document.getElementById('operatorName').value = '';
+    document.getElementById('operatorOther').style.display = 'none';
+    document.getElementById('playgroundStatus').value = '';
+    document.getElementById('issuesText').value = '';
+    document.getElementById('actionText').value = '';
+    document.getElementById('statusOpen').classList.remove('selected');
+    document.getElementById('statusClosed').classList.remove('selected');
+    document.getElementById('closedBanner').classList.remove('show');
+    document.getElementById('successPanel').classList.remove('show');
+    document.getElementById('card-checklist').classList.add('hidden');
+    document.getElementById('card-operator').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    const btn = document.getElementById('langBtn');
+    if (currentLang === 'es') {
+      btn.textContent = '🇨🇦 EN';
+      btn.classList.add('es');
+      document.getElementById('safetyMsg').textContent = 'SEGURIDAD PÚBLICA — Esta inspección debe completarse antes de abrir el área de juegos al público. Si se encuentra algún problema de seguridad, el área debe cerrarse hasta que se corrija.';
+      document.getElementById('operatorTitle').textContent = 'Información del Inspector';
+      document.getElementById('operatorLabel').textContent = '👤 Nombre del Inspector';
+      document.getElementById('checklistTitle').textContent = 'Completar Inspección';
+      document.getElementById('s1title').textContent = '🌱 Suelo y Superficie';
+      document.getElementById('s2title').textContent = '🏗️ Estructuras y Equipo';
+      document.getElementById('s3title').textContent = '🚧 Perímetro y Acceso';
+      document.getElementById('statusLabel').textContent = '🛝 Estado del Área de Juegos';
+      document.getElementById('statusOpen').textContent = '✅ SEGURO PARA ABRIR';
+      document.getElementById('statusClosed').textContent = '🚫 CERRAR ÁREA';
+      document.getElementById('closedMsg').textContent = '⚠️ ÁREA CERRADA — Documenta todos los problemas y notifica al supervisor inmediatamente. No permitir acceso público hasta que todos los problemas de seguridad sean corregidos.';
+      document.getElementById('issuesLabel').textContent = '⚠️ Problemas Encontrados / Notas';
+      document.getElementById('issuesText').placeholder = 'Describe los problemas encontrados, ubicación y gravedad...';
+      document.getElementById('actionLabel').textContent = '🔧 Acción Correctiva Tomada';
+      document.getElementById('actionText').placeholder = 'Describe las acciones correctivas tomadas...';
+      document.getElementById('submitBtn').textContent = '✔ ENVIAR INSPECCIÓN';
+      document.getElementById('successTitle').textContent = '✅ ¡Inspección Registrada!';
+      document.getElementById('successSub').textContent = 'Registro enviado exitosamente';
+      document.getElementById('newEntryBtn').textContent = '+ Nueva Inspección';
+      document.getElementById('qrText').textContent = '📲 Escanear para abrir esta lista';
+      document.getElementById('qrNote').textContent = 'Coloca este código QR en la entrada del área de juegos';
+      document.getElementById('operatorSelect').options[0].textContent = '— Selecciona tu nombre —';
+      document.getElementById('operatorSelect').options[4].textContent = 'Otro (escribe nombre)';
+    } else {
+      btn.textContent = '🇲🇽 ES';
+      btn.classList.remove('es');
+      document.getElementById('safetyMsg').textContent = 'PUBLIC SAFETY — This inspection must be completed before the playground opens to the public each day. If any safety issue is found the playground must be closed until corrected.';
+      document.getElementById('operatorTitle').textContent = 'Inspector Information';
+      document.getElementById('operatorLabel').textContent = '👤 Inspector Name';
+      document.getElementById('checklistTitle').textContent = 'Complete Inspection';
+      document.getElementById('s1title').textContent = '🌱 Ground & Surface';
+      document.getElementById('s2title').textContent = '🏗️ Structures & Equipment';
+      document.getElementById('s3title').textContent = '🚧 Perimeter & Access';
+      document.getElementById('statusLabel').textContent = '🛝 Playground Status After Inspection';
+      document.getElementById('statusOpen').textContent = '✅ SAFE TO OPEN';
+      document.getElementById('statusClosed').textContent = '🚫 CLOSE PLAYGROUND';
+      document.getElementById('closedMsg').textContent = '⚠️ PLAYGROUND CLOSED — Document all issues below and notify supervisor immediately. Do not allow public access until all safety issues are corrected and cleared by supervisor.';
+      document.getElementById('issuesLabel').textContent = '⚠️ Issues Found / Notes';
+      document.getElementById('issuesText').placeholder = 'Describe any issues found, location and severity...';
+      document.getElementById('actionLabel').textContent = '🔧 Corrective Action Taken';
+      document.getElementById('actionText').placeholder = 'Describe any corrective actions taken...';
+      document.getElementById('submitBtn').textContent = '✔ SUBMIT INSPECTION';
+      document.getElementById('successTitle').textContent = '✅ Inspection Logged!';
+      document.getElementById('successSub').textContent = 'Record submitted successfully';
+      document.getElementById('newEntryBtn').textContent = '+ New Inspection';
+      document.getElementById('qrText').textContent = '📲 Scan to open this checklist';
+      document.getElementById('qrNote').textContent = 'Post this QR code at the playground entrance';
+      document.getElementById('operatorSelect').options[0].textContent = '— Select your name —';
+      document.getElementById('operatorSelect').options[4].textContent = 'Other (type name)';
+    }
+    if (!document.getElementById('card-checklist').classList.contains('hidden')) {
+      buildSections();
+    }
+  }
+
+  window.addEventListener('load', () => {
+    const url = 'https://colosanti.github.io/Colasanti-maintenance/playground';
+    const qrDiv = document.getElementById('qrcode');
+    const img = document.createElement('img');
+    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
+    img.alt = 'QR Code';
+    img.width = 160;
+    img.height = 160;
+    img.style.borderRadius = '4px';
+    qrDiv.appendChild(img);
+  });
+</script>
+</body>
+</html>
