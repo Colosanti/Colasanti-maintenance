@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Colasanti's — Flower Rack Platform 3D</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #1a1a2e; font-family: Arial, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.header { background: #0f1923; border-bottom: 3px solid #f0a500; padding: 10px 14px; flex-shrink: 0; }
+.header h1 { font-size: 1rem; font-weight: 800; color: #f0a500; text-transform: uppercase; letter-spacing: 1px; }
+.header p { font-size: 0.7rem; color: #7a8fa6; margin-top: 2px; }
+#wrap { flex: 1; position: relative; overflow: hidden; }
+canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; }
+.btns { position: absolute; top: 8px; left: 8px; display: flex; gap: 6px; flex-wrap: wrap; z-index: 10; }
+.btn { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.4); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.btn:active { background: rgba(240,165,0,0.4); border-color: #f0a500; }
+.specs { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; font-size: 0.7rem; color: #e8edf2; line-height: 1.9; z-index: 10; }
+.specs b { color: #f0a500; }
+.hint { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: 0.7rem; color: #7a8fa6; pointer-events: none; z-index: 10; }
+#loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #f0a500; font-size: 1rem; font-weight: bold; z-index: 20; text-align: center; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌸 Flower Rack Loading Platform</h1>
+  <p>Colasanti's Tropical Gardens — Prototype v1.0 — Wood</p>
+</div>
+<div id="wrap">
+  <div id="loading">Loading 3D Model...</div>
+  <canvas id="c"></canvas>
+  <div class="btns">
+    <button class="btn" onclick="setView('iso')">Reset</button>
+    <button class="btn" onclick="setView('fork')">Fork End</button>
+    <button class="btn" onclick="setView('ramp')">Ramp End</button>
+    <button class="btn" onclick="setView('side')">Side</button>
+    <button class="btn" onclick="setView('top')">Top</button>
+    <button class="btn" onclick="toggleRacks()">Racks On/Off</button>
+  </div>
+  <div class="specs">
+    <b>Platform Specs</b><br>
+    Length: 54 inches<br>
+    Width: 48 inches<br>
+    Height: ~7 inches<br>
+    Rails: 36 inches (3 sides)<br>
+    Fork pockets: 6 inches<br>
+    Capacity: 2 racks / 400 lbs<br>
+    <b>Material: 2x4 + 1x4 lumber</b>
+  </div>
+  <div class="hint">Drag to rotate &nbsp;|&nbsp; Pinch or scroll to zoom</div>
+</div>
+
+<script>
+function loadScript(src, cb) {
+  var s = document.createElement('script');
+  s.src = src;
+  s.onload = cb;
+  s.onerror = function() {
+    document.getElementById('loading').innerHTML = 'Error loading 3D library.<br>Please check your internet connection.';
+  };
+  document.head.appendChild(s);
+}
+
+loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js', function() {
+  document.getElementById('loading').style.display = 'none';
+  init3D();
+});
+
+var racksVisible = true;
+var rackParts = [];
+var rotX = 0.35, rotY = -0.6, dist = 260;
+var isDragging = false, lastX = 0, lastY = 0;
+var renderer, scene, camera;
+
+function setView(v) {
+  if (v==='iso')  { rotX=0.35; rotY=-0.6; dist=260; }
+  if (v==='fork') { rotX=0.12; rotY=Math.PI; dist=230; }
+  if (v==='ramp') { rotX=0.12; rotY=0; dist=230; }
+  if (v==='side') { rotX=0.12; rotY=Math.PI/2; dist=230; }
+  if (v==='top')  { rotX=1.45; rotY=0; dist=270; }
+}
+
+function toggleRacks() {
+  racksVisible = !racksVisible;
+  rackParts.forEach(function(p) { p.visible = racksVisible; });
+}
+
+function init3D() {
+  var canvas = document.getElementById('c');
+  var wrap = document.getElementById('wrap');
+
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setClearColor(0x1a1a2e, 1);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(150, 200, 150);
+  scene.add(sun);
+  var fill = new THREE.DirectionalLight(0x8899ff, 0.25);
+  fill.position.set(-100, 50, -100);
+  scene.add(fill);
+
+  var WOOD   = new THREE.MeshLambertMaterial({color:0xC4A265});
+  var DECK   = new THREE.MeshLambertMaterial({color:0xD4AE7A});
+  var RAIL   = new THREE.MeshLambertMaterial({color:0x8B6340});
+  var POCKT  = new THREE.MeshLambertMaterial({color:0x7A5230});
+  var RACK1  = new THREE.MeshLambertMaterial({color:0x5DCAA5, transparent:true, opacity:0.85});
+  var RACK2  = new THREE.MeshLambertMaterial({color:0x85B7EB, transparent:true, opacity:0.85});
+  var FRME   = new THREE.MeshLambertMaterial({color:0x888888});
+  var CHAIN  = new THREE.MeshLambertMaterial({color:0xBBBBBB});
+  var GND    = new THREE.MeshLambertMaterial({color:0x252535});
+
+  function bx(w,h,d,mat,x,y,z) {
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+    m.position.set(x,y,z);
+    scene.add(m);
+    return m;
+  }
+
+  var S=0.5, W=48*S, L=54*S, FH=7*S, RH=36*S, TH=1.5*S;
+  var rackH=75*S, forkZ=L/2, rampZ=-L/2;
+
+  // Platform base
+  bx(W, TH, L, WOOD, 0, FH/2, 0);
+  for (var i=-W/2+2*S; i<W/2; i+=3.5*S) {
+    bx(2.5*S, TH*0.5, L-TH, DECK, i, FH/2+TH*0.7, 0);
+  }
+  bx(TH,TH,L,WOOD,-W/4,FH/2,0);
+  bx(TH,TH,L,WOOD, W/4,FH/2,0);
+
+  // Fork pockets
+  var fw=3*S, fpH=6*S, fpD=12*S;
+  [-W/4, W/4].forEach(function(fx) {
+    bx(TH,fpH,fpD,POCKT,fx-fw/2,fpH/2,forkZ-fpD/2);
+    bx(TH,fpH,fpD,POCKT,fx+fw/2,fpH/2,forkZ-fpD/2);
+    bx(fw+TH*2,TH,fpD,POCKT,fx,fpH+TH/2,forkZ-fpD/2);
+    bx(fw+TH*2,fpH,TH,POCKT,fx,fpH/2,forkZ-fpD+TH/2);
+  });
+
+  // Ramp - slopes DOWN
+  var rampD=10*S;
+  var rg = new THREE.BufferGeometry();
+  var rv = new Float32Array([
+    -W/2,FH+TH,rampZ,  W/2,FH+TH,rampZ,  W/2,0,rampZ-rampD,
+    -W/2,FH+TH,rampZ,  W/2,0,rampZ-rampD, -W/2,0,rampZ-rampD,
+    -W/2,FH+TH,rampZ, -W/2,0,rampZ-rampD, -W/2,0,rampZ,
+     W/2,FH+TH,rampZ,  W/2,0,rampZ,        W/2,0,rampZ-rampD,
+    -W/2,0,rampZ-rampD, W/2,0,rampZ-rampD, W/2,0,rampZ,
+    -W/2,0,rampZ-rampD, W/2,0,rampZ,      -W/2,0,rampZ,
+  ]);
+  rg.setAttribute('position', new THREE.BufferAttribute(rv, 3));
+  rg.computeVertexNormals();
+  scene.add(new THREE.Mesh(rg, WOOD));
+
+  // Ramp boards
+  for (var ri=-W/2+2*S; ri<W/2; ri+=3.5*S) {
+    var rb = new THREE.Mesh(new THREE.BoxGeometry(2.5*S,TH*0.4,rampD), DECK);
+    rb.position.set(ri,(FH+TH)*0.5,rampZ-rampD/2);
+    rb.rotation.x = Math.atan2(FH+TH,rampD);
+    scene.add(rb);
+  }
+
+  // Safety rails — 3 sides
+  var postY = FH+TH+RH/2;
+  // Fork side
+  [-W/2,0,W/2].forEach(function(px) { bx(TH,RH,TH,RAIL,px,postY,forkZ); });
+  bx(W,TH,TH,RAIL,0,FH+TH+RH,forkZ);
+  bx(W,TH,TH,RAIL,0,FH+TH+RH*0.5,forkZ);
+  // Left side
+  [-W/2,-W/2,-W/2].forEach(function(px,i) {
+    bx(TH,RH,TH,RAIL,px,postY,[0,forkZ/2,rampZ/2][i]);
+  });
+  bx(TH,TH,L,RAIL,-W/2,FH+TH+RH,0);
+  bx(TH,TH,L,RAIL,-W/2,FH+TH+RH*0.5,0);
+  // Right side
+  [W/2,W/2,W/2].forEach(function(px,i) {
+    bx(TH,RH,TH,RAIL,px,postY,[0,forkZ/2,rampZ/2][i]);
+  });
+  bx(TH,TH,L,RAIL,W/2,FH+TH+RH,0);
+  bx(TH,TH,L,RAIL,W/2,FH+TH+RH*0.5,0);
+
+  // Chain — ramp side
+  var chainY = FH+TH+RH*0.88;
+  bx(TH,RH,TH,CHAIN,-W/2,postY,rampZ);
+  bx(TH,RH,TH,CHAIN, W/2,postY,rampZ);
+  for (var cx=-W/2+2*S; cx<W/2; cx+=4*S) {
+    bx(2.5*S,TH*0.6,TH*0.6,CHAIN,cx,chainY,rampZ);
+  }
+
+  // Flower racks
+  var rW=24*S-TH*2, rL=54*S-TH*2, rT=1.2*S;
+  var rBase=FH+TH, rMid=rBase+rackH/2;
+
+  function makeRack(cx, smat) {
+    var parts=[];
+    [[-rW/2+rT/2,-rL/2+rT/2],[-rW/2+rT/2,rL/2-rT/2],[rW/2-rT/2,-rL/2+rT/2],[rW/2-rT/2,rL/2-rT/2]].forEach(function(p) {
+      var post = new THREE.Mesh(new THREE.BoxGeometry(rT,rackH,rT), FRME);
+      post.position.set(cx+p[0], rMid, p[1]);
+      scene.add(post);
+      parts.push(post);
+    });
+    [0.15,0.35,0.58,0.82].forEach(function(f) {
+      var shelf = new THREE.Mesh(new THREE.BoxGeometry(rW,rT*0.4,rL), smat);
+      shelf.position.set(cx, rBase+rackH*f, 0);
+      scene.add(shelf);
+      parts.push(shelf);
+    });
+    return parts;
+  }
+
+  makeRack(-W/4, RACK1).forEach(function(p){ rackParts.push(p); });
+  makeRack( W/4, RACK2).forEach(function(p){ rackParts.push(p); });
+
+  // Ground
+  bx(W*5,0.5,L*5,GND,0,-0.25,0);
+  scene.add(new THREE.GridHelper(200,20,0x333355,0x2a2a44));
+
+  // Controls
+  var target = new THREE.Vector3(0,15,0);
+  var t0x=0,t0y=0,t1d=0;
+
+  canvas.addEventListener('mousedown',function(e){isDragging=true;lastX=e.clientX;lastY=e.clientY;});
+  window.addEventListener('mouseup',function(){isDragging=false;});
+  canvas.addEventListener('mousemove',function(e){
+    if(!isDragging)return;
+    rotY+=(e.clientX-lastX)*0.007;
+    rotX+=(e.clientY-lastY)*0.007;
+    rotX=Math.max(-1.5,Math.min(1.5,rotX));
+    lastX=e.clientX;lastY=e.clientY;
+  });
+  canvas.addEventListener('wheel',function(e){
+    dist=Math.max(80,Math.min(500,dist+e.deltaY*0.25));
+    e.preventDefault();
+  },{passive:false});
+  canvas.addEventListener('touchstart',function(e){
+    if(e.touches.length===1){t0x=e.touches[0].clientX;t0y=e.touches[0].clientY;}
+    if(e.touches.length===2){var dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;t1d=Math.sqrt(dx*dx+dy*dy);}
+  },{passive:true});
+  canvas.addEventListener('touchmove',function(e){
+    e.preventDefault();
+    if(e.touches.length===1){
+      rotY+=(e.touches[0].clientX-t0x)*0.007;
+      rotX+=(e.touches[0].clientY-t0y)*0.007;
+      rotX=Math.max(-1.5,Math.min(1.5,rotX));
+      t0x=e.touches[0].clientX;t0y=e.touches[0].clientY;
+    }
+    if(e.touches.length===2){
+      var dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+      var nd=Math.sqrt(dx*dx+dy*dy);
+      dist=Math.max(80,Math.min(500,dist-(nd-t1d)*0.5));
+      t1d=nd;
+    }
+  },{passive:false});
+
+  function resize(){
+    var w=wrap.clientWidth,h=wrap.clientHeight;
+    if(renderer.domElement.width!==w||renderer.domElement.height!==h){
+      renderer.setSize(w,h,false);
+      camera.aspect=w/h;
+      camera.updateProjectionMatrix();
+    }
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    resize();
+    camera.position.x=target.x+dist*Math.sin(rotY)*Math.cos(rotX);
+    camera.position.y=target.y+dist*Math.sin(rotX);
+    camera.position.z=target.z+dist*Math.cos(rotY)*Math.cos(rotX);
+    camera.lookAt(target);
+    renderer.render(scene,camera);
+  }
+  animate();
+}
+</script>
+</body>
+</html>
