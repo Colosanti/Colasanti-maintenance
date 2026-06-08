@@ -715,16 +715,16 @@
 
 <!-- BOILER #1 MODAL -->
 <div class="modal-overlay" id="modal-boiler1">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">🔥 Boiler Room #1 Inspection</div>
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-header" style="background:rgba(231,76,60,0.15); border-bottom-color:#e74c3c;">
+      <div class="modal-title" style="color:#e74c3c;">🔥 Boiler Room #1 — Full Inspection</div>
       <button class="modal-close" onclick="closeModal('boiler1')">✕ Close</button>
     </div>
-    <div class="modal-body">
-      <div class="cl-progress" id="cl-progress-boiler1">0 of 10 items checked</div>
+    <div class="modal-body" id="boiler1-modal-body">
+      <div class="cl-progress" id="cl-progress-boiler1">Complete all sections below</div>
       <div id="cl-items-boiler1"></div>
-      <button class="modal-submit-btn" id="cl-submit-boiler1" onclick="submitChecklist('boiler1')" disabled>
-        ✔ COMPLETE CHECKLIST
+      <button class="modal-submit-btn" id="cl-submit-boiler1" onclick="submitBoilerModal('boiler1')" style="background:linear-gradient(135deg,#e74c3c,#c0392b);">
+        🔥 COMPLETE BOILER #1 INSPECTION
       </button>
     </div>
   </div>
@@ -749,16 +749,16 @@
 
 <!-- BOILER #2 MODAL -->
 <div class="modal-overlay" id="modal-boiler2">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">🔥 Boiler Room #2 Inspection</div>
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-header" style="background:rgba(52,152,219,0.15); border-bottom-color:#3498db;">
+      <div class="modal-title" style="color:#3498db;">🔥 Boiler Room #2 — Full Inspection</div>
       <button class="modal-close" onclick="closeModal('boiler2')">✕ Close</button>
     </div>
-    <div class="modal-body">
-      <div class="cl-progress" id="cl-progress-boiler2">0 of 10 items checked</div>
+    <div class="modal-body" id="boiler2-modal-body">
+      <div class="cl-progress" id="cl-progress-boiler2">Complete all sections below</div>
       <div id="cl-items-boiler2"></div>
-      <button class="modal-submit-btn" id="cl-submit-boiler2" onclick="submitChecklist('boiler2')" disabled>
-        ✔ COMPLETE CHECKLIST
+      <button class="modal-submit-btn" id="cl-submit-boiler2" onclick="submitBoilerModal('boiler2')" style="background:linear-gradient(135deg,#3498db,#2980b9);">
+        🔥 COMPLETE BOILER #2 INSPECTION
       </button>
     </div>
   </div>
@@ -946,21 +946,7 @@
         { id: 'f10', label: 'Verify fire extinguisher on unit and charged', needsNote: true },
       ]
     },
-    boiler1: {
-      title: 'Boiler Room #1 Inspection',
-      items: [
-        { id: 'b1a', label: 'Check operating pressure gauge — within normal range', needsNote: true },
-        { id: 'b1b', label: 'Check water level — visible in sight glass', needsNote: true },
-        { id: 'b1c', label: 'Check temperature readings — within normal range', needsNote: true },
-        { id: 'b1d', label: 'Inspect all visible pipes and fittings for leaks', needsNote: true },
-        { id: 'b1e', label: 'Check safety/relief valve — no signs of weeping or discharge', needsNote: true },
-        { id: 'b1f', label: 'Inspect burner operation — flame steady, no unusual noise', needsNote: true },
-        { id: 'b1g', label: 'Check chemical treatment levels if applicable', needsNote: true },
-        { id: 'b1h', label: 'Inspect room for unusual odours (gas, burning)', needsNote: true },
-        { id: 'b1i', label: 'Verify emergency shutoff is accessible and labelled', needsNote: true },
-        { id: 'b1j', label: 'Check floor drain — clear of debris, no standing water', needsNote: true },
-      ]
-    },
+    boiler1: { title: 'Boiler Room #1 Inspection', _fullBoiler: true, _boilerKey: 'boiler1' },
     playground: {
       title: 'Playground & Rides Inspection',
       items: [
@@ -976,31 +962,259 @@
         { id: 'p10', label: 'Verify first aid kit accessible nearby', needsNote: true },
       ]
     },
-    boiler2: {
-      title: 'Boiler Room #2 Inspection',
-      items: [
-        { id: 'b2a', label: 'Check operating pressure gauge — within normal range', needsNote: true },
-        { id: 'b2b', label: 'Check water level — visible in sight glass', needsNote: true },
-        { id: 'b2c', label: 'Check temperature readings — within normal range', needsNote: true },
-        { id: 'b2d', label: 'Inspect all visible pipes and fittings for leaks', needsNote: true },
-        { id: 'b2e', label: 'Check safety/relief valve — no signs of weeping or discharge', needsNote: true },
-        { id: 'b2f', label: 'Inspect burner operation — flame steady, no unusual noise', needsNote: true },
-        { id: 'b2g', label: 'Check chemical treatment levels if applicable', needsNote: true },
-        { id: 'b2h', label: 'Inspect room for unusual odours (gas, burning)', needsNote: true },
-        { id: 'b2i', label: 'Verify emergency shutoff is accessible and labelled', needsNote: true },
-        { id: 'b2j', label: 'Check floor drain — clear of debris, no standing water', needsNote: true },
-      ]
-    }
+    boiler2: { title: 'Boiler Room #2 Inspection', _fullBoiler: true, _boilerKey: 'boiler2' }
   };
 
   // Track checklist results
   const checklistResults = {};
   let activeModal = null;
 
+  // ===================== FULL BOILER DATA =====================
+  const boilerData = {
+    preStart: [
+      'Water level visible in sight glass',
+      'Boiler room ventilation and combustion air adequate',
+      'Gas supply valve open and pressure normal',
+      'Electrical supply and disconnect in ON position',
+      'Area around boiler clear of combustibles and obstructions',
+      'Condensate return tank level adequate',
+      'Feedwater pump operational',
+      'Chemical feed system operational',
+      'Flue/stack/breeching condition — no blockage or damage',
+      'Boiler room lighting adequate',
+    ],
+    safety: [
+      'Low water cutoff (LWCO) tested and functional',
+      'Safety/relief valve — not leaking, not wired/blocked shut',
+      'Operating pressure control functional',
+      'High limit pressure control functional',
+      'Flame safeguard/scanner operational',
+      'Manual gas shut-off valve accessible',
+      'Emergency shut-off switch accessible and labeled',
+      'Low gas pressure switch functional',
+      'High gas pressure switch functional',
+      'Combustion air proving switch functional',
+    ],
+    burner: [
+      'Flame appearance and color (steady blue)',
+      'Ignition sequence — normal startup',
+      'Burner cycling — normal on/off',
+      'No unusual sounds or vibrations',
+      'Combustion air damper operating properly',
+      'Pilot/igniter functioning',
+      'Burner gaskets — no gas or flue gas leaks',
+    ],
+    general: [
+      'No steam leaks at fittings or valves',
+      'No water leaks at piping or connections',
+      'No gas leaks detected (smell/soap test)',
+      'All gauges and instruments functioning',
+      'Piping and valve insulation intact',
+      'Steam traps operating properly',
+      'Boiler room floor dry and drainage clear',
+      'Fire extinguisher present and inspected',
+      'First aid kit accessible',
+      'Boiler log book up to date',
+    ],
+    readings: [
+      { label: 'Steam pressure', unit: 'PSI', warn: 12, critical: 14 },
+      { label: 'Water level — sight glass reading', unit: '—' },
+      { label: 'Stack/flue gas temperature', unit: '°F' },
+      { label: 'Gas supply pressure', unit: 'in.W.C.' },
+      { label: 'Manifold/burner gas pressure', unit: 'in.W.C.' },
+      { label: 'Feedwater temperature', unit: '°F' },
+      { label: 'Condensate return temperature', unit: '°F' },
+      { label: 'Boiler room ambient temperature', unit: '°F' },
+    ],
+    blowdowns: [
+      'Bottom blowdown',
+      'Surface/skimmer blowdown',
+      'LWCO blowdown test',
+      'Water column blowdown',
+    ],
+    waterTreatment: [
+      { label: 'pH level', range: '7.0 – 9.5' },
+      { label: 'TDS / Conductivity', range: 'Per spec' },
+      { label: 'Sulfite residual', range: '20 – 40 ppm' },
+      { label: 'Alkalinity', range: '200 – 800 ppm' },
+      { label: 'Hardness', range: '0 ppm' },
+      { label: 'Condensate pH', range: '7.0 – 9.0' },
+    ],
+  };
+
+  const boilerState = { boiler1: {}, boiler2: {} };
+
+  function buildFullBoilerModal(key) {
+    const color = key === 'boiler1' ? '#e74c3c' : '#3498db';
+    const boilerName = key === 'boiler1' ? 'Boiler #1 (Volcano ST-350E)' : 'Boiler #2 (Indeck Starfire ST-250E)';
+    const container = document.getElementById(`cl-items-${key}`);
+    const p = key;
+    boilerState[key] = { preStart: {}, safety: {}, burner: {}, general: {}, readings: {}, blowdowns: {}, waterTreatment: {} };
+
+    let html = '';
+
+    // SECTION STYLE HELPER
+    function section(icon, title, body) {
+      return `<div style="background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;">
+        <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.1rem;">${icon}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.5px;color:${color};">${title}</span>
+        </div>
+        <div style="padding:12px 14px;">${body}</div>
+      </div>`;
+    }
+
+    function checkItems(items, stateKey) {
+      return items.map((item, i) => {
+        const id = `${p}_${stateKey}_${i}`;
+        return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(45,64,89,0.4);" id="row_${id}">
+          <div style="flex:1;font-size:0.88rem;line-height:1.3;">${item}</div>
+          <div style="display:flex;gap:5px;flex-shrink:0;">
+            <button onclick="boilerCheck('${p}','${stateKey}',${i},'ok',this)" style="padding:6px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;color:var(--text);" class="bchk-btn" data-id="${id}">OK</button>
+            <button onclick="boilerCheck('${p}','${stateKey}',${i},'fail',this)" style="padding:6px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;color:var(--text);" class="bchk-btn" data-id="${id}">FAIL</button>
+            <button onclick="boilerCheck('${p}','${stateKey}',${i},'na',this)" style="padding:6px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;color:var(--text);" class="bchk-btn" data-id="${id}">N/A</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // Boiler info
+    html += section('📋', 'Boiler Information', `
+      <div style="font-size:0.85rem;color:var(--muted);margin-bottom:10px;">${boilerName}</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Water Meter Reading (GAL)</div>
+        <input id="${p}_waterMeter" type="number" inputmode="numeric" placeholder="e.g. 116799" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.95rem;padding:9px 12px;outline:none;">
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Previous Reading (GAL)</div>
+        <input id="${p}_prevMeter" type="number" inputmode="numeric" placeholder="Previous reading" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.95rem;padding:9px 12px;outline:none;opacity:0.8;">
+      </div>
+    `);
+
+    // Pre-start
+    html += section('👁️', 'Pre-Start Visual Inspection', checkItems(boilerData.preStart, 'preStart'));
+
+    // Safety
+    html += section('🔒', 'Safety Device Checks', checkItems(boilerData.safety, 'safety'));
+
+    // Readings
+    const readingRows = boilerData.readings.map((r, i) => `
+      <div style="display:grid;grid-template-columns:1fr auto 90px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
+        <div style="font-size:0.87rem;">${r.label}</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;color:var(--muted);white-space:nowrap;">${r.unit}</div>
+        <input id="${p}_reading_${i}" type="number" inputmode="decimal" placeholder="—" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;text-align:center;">
+      </div>
+    `).join('');
+    html += section('📊', 'Operating Readings', readingRows);
+
+    // Burner
+    html += section('🔥', 'Burner Operation', checkItems(boilerData.burner, 'burner'));
+
+    // Blowdowns
+    const bdRows = boilerData.blowdowns.map((bd, i) => `
+      <div style="padding:10px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
+        <div style="font-size:0.88rem;font-weight:600;margin-bottom:6px;">${bd}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 80px;gap:6px;">
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Start Time</div>
+            <input id="${p}_bd_start_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;">
+          </div>
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">End Time</div>
+            <input id="${p}_bd_end_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;">
+          </div>
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Done?</div>
+            <select id="${p}_bd_done_${i}" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 6px;outline:none;-webkit-appearance:none;">
+              <option value="">—</option><option value="Yes">Yes</option><option value="No">No</option><option value="N/A">N/A</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    html += section('💧', 'Blowdown Log', bdRows);
+
+    // Water treatment
+    const wtRows = boilerData.waterTreatment.map((wt, i) => `
+      <div style="display:grid;grid-template-columns:1fr auto 80px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
+        <div>
+          <div style="font-size:0.87rem;">${wt.label}</div>
+          <div style="font-size:0.75rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;">Range: ${wt.range}</div>
+        </div>
+        <div style="font-size:0.75rem;color:var(--muted);">Result</div>
+        <input id="${p}_wt_${i}" type="text" placeholder="—" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;text-align:center;">
+      </div>
+    `).join('');
+    html += section('⚗️', 'Water Treatment', wtRows);
+
+    // General inspection
+    html += section('🔍', 'General Inspection', checkItems(boilerData.general, 'general'));
+
+    // Deficiencies
+    html += section('⚠️', 'Deficiencies & Notes', `
+      <textarea id="${p}_deficiencies" placeholder="List any deficiencies, issues, or notes here..." rows="3"
+        style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px;outline:none;resize:none;min-height:70px;"></textarea>
+    `);
+
+    container.innerHTML = html;
+    // init state
+    ['preStart','safety','burner','general'].forEach(sk => {
+      boilerData[sk].forEach((_, i) => { boilerState[key][sk][i] = null; });
+    });
+  }
+
+  function boilerCheck(boilerKey, stateKey, idx, val, btn) {
+    boilerState[boilerKey][stateKey][idx] = val;
+    const id = `${boilerKey}_${stateKey}_${idx}`;
+    const row = document.getElementById(`row_${id}`);
+    const btns = row.querySelectorAll('.bchk-btn');
+    btns.forEach(b => {
+      b.style.background = 'var(--panel)';
+      b.style.borderColor = 'var(--border)';
+      b.style.color = 'var(--text)';
+    });
+    if (val === 'ok') { btn.style.background = 'rgba(46,204,113,0.15)'; btn.style.borderColor = 'var(--ok)'; btn.style.color = 'var(--ok)'; }
+    else if (val === 'fail') { btn.style.background = 'rgba(231,76,60,0.15)'; btn.style.borderColor = 'var(--warn)'; btn.style.color = 'var(--warn)'; }
+    else { btn.style.background = 'rgba(122,143,166,0.15)'; btn.style.borderColor = 'var(--muted)'; btn.style.color = 'var(--muted)'; }
+  }
+
+  function submitBoilerModal(key) {
+    closeModal(key);
+    const btn = document.getElementById(`clbtn-${key}`);
+    if (btn) { btn.classList.add('completed'); btn.textContent = '✅ Boiler Inspection Done'; }
+  }
+
+  function getBoilerSummary(key) {
+    const name = key === 'boiler1' ? 'Boiler Room #1' : 'Boiler Room #2';
+    const lines = [`\n${name} Full Inspection`];
+    const sections = [
+      { label: 'Pre-Start Visual', sk: 'preStart', items: boilerData.preStart },
+      { label: 'Safety Devices', sk: 'safety', items: boilerData.safety },
+      { label: 'Burner Operation', sk: 'burner', items: boilerData.burner },
+      { label: 'General Inspection', sk: 'general', items: boilerData.general },
+    ];
+    sections.forEach(sec => {
+      lines.push(`  [${sec.label}]`);
+      sec.items.forEach((item, i) => {
+        const val = (boilerState[key][sec.sk] || {})[i] || 'Not checked';
+        lines.push(`    • ${item}: ${val.toUpperCase()}`);
+      });
+    });
+    const wm = document.getElementById(`${key}_waterMeter`)?.value;
+    if (wm) lines.push(`  Water Meter Reading: ${wm} GAL`);
+    const def = document.getElementById(`${key}_deficiencies`)?.value;
+    if (def) lines.push(`  Deficiencies: ${def}`);
+    return lines.join('\n');
+  }
+
   // ===================== BUILD CHECKLIST MODALS =====================
   function buildChecklists() {
     Object.keys(checklists).forEach(key => {
       const cl = checklists[key];
+      if (cl._fullBoiler) {
+        buildFullBoilerModal(key);
+        return;
+      }
       checklistResults[key] = {};
       const container = document.getElementById(`cl-items-${key}`);
       container.innerHTML = '';
@@ -1077,6 +1291,7 @@
   }
 
   function getChecklistSummary(key) {
+    if (key === 'boiler1' || key === 'boiler2') return getBoilerSummary(key);
     const cl = checklists[key];
     const lines = cl.items.map(item => {
       const r = checklistResults[key][item.id];
@@ -1426,7 +1641,7 @@ Submitted via Colasanti's Maintenance System
   // ===================== QR CODE =====================
   window.addEventListener('load', () => {
     // Fixed URL — corrected spelling colasanti (not colosanti)
-    const url = 'https://colosanti.github.io/Colasanti-maintenance/daily_walk/index.html';
+    const url = 'https://colosanti.github.io/Colasanti-maintenance/daily_walk/';
     const qrDiv = document.getElementById('qrcode');
     const img = document.createElement('img');
     img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
