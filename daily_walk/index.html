@@ -26,6 +26,7 @@
     --radius: 12px;
     --morning: #f0a500;
     --evening: #6c5ce7;
+    --safety: #00b894;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,7 +39,6 @@
     padding: 0 0 60px 0;
   }
 
-  /* HEADER */
   .header {
     background: linear-gradient(135deg, #0a1520 0%, #1a2c42 100%);
     border-bottom: 3px solid var(--accent);
@@ -53,603 +53,119 @@
   }
 
   .header-icon { font-size: 2rem; line-height: 1; }
+  .header-text h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; line-height: 1; }
+  .header-text p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 
-  .header-text h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: var(--accent);
-    text-transform: uppercase;
-    line-height: 1;
-  }
-
-  .header-text p {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .header-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .lang-btn {
-    background: rgba(255,255,255,0.1);
-    border: 2px solid rgba(255,255,255,0.3);
-    color: var(--text);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
+  .lang-btn { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
   .lang-btn.es { background: rgba(240,165,0,0.2); border-color: var(--accent); color: var(--accent); }
 
-  .shift-badge {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 0.9rem;
-    padding: 6px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    white-space: nowrap;
-  }
-
+  .shift-badge { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.9rem; padding: 6px 12px; border-radius: 20px; letter-spacing: 1px; white-space: nowrap; }
   .shift-badge.morning { background: var(--morning); color: #000; }
   .shift-badge.evening { background: var(--evening); color: #fff; }
 
-  /* CONTENT */
   .content { padding: 16px; max-width: 700px; margin: 0 auto; }
 
-  /* STEP CARDS */
-  .step-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 14px;
-    overflow: hidden;
-  }
-
+  .step-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; overflow: hidden; }
   .step-card.active { border-color: var(--accent); }
-
-  .step-header {
-    background: var(--panel2);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .step-num {
-    background: var(--accent);
-    color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 0.85rem;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .step-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-
+  .step-header { background: var(--panel2); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .step-num { background: var(--accent); color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.85rem; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
   .step-body { padding: 16px; }
 
-  /* SHIFT SELECTOR */
-  .shift-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .shift-btn {
-    background: var(--panel2);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 16px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.15s;
-  }
-
+  .shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .shift-btn { background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; padding: 20px 16px; cursor: pointer; text-align: center; transition: all 0.15s; }
   .shift-btn .shift-icon { font-size: 2rem; margin-bottom: 6px; }
-
-  .shift-btn .shift-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .shift-btn .shift-time {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  .shift-btn.morning-btn:hover,
-  .shift-btn.morning-btn.selected {
-    border-color: var(--morning);
-    background: rgba(240,165,0,0.1);
-  }
-
+  .shift-btn .shift-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .shift-btn .shift-time { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .shift-btn.morning-btn:hover, .shift-btn.morning-btn.selected { border-color: var(--morning); background: rgba(240,165,0,0.1); }
   .shift-btn.morning-btn.selected .shift-name { color: var(--morning); }
-
-  .shift-btn.evening-btn:hover,
-  .shift-btn.evening-btn.selected {
-    border-color: var(--evening);
-    background: rgba(108,92,231,0.1);
-  }
-
+  .shift-btn.evening-btn:hover, .shift-btn.evening-btn.selected { border-color: var(--evening); background: rgba(108,92,231,0.1); }
   .shift-btn.evening-btn.selected .shift-name { color: var(--evening); }
 
-  /* FORM FIELDS */
   .form-row { margin-bottom: 14px; }
-
-  .form-label {
-    display: block;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
-  .form-input {
-    width: 100%;
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
-    font-size: 1.05rem;
-    padding: 13px 14px;
-    outline: none;
-    -webkit-appearance: none;
-  }
-
+  .form-label { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .form-input { width: 100%; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 1.05rem; padding: 13px 14px; outline: none; -webkit-appearance: none; }
   .form-input:focus { border-color: var(--accent); }
-
-  select.form-input {
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f0a500' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
-  }
-
+  select.form-input { cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f0a500' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
   select.form-input option { background: #1a2635; color: #e8edf2; }
 
-  /* STOP CARDS */
-  .stop-card {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-
+  .stop-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
   .stop-card.pass { border-color: var(--ok); }
   .stop-card.fail { border-color: var(--warn); }
   .stop-card.na { border-color: var(--na); }
-
-  .stop-header {
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .stop-number {
-    background: var(--accent);
-    color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 0.8rem;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
+  .stop-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  .stop-number { background: var(--accent); color: #000; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.8rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stop-info { flex: 1; }
-
-  .stop-area {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .stop-task {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 2px;
-    line-height: 1.3;
-  }
-
-  .stop-status {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 12px;
-    white-space: nowrap;
-  }
-
+  .stop-area { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .stop-task { font-size: 0.85rem; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+  .stop-status { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; white-space: nowrap; }
   .stop-status.pass { background: rgba(46,204,113,0.2); color: var(--ok); }
   .stop-status.fail { background: rgba(231,76,60,0.2); color: var(--warn); }
   .stop-status.na { background: rgba(122,143,166,0.2); color: var(--na); }
   .stop-status.pending { background: rgba(240,165,0,0.1); color: var(--muted); }
-
   .stop-body { padding: 0 14px 12px; }
 
-  .pfna-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
+  .pfna-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+  .pfna-btn { padding: 12px 8px; border-radius: 8px; border: 2px solid var(--border); background: var(--panel); font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text); }
+  .pfna-btn.pass-btn.selected { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+  .pfna-btn.fail-btn.selected { background: rgba(231,76,60,0.15); border-color: var(--warn); color: var(--warn); }
+  .pfna-btn.na-btn.selected { background: rgba(122,143,166,0.15); border-color: var(--na); color: var(--na); }
 
-  .pfna-btn {
-    padding: 12px 8px;
-    border-radius: 8px;
-    border: 2px solid var(--border);
-    background: var(--panel);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.15s;
-    color: var(--text);
-  }
-
-  .pfna-btn.pass-btn.selected {
-    background: rgba(46,204,113,0.15);
-    border-color: var(--ok);
-    color: var(--ok);
-  }
-
-  .pfna-btn.fail-btn.selected {
-    background: rgba(231,76,60,0.15);
-    border-color: var(--warn);
-    color: var(--warn);
-  }
-
-  .pfna-btn.na-btn.selected {
-    background: rgba(122,143,166,0.15);
-    border-color: var(--na);
-    color: var(--na);
-  }
-
-  .stop-notes {
-    width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
-    font-size: 0.9rem;
-    padding: 10px 12px;
-    outline: none;
-    resize: none;
-    min-height: 60px;
-    display: none;
-  }
-
+  .stop-notes { width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.9rem; padding: 10px 12px; outline: none; resize: none; min-height: 60px; display: none; }
   .stop-notes.show { display: block; }
   .stop-notes:focus { border-color: var(--warn); }
 
-  /* CHECKLIST BUTTON */
-  .checklist-btn {
-    display: inline-block;
-    margin-top: 8px;
-    background: rgba(240,165,0,0.15);
-    border: 1.5px solid var(--accent);
-    color: var(--accent);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    padding: 8px 14px;
+  /* SAFETY CHECKS SECTION */
+  .safety-checks {
+    margin-top: 10px;
+    background: rgba(0,184,148,0.07);
+    border: 1px solid rgba(0,184,148,0.3);
     border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
+    padding: 10px 12px;
+  }
+  .safety-checks-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.15s;
+    color: var(--safety);
+    margin-bottom: 8px;
   }
-  .checklist-btn:hover { background: rgba(240,165,0,0.3); }
-  .checklist-btn.completed {
-    background: rgba(46,204,113,0.15);
-    border-color: var(--ok);
-    color: var(--ok);
+  .safety-check-row {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,184,148,0.15);
   }
-
-  /* PROGRESS BAR */
-  .progress-bar-container {
-    background: var(--panel2);
-    border-radius: 20px;
-    height: 8px;
-    margin-bottom: 16px;
-    overflow: hidden;
+  .safety-check-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .safety-check-label {
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 6px;
   }
-
-  .progress-bar {
-    background: linear-gradient(90deg, var(--accent), var(--ok));
-    height: 100%;
-    border-radius: 20px;
-    transition: width 0.3s ease;
-    width: 0%;
-  }
-
-  .progress-text {
+  .safety-btn-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .safety-btn {
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--panel);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.85rem;
-    color: var(--muted);
+    font-weight: 700;
+    cursor: pointer;
     text-align: center;
-    margin-bottom: 10px;
-  }
-
-  /* SUBMIT */
-  .submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    color: #000;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 18px;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    margin-top: 6px;
-  }
-
-  /* SUCCESS */
-  .success-panel {
-    display: none;
-    background: rgba(46,204,113,0.1);
-    border: 2px solid var(--ok);
-    border-radius: var(--radius);
-    padding: 24px;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .success-panel.show { display: block; }
-
-  .success-panel h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--ok);
-    margin-bottom: 6px;
-  }
-
-  .summary-box {
-    background: var(--panel2);
-    border-radius: 10px;
-    padding: 14px;
-    margin: 14px 0;
-    text-align: left;
-    font-size: 0.9rem;
-    line-height: 1.8;
-  }
-
-  .summary-box strong {
-    color: var(--accent);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-right: 6px;
-  }
-
-  .new-entry-btn {
-    background: var(--panel2);
-    border: 2px solid var(--accent);
-    color: var(--accent);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 12px 28px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-transform: uppercase;
-    margin-top: 10px;
-  }
-
-  /* QR */
-  .qr-section {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 14px;
-  }
-
-  .qr-section h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-
-  #qrcode {
-    display: inline-block;
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-  }
-
-  .qr-note { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
-
-  .hidden { display: none; }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 14px 0;
-  }
-
-  /* FAIL SUMMARY */
-  .fail-summary {
-    background: rgba(231,76,60,0.1);
-    border: 1px solid var(--warn);
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: var(--warn);
-    display: none;
-  }
-
-  .fail-summary.show { display: block; }
-  .fail-summary h4 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-
-  /* =====================
-     MODAL / POPUP CHECKLIST
-  ===================== */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 500;
-    padding: 16px;
-    overflow-y: auto;
-  }
-
-  .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
-
-  .modal-box {
-    background: var(--panel);
-    border: 2px solid var(--accent);
-    border-radius: var(--radius);
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-    overflow: hidden;
-  }
-
-  .modal-header {
-    background: var(--panel2);
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid var(--accent);
-  }
-
-  .modal-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
-  }
-
-  .modal-close {
-    background: rgba(231,76,60,0.2);
-    border: 1.5px solid var(--warn);
-    color: var(--warn);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .modal-body { padding: 16px; }
-
-  .cl-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .cl-item:last-child { border-bottom: none; }
-
-  .cl-check {
-    width: 26px;
-    height: 26px;
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    background: var(--panel2);
-    flex-shrink: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
+    color: var(--text);
     transition: all 0.15s;
-    margin-top: 1px;
   }
-
-  .cl-check.checked {
-    background: var(--ok);
-    border-color: var(--ok);
-    color: #fff;
-  }
-
-  .cl-label {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    flex: 1;
-    cursor: pointer;
-  }
-
-  .cl-label.checked { color: var(--muted); text-decoration: line-through; }
-
-  .cl-note {
+  .safety-btn.pass.selected { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+  .safety-btn.fail.selected { background: rgba(231,76,60,0.15); border-color: var(--warn); color: var(--warn); }
+  .safety-btn.na.selected { background: rgba(122,143,166,0.15); border-color: var(--na); color: var(--na); }
+  .safety-na-note {
     width: 100%;
     margin-top: 6px;
     background: var(--panel);
-    border: 1px solid var(--border);
+    border: 1.5px solid #6c5ce7;
     border-radius: 6px;
     color: var(--text);
     font-family: 'Barlow', sans-serif;
@@ -659,42 +175,68 @@
     resize: none;
     display: none;
   }
+  .safety-na-note.show { display: block; }
+  .safety-na-required {
+    font-size: 0.75rem;
+    color: #a29bfe;
+    font-family: 'Barlow Condensed', sans-serif;
+    margin-top: 3px;
+    display: none;
+  }
+  .safety-na-required.show { display: block; }
 
+  .checklist-btn { display: inline-block; margin-top: 8px; background: rgba(240,165,0,0.15); border: 1.5px solid var(--accent); color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; padding: 8px 14px; border-radius: 8px; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: all 0.15s; }
+  .checklist-btn:hover { background: rgba(240,165,0,0.3); }
+  .checklist-btn.completed { background: rgba(46,204,113,0.15); border-color: var(--ok); color: var(--ok); }
+
+  .progress-bar-container { background: var(--panel2); border-radius: 20px; height: 8px; margin-bottom: 16px; overflow: hidden; }
+  .progress-bar { background: linear-gradient(90deg, var(--accent), var(--ok)); height: 100%; border-radius: 20px; transition: width 0.3s ease; width: 0%; }
+  .progress-text { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; color: var(--muted); text-align: center; margin-bottom: 10px; }
+
+  .submit-btn { width: 100%; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 18px; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 6px; }
+
+  .success-panel { display: none; background: rgba(46,204,113,0.1); border: 2px solid var(--ok); border-radius: var(--radius); padding: 24px; text-align: center; margin-top: 10px; }
+  .success-panel.show { display: block; }
+  .success-panel h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--ok); margin-bottom: 6px; }
+
+  .summary-box { background: var(--panel2); border-radius: 10px; padding: 14px; margin: 14px 0; text-align: left; font-size: 0.9rem; line-height: 1.8; }
+  .summary-box strong { color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-right: 6px; }
+
+  .new-entry-btn { background: var(--panel2); border: 2px solid var(--accent); color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; padding: 12px 28px; border-radius: 8px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+
+  .qr-section { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; margin-bottom: 14px; }
+  .qr-section h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; }
+  #qrcode { display: inline-block; background: white; padding: 10px; border-radius: 8px; }
+  .qr-note { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+
+  .hidden { display: none; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+
+  .fail-summary { background: rgba(231,76,60,0.1); border: 1px solid var(--warn); border-radius: 8px; padding: 12px 14px; margin-top: 10px; font-size: 0.9rem; color: var(--warn); display: none; }
+  .fail-summary.show { display: block; }
+  .fail-summary h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); z-index: 500; padding: 16px; overflow-y: auto; }
+  .modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+  .modal-box { background: var(--panel); border: 2px solid var(--accent); border-radius: var(--radius); width: 100%; max-width: 600px; margin-top: 20px; overflow: hidden; }
+  .modal-header { background: var(--panel2); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--accent); }
+  .modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+  .modal-close { background: rgba(231,76,60,0.2); border: 1.5px solid var(--warn); color: var(--warn); font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+  .modal-body { padding: 16px; }
+  .cl-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .cl-item:last-child { border-bottom: none; }
+  .cl-check { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 6px; background: var(--panel2); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all 0.15s; margin-top: 1px; }
+  .cl-check.checked { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .cl-label { font-size: 0.95rem; line-height: 1.4; flex: 1; cursor: pointer; }
+  .cl-label.checked { color: var(--muted); text-decoration: line-through; }
+  .cl-note { width: 100%; margin-top: 6px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.85rem; padding: 8px 10px; outline: none; resize: none; display: none; }
   .cl-note.show { display: block; }
-
-  .cl-progress {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 12px;
-  }
-
-  .modal-submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, var(--ok) 0%, #27ae60 100%);
-    color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 16px;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    margin-top: 12px;
-  }
-
-  .modal-submit-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  .cl-progress { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; color: var(--muted); text-align: center; margin-bottom: 12px; }
+  .modal-submit-btn { width: 100%; background: linear-gradient(135deg, var(--ok) 0%, #27ae60 100%); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 16px; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 12px; }
+  .modal-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 </style>
 </head>
 <body>
-
-<!-- ===================== CHECKLIST MODALS ===================== -->
 
 <!-- FORKLIFT MODAL -->
 <div class="modal-overlay" id="modal-forklift">
@@ -706,9 +248,7 @@
     <div class="modal-body">
       <div class="cl-progress" id="cl-progress-forklift">0 of 10 items checked</div>
       <div id="cl-items-forklift"></div>
-      <button class="modal-submit-btn" id="cl-submit-forklift" onclick="submitChecklist('forklift')" disabled>
-        ✔ COMPLETE CHECKLIST
-      </button>
+      <button class="modal-submit-btn" id="cl-submit-forklift" onclick="submitChecklist('forklift')" disabled>✔ COMPLETE CHECKLIST</button>
     </div>
   </div>
 </div>
@@ -723,9 +263,7 @@
     <div class="modal-body" id="boiler1-modal-body">
       <div class="cl-progress" id="cl-progress-boiler1">Complete all sections below</div>
       <div id="cl-items-boiler1"></div>
-      <button class="modal-submit-btn" id="cl-submit-boiler1" onclick="submitBoilerModal('boiler1')" style="background:linear-gradient(135deg,#e74c3c,#c0392b);">
-        🔥 COMPLETE BOILER #1 INSPECTION
-      </button>
+      <button class="modal-submit-btn" id="cl-submit-boiler1" onclick="submitBoilerModal('boiler1')" style="background:linear-gradient(135deg,#e74c3c,#c0392b);">🔥 COMPLETE BOILER #1 INSPECTION</button>
     </div>
   </div>
 </div>
@@ -740,9 +278,7 @@
     <div class="modal-body">
       <div class="cl-progress" id="cl-progress-playground">0 of 10 items checked</div>
       <div id="cl-items-playground"></div>
-      <button class="modal-submit-btn" id="cl-submit-playground" onclick="submitChecklist('playground')" disabled>
-        ✔ COMPLETE CHECKLIST
-      </button>
+      <button class="modal-submit-btn" id="cl-submit-playground" onclick="submitChecklist('playground')" disabled>✔ COMPLETE CHECKLIST</button>
     </div>
   </div>
 </div>
@@ -757,14 +293,27 @@
     <div class="modal-body" id="boiler2-modal-body">
       <div class="cl-progress" id="cl-progress-boiler2">Complete all sections below</div>
       <div id="cl-items-boiler2"></div>
-      <button class="modal-submit-btn" id="cl-submit-boiler2" onclick="submitBoilerModal('boiler2')" style="background:linear-gradient(135deg,#3498db,#2980b9);">
-        🔥 COMPLETE BOILER #2 INSPECTION
-      </button>
+      <button class="modal-submit-btn" id="cl-submit-boiler2" onclick="submitBoilerModal('boiler2')" style="background:linear-gradient(135deg,#3498db,#2980b9);">🔥 COMPLETE BOILER #2 INSPECTION</button>
     </div>
   </div>
 </div>
 
-<!-- ===================== MAIN HEADER ===================== -->
+<!-- DOORS & EMERGENCY EXITS MODAL -->
+<div class="modal-overlay" id="modal-doors">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-header" style="background:rgba(108,92,231,0.15); border-bottom-color:#6c5ce7;">
+      <div class="modal-title" style="color:#6c5ce7;">🚪 Doors & Emergency Exits</div>
+      <button class="modal-close" onclick="closeModal('doors')">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="cl-progress" id="cl-progress-doors">Complete all door checks below</div>
+      <div id="cl-items-doors"></div>
+      <button class="modal-submit-btn" id="cl-submit-doors" onclick="submitDoorsModal()" style="background:linear-gradient(135deg,#6c5ce7,#5f4fcf);">
+        🚪 COMPLETE DOOR CHECKS
+      </button>
+    </div>
+  </div>
+</div>
 <div class="header">
   <div class="header-icon">🏢</div>
   <div class="header-text">
@@ -778,24 +327,16 @@
 </div>
 
 <div class="content">
-
   <!-- STEP 1: SHIFT -->
   <div class="step-card active" id="card-shift">
-    <div class="step-header">
-      <div class="step-num">1</div>
-      <div class="step-title" id="shiftTitle">Select Shift</div>
-    </div>
+    <div class="step-header"><div class="step-num">1</div><div class="step-title" id="shiftTitle">Select Shift</div></div>
     <div class="step-body">
       <div class="shift-grid">
         <button class="shift-btn morning-btn" onclick="selectShift('morning', this)">
-          <div class="shift-icon">☀️</div>
-          <div class="shift-name" id="morningLabel">Morning</div>
-          <div class="shift-time" id="morningTime">Start of Day Walk</div>
+          <div class="shift-icon">☀️</div><div class="shift-name" id="morningLabel">Morning</div><div class="shift-time" id="morningTime">Start of Day Walk</div>
         </button>
         <button class="shift-btn evening-btn" onclick="selectShift('evening', this)">
-          <div class="shift-icon">🌙</div>
-          <div class="shift-name" id="eveningLabel">Evening</div>
-          <div class="shift-time" id="eveningTime">End of Day Walk</div>
+          <div class="shift-icon">🌙</div><div class="shift-name" id="eveningLabel">Evening</div><div class="shift-time" id="eveningTime">End of Day Walk</div>
         </button>
       </div>
     </div>
@@ -803,10 +344,7 @@
 
   <!-- STEP 2: STAFF -->
   <div class="step-card" id="card-staff">
-    <div class="step-header">
-      <div class="step-num">2</div>
-      <div class="step-title" id="staffTitle">Your Name</div>
-    </div>
+    <div class="step-header"><div class="step-num">2</div><div class="step-title" id="staffTitle">Your Name</div></div>
     <div class="step-body">
       <div class="form-row">
         <label class="form-label" id="staffLabel">👤 Select Your Name</label>
@@ -817,8 +355,7 @@
           <option value="Roman">Roman</option>
           <option value="__other__">Other (type name)</option>
         </select>
-        <input class="form-input" id="staffNameOther" type="text" placeholder="Enter your name"
-          style="margin-top:8px; display:none;" autocomplete="off">
+        <input class="form-input" id="staffNameOther" type="text" placeholder="Enter your name" style="margin-top:8px; display:none;" autocomplete="off">
         <input type="hidden" id="staffName">
       </div>
       <div class="form-row">
@@ -835,20 +372,12 @@
 
   <!-- STEP 3: WALKTHROUGH -->
   <div class="step-card hidden" id="card-walk">
-    <div class="step-header">
-      <div class="step-num">3</div>
-      <div class="step-title" id="walkTitle">Complete Walkthrough</div>
-    </div>
+    <div class="step-header"><div class="step-num">3</div><div class="step-title" id="walkTitle">Complete Walkthrough</div></div>
     <div class="step-body">
-      <div class="progress-text" id="progressText">0 of 13 stops completed</div>
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+      <div class="progress-text" id="progressText">0 of 15 stops completed</div>
+      <div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
       <div id="stopsContainer"></div>
-      <div class="fail-summary" id="failSummary">
-        <h4>⚠️ Issues Found</h4>
-        <div id="failList"></div>
-      </div>
+      <div class="fail-summary" id="failSummary"><h4>⚠️ Issues Found</h4><div id="failList"></div></div>
       <button class="submit-btn" onclick="submitForm()" id="submitBtn">✔ SUBMIT WALKTHROUGH</button>
     </div>
   </div>
@@ -867,11 +396,9 @@
     <div id="qrcode"></div>
     <p class="qr-note" id="qrNote">Print and post this QR code for quick access</p>
   </div>
-
 </div>
 
 <script>
-  // ===================== LANGUAGE =====================
   let currentLang = 'en';
 
   const t = {
@@ -929,7 +456,6 @@
     }
   };
 
-  // ===================== CHECKLIST DEFINITIONS =====================
   const checklists = {
     forklift: {
       title: 'Forklift Pre-Use Inspection',
@@ -962,10 +488,13 @@
         { id: 'p10', label: 'Verify first aid kit accessible nearby', needsNote: true },
       ]
     },
-    boiler2: { title: 'Boiler Room #2 Inspection', _fullBoiler: true, _boilerKey: 'boiler2' }
+    boiler2: { title: 'Boiler Room #2 Inspection', _fullBoiler: true, _boilerKey: 'boiler2' },
+    doors: { title: 'Doors & Emergency Exits', _doors: true }
   };
 
-  // Track checklist results
+  // Safety check state: { stopIndex: { emLight: 'pass'|'fail'|'na'|null, exitSign: 'pass'|'fail'|'na'|null } }
+  const safetyCheckResults = {};
+
   const checklistResults = {};
   let activeModal = null;
 
@@ -1053,7 +582,6 @@
 
     let html = '';
 
-    // SECTION STYLE HELPER
     function section(icon, title, body) {
       return `<div style="background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;">
         <div style="padding:10px 14px;background:rgba(255,255,255,0.04);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
@@ -1078,7 +606,6 @@
       }).join('');
     }
 
-    // Boiler info
     html += section('📋', 'Boiler Information', `
       <div style="font-size:0.85rem;color:var(--muted);margin-bottom:10px;">${boilerName}</div>
       <div style="margin-bottom:10px;">
@@ -1090,74 +617,37 @@
         <input id="${p}_prevMeter" type="number" inputmode="numeric" placeholder="Previous reading" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.95rem;padding:9px 12px;outline:none;opacity:0.8;">
       </div>
     `);
-
-    // Pre-start
     html += section('👁️', 'Pre-Start Visual Inspection', checkItems(boilerData.preStart, 'preStart'));
-
-    // Safety
     html += section('🔒', 'Safety Device Checks', checkItems(boilerData.safety, 'safety'));
-
-    // Readings
     const readingRows = boilerData.readings.map((r, i) => `
       <div style="display:grid;grid-template-columns:1fr auto 90px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
         <div style="font-size:0.87rem;">${r.label}</div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;color:var(--muted);white-space:nowrap;">${r.unit}</div>
         <input id="${p}_reading_${i}" type="number" inputmode="decimal" placeholder="—" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;text-align:center;">
-      </div>
-    `).join('');
+      </div>`).join('');
     html += section('📊', 'Operating Readings', readingRows);
-
-    // Burner
     html += section('🔥', 'Burner Operation', checkItems(boilerData.burner, 'burner'));
-
-    // Blowdowns
     const bdRows = boilerData.blowdowns.map((bd, i) => `
       <div style="padding:10px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
         <div style="font-size:0.88rem;font-weight:600;margin-bottom:6px;">${bd}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 80px;gap:6px;">
-          <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Start Time</div>
-            <input id="${p}_bd_start_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;">
-          </div>
-          <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">End Time</div>
-            <input id="${p}_bd_end_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;">
-          </div>
-          <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Done?</div>
-            <select id="${p}_bd_done_${i}" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 6px;outline:none;-webkit-appearance:none;">
-              <option value="">—</option><option value="Yes">Yes</option><option value="No">No</option><option value="N/A">N/A</option>
-            </select>
-          </div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Start Time</div><input id="${p}_bd_start_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;"></div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">End Time</div><input id="${p}_bd_end_${i}" type="time" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;"></div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Done?</div><select id="${p}_bd_done_${i}" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 6px;outline:none;-webkit-appearance:none;"><option value="">—</option><option value="Yes">Yes</option><option value="No">No</option><option value="N/A">N/A</option></select></div>
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
     html += section('💧', 'Blowdown Log', bdRows);
-
-    // Water treatment
     const wtRows = boilerData.waterTreatment.map((wt, i) => `
       <div style="display:grid;grid-template-columns:1fr auto 80px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);">
-        <div>
-          <div style="font-size:0.87rem;">${wt.label}</div>
-          <div style="font-size:0.75rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;">Range: ${wt.range}</div>
-        </div>
+        <div><div style="font-size:0.87rem;">${wt.label}</div><div style="font-size:0.75rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;">Range: ${wt.range}</div></div>
         <div style="font-size:0.75rem;color:var(--muted);">Result</div>
         <input id="${p}_wt_${i}" type="text" placeholder="—" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;text-align:center;">
-      </div>
-    `).join('');
+      </div>`).join('');
     html += section('⚗️', 'Water Treatment', wtRows);
-
-    // General inspection
     html += section('🔍', 'General Inspection', checkItems(boilerData.general, 'general'));
-
-    // Deficiencies
-    html += section('⚠️', 'Deficiencies & Notes', `
-      <textarea id="${p}_deficiencies" placeholder="List any deficiencies, issues, or notes here..." rows="3"
-        style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px;outline:none;resize:none;min-height:70px;"></textarea>
-    `);
+    html += section('⚠️', 'Deficiencies & Notes', `<textarea id="${p}_deficiencies" placeholder="List any deficiencies, issues, or notes here..." rows="3" style="width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px;outline:none;resize:none;min-height:70px;"></textarea>`);
 
     container.innerHTML = html;
-    // init state
     ['preStart','safety','burner','general'].forEach(sk => {
       boilerData[sk].forEach((_, i) => { boilerState[key][sk][i] = null; });
     });
@@ -1168,11 +658,7 @@
     const id = `${boilerKey}_${stateKey}_${idx}`;
     const row = document.getElementById(`row_${id}`);
     const btns = row.querySelectorAll('.bchk-btn');
-    btns.forEach(b => {
-      b.style.background = 'var(--panel)';
-      b.style.borderColor = 'var(--border)';
-      b.style.color = 'var(--text)';
-    });
+    btns.forEach(b => { b.style.background = 'var(--panel)'; b.style.borderColor = 'var(--border)'; b.style.color = 'var(--text)'; });
     if (val === 'ok') { btn.style.background = 'rgba(46,204,113,0.15)'; btn.style.borderColor = 'var(--ok)'; btn.style.color = 'var(--ok)'; }
     else if (val === 'fail') { btn.style.background = 'rgba(231,76,60,0.15)'; btn.style.borderColor = 'var(--warn)'; btn.style.color = 'var(--warn)'; }
     else { btn.style.background = 'rgba(122,143,166,0.15)'; btn.style.borderColor = 'var(--muted)'; btn.style.color = 'var(--muted)'; }
@@ -1211,10 +697,8 @@
   function buildChecklists() {
     Object.keys(checklists).forEach(key => {
       const cl = checklists[key];
-      if (cl._fullBoiler) {
-        buildFullBoilerModal(key);
-        return;
-      }
+      if (cl._fullBoiler) { buildFullBoilerModal(key); return; }
+      if (key === 'doors') { buildDoorsModal(); return; }
       checklistResults[key] = {};
       const container = document.getElementById(`cl-items-${key}`);
       container.innerHTML = '';
@@ -1227,10 +711,8 @@
           <div class="cl-check" id="clcheck-${key}-${item.id}" onclick="toggleClItem('${key}','${item.id}')"></div>
           <div style="flex:1">
             <div class="cl-label" id="cllabel-${key}-${item.id}" onclick="toggleClItem('${key}','${item.id}')">${item.label}</div>
-            <textarea class="cl-note" id="clnote-${key}-${item.id}" placeholder="Note any issue..." rows="2"
-              oninput="saveClNote('${key}','${item.id}',this.value)"></textarea>
-          </div>
-        `;
+            <textarea class="cl-note" id="clnote-${key}-${item.id}" placeholder="Note any issue..." rows="2" oninput="saveClNote('${key}','${item.id}',this.value)"></textarea>
+          </div>`;
         container.appendChild(div);
       });
     });
@@ -1245,20 +727,11 @@
     checkEl.classList.toggle('checked', checked);
     checkEl.textContent = checked ? '✓' : '';
     labelEl.classList.toggle('checked', checked);
-    // Show note field when unchecked (issue found)
-    if (!checked) {
-      noteEl.classList.add('show');
-    } else {
-      noteEl.classList.remove('show');
-      noteEl.value = '';
-      checklistResults[key][id].note = '';
-    }
+    if (!checked) { noteEl.classList.add('show'); } else { noteEl.classList.remove('show'); noteEl.value = ''; checklistResults[key][id].note = ''; }
     updateClProgress(key);
   }
 
-  function saveClNote(key, id, val) {
-    checklistResults[key][id].note = val;
-  }
+  function saveClNote(key, id, val) { checklistResults[key][id].note = val; }
 
   function updateClProgress(key) {
     const cl = checklists[key];
@@ -1268,30 +741,18 @@
     document.getElementById(`cl-submit-${key}`).disabled = (done < total);
   }
 
-  function openModal(key) {
-    document.getElementById(`modal-${key}`).classList.add('show');
-    document.body.style.overflow = 'hidden';
-    activeModal = key;
-  }
-
-  function closeModal(key) {
-    document.getElementById(`modal-${key}`).classList.remove('show');
-    document.body.style.overflow = '';
-    activeModal = null;
-  }
+  function openModal(key) { document.getElementById(`modal-${key}`).classList.add('show'); document.body.style.overflow = 'hidden'; activeModal = key; }
+  function closeModal(key) { document.getElementById(`modal-${key}`).classList.remove('show'); document.body.style.overflow = ''; activeModal = null; }
 
   function submitChecklist(key) {
     closeModal(key);
-    // Mark the checklist button as completed on the stop card
     const btn = document.getElementById(`clbtn-${key}`);
-    if (btn) {
-      btn.classList.add('completed');
-      btn.textContent = '✅ Checklist Done';
-    }
+    if (btn) { btn.classList.add('completed'); btn.textContent = '✅ Checklist Done'; }
   }
 
   function getChecklistSummary(key) {
     if (key === 'boiler1' || key === 'boiler2') return getBoilerSummary(key);
+    if (key === 'doors') return getDoorCheckSummary();
     const cl = checklists[key];
     const lines = cl.items.map(item => {
       const r = checklistResults[key][item.id];
@@ -1302,42 +763,179 @@
     return `${cl.title}\n${lines.join('\n')}`;
   }
 
+  // ===================== SAFETY CHECK FUNCTIONS =====================
+  function setSafetyCheck(stopIdx, field, val, btn) {
+    if (!safetyCheckResults[stopIdx]) safetyCheckResults[stopIdx] = { emLight: null, emLightNote: '', exitSign: null, exitSignNote: '' };
+    safetyCheckResults[stopIdx][field] = val;
+
+    // Update button styles
+    const group = btn.closest('.safety-btn-group');
+    group.querySelectorAll('.safety-btn').forEach(b => { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+
+    // Show/hide N/A note
+    const noteEl = document.getElementById(`safety-na-note-${stopIdx}-${field}`);
+    const reqEl = document.getElementById(`safety-na-req-${stopIdx}-${field}`);
+    if (val === 'na') {
+      noteEl.classList.add('show');
+      reqEl.classList.add('show');
+      noteEl.focus();
+    } else {
+      noteEl.classList.remove('show');
+      reqEl.classList.remove('show');
+      noteEl.value = '';
+      safetyCheckResults[stopIdx][field + 'Note'] = '';
+    }
+  }
+
+  function saveSafetyNote(stopIdx, field, val) {
+    if (!safetyCheckResults[stopIdx]) safetyCheckResults[stopIdx] = { emLight: null, emLightNote: '', exitSign: null, exitSignNote: '' };
+    safetyCheckResults[stopIdx][field + 'Note'] = val;
+  }
+
+  function getSafetyCheckSummary(stopIdx, areaName) {
+    const r = safetyCheckResults[stopIdx];
+    if (!r) return `  Emergency Lighting: Not checked\n  Exit Sign: Not checked`;
+    const emNote = r.emLight === 'na' && r.emLightNote ? ` (${r.emLightNote})` : '';
+    const exNote = r.exitSign === 'na' && r.exitSignNote ? ` (${r.exitSignNote})` : '';
+    return `  🚨 Emergency Lighting: ${(r.emLight || 'Not checked').toUpperCase()}${emNote}\n  🚪 Exit Sign: ${(r.exitSign || 'Not checked').toUpperCase()}${exNote}`;
+  }
+
+  // ===================== DOOR CHECK DATA =====================
+  const doorCheckDoors = [
+    { id: 'banquet',  label: 'Banquet Door' },
+    { id: 'gh1',      label: 'GH1 Door' },
+    { id: 'zoo',      label: 'Zoo Door' },
+    { id: 'employee', label: 'Employee Door' },
+    { id: 'loading',  label: 'Loading Dock' },
+    { id: 'fire',     label: 'Fire Exits' },
+  ];
+
+  const doorCheckState = {};
+
+  function buildDoorsModal() {
+    const container = document.getElementById('cl-items-doors');
+    const color = '#6c5ce7';
+    let html = `
+      <div style="background:rgba(108,92,231,0.1);border:1px solid rgba(108,92,231,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.82rem;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;">
+        ⚠️ All doors must be checked. N/A requires a written reason. Locations will be updated as geofencing is implemented.
+      </div>`;
+
+    doorCheckDoors.forEach(door => {
+      doorCheckState[door.id] = { saltScrape: null, saltNote: '', exitCheck: null, exitNote: '' };
+      html += `
+        <div style="background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;">
+          <div style="padding:10px 14px;background:rgba(108,92,231,0.08);border-bottom:1px solid rgba(108,92,231,0.2);display:flex;align-items:center;gap:8px;">
+            <span style="font-size:1rem;">🚪</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:0.5px;color:${color};">${door.label}</span>
+          </div>
+          <div style="padding:12px 14px;">
+
+            <div style="margin-bottom:12px;">
+              <div style="font-size:0.85rem;margin-bottom:6px;font-weight:600;">🧂 Salt / Scrape</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;" id="door-salt-grp-${door.id}">
+                <button onclick="setDoorCheck('${door.id}','saltScrape','pass',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">✅ PASS</button>
+                <button onclick="setDoorCheck('${door.id}','saltScrape','fail',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">⚠️ FAIL</button>
+                <button onclick="setDoorCheck('${door.id}','saltScrape','na',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">— N/A</button>
+              </div>
+              <textarea id="door-salt-note-${door.id}" placeholder="Required: explain why N/A..." rows="2"
+                style="width:100%;margin-top:6px;background:var(--panel);border:1.5px solid #6c5ce7;border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.85rem;padding:8px 10px;outline:none;resize:none;display:none;"
+                oninput="doorCheckState['${door.id}'].saltNote=this.value"></textarea>
+              <div id="door-salt-req-${door.id}" style="font-size:0.75rem;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;margin-top:3px;display:none;">⚠️ N/A reason required</div>
+            </div>
+
+            <div>
+              <div style="font-size:0.85rem;margin-bottom:6px;font-weight:600;">🚨 Emergency Exit Check</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;" id="door-exit-grp-${door.id}">
+                <button onclick="setDoorCheck('${door.id}','exitCheck','pass',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">✅ PASS</button>
+                <button onclick="setDoorCheck('${door.id}','exitCheck','fail',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">⚠️ FAIL</button>
+                <button onclick="setDoorCheck('${door.id}','exitCheck','na',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">— N/A</button>
+              </div>
+              <textarea id="door-exit-note-${door.id}" placeholder="Required: explain why N/A..." rows="2"
+                style="width:100%;margin-top:6px;background:var(--panel);border:1.5px solid #6c5ce7;border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.85rem;padding:8px 10px;outline:none;resize:none;display:none;"
+                oninput="doorCheckState['${door.id}'].exitNote=this.value"></textarea>
+              <div id="door-exit-req-${door.id}" style="font-size:0.75rem;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;margin-top:3px;display:none;">⚠️ N/A reason required</div>
+            </div>
+
+          </div>
+        </div>`;
+    });
+
+    container.innerHTML = html;
+  }
+
+  function setDoorCheck(doorId, field, val, btn) {
+    doorCheckState[doorId][field] = val;
+    const grpId = field === 'saltScrape' ? `door-salt-grp-${doorId}` : `door-exit-grp-${doorId}`;
+    const noteId = field === 'saltScrape' ? `door-salt-note-${doorId}` : `door-exit-note-${doorId}`;
+    const reqId  = field === 'saltScrape' ? `door-salt-req-${doorId}`  : `door-exit-req-${doorId}`;
+    document.getElementById(grpId).querySelectorAll('.door-btn').forEach(b => {
+      b.style.background = 'var(--panel)'; b.style.borderColor = 'var(--border)'; b.style.color = 'var(--text)';
+    });
+    if (val === 'pass') { btn.style.background = 'rgba(46,204,113,0.15)'; btn.style.borderColor = 'var(--ok)'; btn.style.color = 'var(--ok)'; }
+    else if (val === 'fail') { btn.style.background = 'rgba(231,76,60,0.15)'; btn.style.borderColor = 'var(--warn)'; btn.style.color = 'var(--warn)'; }
+    else { btn.style.background = 'rgba(108,92,231,0.15)'; btn.style.borderColor = '#6c5ce7'; btn.style.color = '#a29bfe'; }
+    const noteEl = document.getElementById(noteId);
+    const reqEl  = document.getElementById(reqId);
+    if (val === 'na') { noteEl.style.display = 'block'; reqEl.style.display = 'block'; noteEl.focus(); }
+    else { noteEl.style.display = 'none'; reqEl.style.display = 'none'; noteEl.value = ''; doorCheckState[doorId][field === 'saltScrape' ? 'saltNote' : 'exitNote'] = ''; }
+  }
+
+  function submitDoorsModal() {
+    // Validate all doors
+    for (const door of doorCheckDoors) {
+      const s = doorCheckState[door.id];
+      if (!s.saltScrape) { alert(`⚠️ Please complete Salt/Scrape check for: ${door.label}`); return; }
+      if (!s.exitCheck)  { alert(`⚠️ Please complete Emergency Exit check for: ${door.label}`); return; }
+      if (s.saltScrape === 'na' && !s.saltNote.trim()) { alert(`⚠️ N/A reason required for Salt/Scrape at: ${door.label}`); return; }
+      if (s.exitCheck  === 'na' && !s.exitNote.trim()) { alert(`⚠️ N/A reason required for Emergency Exit at: ${door.label}`); return; }
+    }
+    closeModal('doors');
+    const btn = document.getElementById('clbtn-doors');
+    if (btn) { btn.classList.add('completed'); btn.textContent = '✅ Door Checks Done'; }
+  }
+
+  function getDoorCheckSummary() {
+    const lines = ['\nDoors & Emergency Exits'];
+    doorCheckDoors.forEach(door => {
+      const s = doorCheckState[door.id];
+      const saltNote = s.saltScrape === 'na' && s.saltNote ? ` (${s.saltNote})` : '';
+      const exitNote = s.exitCheck  === 'na' && s.exitNote ? ` (${s.exitNote})` : '';
+      lines.push(`  ${door.label}:`);
+      lines.push(`    🧂 Salt/Scrape: ${(s.saltScrape || 'Not checked').toUpperCase()}${saltNote}`);
+      lines.push(`    🚨 Emergency Exit: ${(s.exitCheck || 'Not checked').toUpperCase()}${exitNote}`);
+    });
+    return lines.join('\n');
+  }
+
   // ===================== STOPS =====================
   const stops = [
-    { num: 1,  area: 'Maintenance Shop',    area_es: 'Taller de Mantenimiento',      task: 'Clock in — review previous shift notes and open work orders',                         task_es: 'Registrar entrada — revisar notas del turno anterior y órdenes de trabajo abiertas' },
-    { num: 2,  area: 'Forklift Area',       area_es: 'Área del Montacargas',         task: 'Complete forklift pre-use inspection checklist',                                      task_es: 'Completar la lista de verificación previa al uso del montacargas',          checklist: 'forklift', checklistLabel: '🚜 Open Forklift Checklist', checklistLabel_es: '🚜 Abrir Lista de Montacargas' },
-    { num: 3,  area: 'Boiler Room #1',      area_es: 'Sala de Calderas #1',          task: 'Complete boiler room checklist — pressure, temp, leaks',                              task_es: 'Completar lista de sala de calderas — presión, temperatura, fugas',         checklist: 'boiler1', checklistLabel: '🔥 Open Boiler Checklist', checklistLabel_es: '🔥 Abrir Lista de Calderas' },
-    { num: 4,  area: 'Retail Floor',        area_es: 'Piso de Ventas',               task: 'Walk retail — check hazards, lighting, displays, emergency exits',                    task_es: 'Recorrer tienda — verificar peligros, iluminación, exhibidores, salidas de emergencia' },
-    { num: 5,  area: 'Zoo',                 area_es: 'Zoológico',                    task: 'Walk zoo — check enclosures, fencing, pathways, animal areas',                        task_es: 'Recorrer zoológico — verificar cercados, vallas, caminos, áreas de animales' },
-    { num: 6,  area: 'Playground & Rides',  area_es: 'Área de Juegos y Atracciones', task: 'Walk playground & rides — check equipment, safety surfacing, signage',               task_es: 'Recorrer área de juegos — verificar equipo, superficie de seguridad, señalización', checklist: 'playground', checklistLabel: '🛝 Open Playground Checklist', checklistLabel_es: '🛝 Abrir Lista de Área de Juegos' },
-    { num: 7,  area: 'All Doors & Lights',  area_es: 'Todas las Puertas y Luces',    task: 'Check all exterior/interior doors, fire doors, emergency lighting',                  task_es: 'Verificar todas las puertas exteriores/interiores, puertas contra incendio, iluminación de emergencia' },
-    { num: 8,  area: 'Arcade',              area_es: 'Arcadia',                      task: 'Walk arcade — check equipment, GFI, exits, lighting',                                task_es: 'Recorrer arcadia — verificar equipos, GFI, salidas, iluminación' },
-    { num: 9,  area: 'Mini Golf',           area_es: 'Mini Golf',                    task: 'Walk mini golf — check course conditions, lighting, fencing',                        task_es: 'Recorrer mini golf — verificar condiciones del campo, iluminación, vallas' },
-    { num: 10, area: 'Restaurant',          area_es: 'Restaurante',                  task: 'Walk restaurant — check kitchen safety equipment, dining area, exits',               task_es: 'Recorrer restaurante — verificar equipo de seguridad de cocina, área de comedor, salidas' },
-    { num: 11, area: 'Boiler Room #2',      area_es: 'Sala de Calderas #2',          task: 'Complete second boiler room checklist — pressure, temp, leaks',                      task_es: 'Completar segunda lista de sala de calderas — presión, temperatura, fugas',  checklist: 'boiler2', checklistLabel: '🔥 Open Boiler Checklist', checklistLabel_es: '🔥 Abrir Lista de Calderas' },
-    { num: 12, area: 'Warehouse',           area_es: 'Almacén',                      task: 'Walk warehouse — check storage, racking, loading areas',                             task_es: 'Recorrer almacén — verificar almacenamiento, estanterías, áreas de carga' },
-    { num: 13, area: 'Maintenance Shop',    area_es: 'Taller de Mantenimiento',      task: 'Return to shop — start toolbox talk, log all issues found',                          task_es: 'Regresar al taller — iniciar charla de seguridad, registrar todos los problemas encontrados' },
+    { num: 1,  area: 'Maintenance Shop',    area_es: 'Taller de Mantenimiento',      task: 'Clock in — review previous shift notes and open work orders', task_es: 'Registrar entrada — revisar notas del turno anterior y órdenes de trabajo abiertas' },
+    { num: 2,  area: 'Forklift Area',       area_es: 'Área del Montacargas',         task: 'Complete forklift pre-use inspection checklist', task_es: 'Completar la lista de verificación previa al uso del montacargas', checklist: 'forklift', checklistLabel: '🚜 Open Forklift Checklist', checklistLabel_es: '🚜 Abrir Lista de Montacargas' },
+    { num: 3,  area: 'Boiler Room #1',      area_es: 'Sala de Calderas #1',          task: 'Complete boiler room checklist — pressure, temp, leaks', task_es: 'Completar lista de sala de calderas — presión, temperatura, fugas', checklist: 'boiler1', checklistLabel: '🔥 Open Boiler Checklist', checklistLabel_es: '🔥 Abrir Lista de Calderas' },
+    { num: 4,  area: 'Retail Floor',        area_es: 'Piso de Ventas',               task: 'Walk retail — check hazards, lighting, displays, emergency exits', task_es: 'Recorrer tienda — verificar peligros, iluminación, exhibidores, salidas de emergencia' },
+    { num: 5,  area: 'Zoo',                 area_es: 'Zoológico',                    task: 'Walk zoo — check enclosures, fencing, pathways, animal areas', task_es: 'Recorrer zoológico — verificar cercados, vallas, caminos, áreas de animales' },
+    { num: 6,  area: 'Playground & Rides',  area_es: 'Área de Juegos y Atracciones', task: 'Walk playground & rides — check equipment, safety surfacing, signage', task_es: 'Recorrer área de juegos — verificar equipo, superficie de seguridad, señalización', checklist: 'playground', checklistLabel: '🛝 Open Playground Checklist', checklistLabel_es: '🛝 Abrir Lista de Área de Juegos' },
+    { num: 7,  area: 'All Doors & Lights',  area_es: 'Todas las Puertas y Luces',    task: 'Check all exterior/interior doors, fire doors, emergency lighting', task_es: 'Verificar todas las puertas exteriores/interiores, puertas contra incendio, iluminación de emergencia' },
+    { num: 8,  area: 'Arcade',              area_es: 'Arcadia',                      task: 'Walk arcade — check equipment, GFI, exits, lighting', task_es: 'Recorrer arcadia — verificar equipos, GFI, salidas, iluminación' },
+    { num: 9,  area: 'Mini Golf',           area_es: 'Mini Golf',                    task: 'Walk mini golf — check course conditions, lighting, fencing', task_es: 'Recorrer mini golf — verificar condiciones del campo, iluminación, vallas' },
+    { num: 10, area: 'Restaurant',          area_es: 'Restaurante',                  task: 'Walk restaurant — check kitchen safety equipment, dining area, exits', task_es: 'Recorrer restaurante — verificar equipo de seguridad de cocina, área de comedor, salidas' },
+    { num: 11, area: 'Boiler Room #2',      area_es: 'Sala de Calderas #2',          task: 'Complete second boiler room checklist — pressure, temp, leaks', task_es: 'Completar segunda lista de sala de calderas — presión, temperatura, fugas', checklist: 'boiler2', checklistLabel: '🔥 Open Boiler Checklist', checklistLabel_es: '🔥 Abrir Lista de Calderas' },
+    { num: 12, area: 'Warehouse',           area_es: 'Almacén',                      task: 'Walk warehouse — check storage, racking, loading areas', task_es: 'Recorrer almacén — verificar almacenamiento, estanterías, áreas de carga' },
+    { num: 13, area: 'Doors & Emergency Exits', area_es: 'Puertas y Salidas de Emergencia', task: 'Check all doors — salt/scrape and emergency exit status', task_es: 'Verificar todas las puertas — sal/raspado y estado de salida de emergencia', checklist: 'doors', checklistLabel: '🚪 Open Door Checks', checklistLabel_es: '🚪 Abrir Verificación de Puertas' },
+    { num: 14, area: 'Grow Houses',         area_es: 'Invernaderos',                 task: 'Walk grow houses — check temperature, humidity, equipment, safety', task_es: 'Recorrer invernaderos — verificar temperatura, humedad, equipo, seguridad' },
+    { num: 14, area: 'Maintenance Shop',    area_es: 'Taller de Mantenimiento',      task: 'Return to shop — start toolbox talk, log all issues found', task_es: 'Regresar al taller — iniciar charla de seguridad, registrar todos los problemas encontrados' },
   ];
 
   let selectedShift = null;
   let stopResults = {};
 
-  // ===================== LANGUAGE =====================
-  function toggleLanguage() {
-    currentLang = currentLang === 'en' ? 'es' : 'en';
-    applyLanguage();
-  }
+  function toggleLanguage() { currentLang = currentLang === 'en' ? 'es' : 'en'; applyLanguage(); }
 
   function applyLanguage() {
     const lang = t[currentLang];
     const btn = document.getElementById('langBtn');
-    if (currentLang === 'es') {
-      btn.textContent = '🇨🇦 EN';
-      btn.classList.add('es');
-    } else {
-      btn.textContent = '🇲🇽 ES';
-      btn.classList.remove('es');
-    }
+    if (currentLang === 'es') { btn.textContent = '🇨🇦 EN'; btn.classList.add('es'); } else { btn.textContent = '🇲🇽 ES'; btn.classList.remove('es'); }
     document.getElementById('headerSubtitle').textContent = lang.subtitle;
     document.getElementById('shiftTitle').textContent = lang.shiftTitle;
     document.getElementById('morningLabel').textContent = lang.morning;
@@ -1358,46 +956,32 @@
     document.querySelector('#staffNameSelect option[value="__other__"]').textContent = lang.other;
     document.getElementById('staffNameOther').placeholder = lang.enterName;
     document.querySelector('#supervisorSelect option[value=""]').textContent = lang.selectSupervisor;
-
-    if (selectedShift) {
-      const badge = document.getElementById('shiftBadge');
-      badge.textContent = selectedShift === 'morning' ? lang.shiftBadgeMorning : lang.shiftBadgeEvening;
-    }
-
+    if (selectedShift) { const badge = document.getElementById('shiftBadge'); badge.textContent = selectedShift === 'morning' ? lang.shiftBadgeMorning : lang.shiftBadgeEvening; }
     document.querySelectorAll('.stop-card').forEach((card, i) => {
       const stop = stops[i];
       card.querySelector('.stop-area').textContent = currentLang === 'es' ? stop.area_es : stop.area;
       card.querySelector('.stop-task').textContent = currentLang === 'es' ? stop.task_es : stop.task;
       const pfnaBtns = card.querySelectorAll('.pfna-btn');
-      pfnaBtns[0].textContent = lang.pass;
-      pfnaBtns[1].textContent = lang.fail;
-      pfnaBtns[2].textContent = lang.na;
+      pfnaBtns[0].textContent = lang.pass; pfnaBtns[1].textContent = lang.fail; pfnaBtns[2].textContent = lang.na;
       card.querySelector('.stop-notes').placeholder = lang.notesPlaceholder;
     });
-
     updateProgress();
   }
 
-  // ===================== SHIFT =====================
   function selectShift(shift, btn) {
     selectedShift = shift;
     document.querySelectorAll('.shift-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-
     const badge = document.getElementById('shiftBadge');
     badge.classList.remove('hidden', 'morning', 'evening');
     badge.classList.add(shift);
-    badge.textContent = shift === 'morning' ?
-      t[currentLang].shiftBadgeMorning : t[currentLang].shiftBadgeEvening;
-
+    badge.textContent = shift === 'morning' ? t[currentLang].shiftBadgeMorning : t[currentLang].shiftBadgeEvening;
     document.getElementById('card-shift').classList.remove('active');
     document.getElementById('card-staff').classList.add('active');
     document.getElementById('card-staff').scrollIntoView({ behavior: 'instant', block: 'start' });
-
     buildStops();
   }
 
-  // ===================== BUILD STOPS =====================
   function buildStops() {
     const container = document.getElementById('stopsContainer');
     container.innerHTML = '';
@@ -1409,10 +993,34 @@
       card.id = `stop-${i}`;
 
       const checklistBtn = stop.checklist
-        ? `<button class="checklist-btn" id="clbtn-${stop.checklist}" onclick="openModal('${stop.checklist}')">
-             ${currentLang === 'es' ? stop.checklistLabel_es : stop.checklistLabel}
-           </button>`
+        ? `<button class="checklist-btn" id="clbtn-${stop.checklist}" onclick="openModal('${stop.checklist}')">${currentLang === 'es' ? stop.checklistLabel_es : stop.checklistLabel}</button>`
         : '';
+
+      // Safety checks for every stop
+      const safetyBlock = `
+        <div class="safety-checks">
+          <div class="safety-checks-title">🚨 Emergency Safety Checks</div>
+          <div class="safety-check-row">
+            <div class="safety-check-label">💡 Emergency lighting functional</div>
+            <div class="safety-btn-group">
+              <button class="safety-btn pass" onclick="setSafetyCheck(${i},'emLight','pass',this)">✅ PASS</button>
+              <button class="safety-btn fail" onclick="setSafetyCheck(${i},'emLight','fail',this)">⚠️ FAIL</button>
+              <button class="safety-btn na" onclick="setSafetyCheck(${i},'emLight','na',this)">— N/A</button>
+            </div>
+            <textarea class="safety-na-note" id="safety-na-note-${i}-emLight" placeholder="Required: explain why N/A..." rows="2" oninput="saveSafetyNote(${i},'emLight',this.value)"></textarea>
+            <div class="safety-na-required" id="safety-na-req-${i}-emLight">⚠️ N/A reason required before submitting</div>
+          </div>
+          <div class="safety-check-row">
+            <div class="safety-check-label">🚪 Exit sign visible & lit</div>
+            <div class="safety-btn-group">
+              <button class="safety-btn pass" onclick="setSafetyCheck(${i},'exitSign','pass',this)">✅ PASS</button>
+              <button class="safety-btn fail" onclick="setSafetyCheck(${i},'exitSign','fail',this)">⚠️ FAIL</button>
+              <button class="safety-btn na" onclick="setSafetyCheck(${i},'exitSign','na',this)">— N/A</button>
+            </div>
+            <textarea class="safety-na-note" id="safety-na-note-${i}-exitSign" placeholder="Required: explain why N/A..." rows="2" oninput="saveSafetyNote(${i},'exitSign',this.value)"></textarea>
+            <div class="safety-na-required" id="safety-na-req-${i}-exitSign">⚠️ N/A reason required before submitting</div>
+          </div>
+        </div>`;
 
       card.innerHTML = `
         <div class="stop-header">
@@ -1431,8 +1039,8 @@
             <button class="pfna-btn na-btn" onclick="setResult(${i}, 'na', this)">${lang.na}</button>
           </div>
           <textarea class="stop-notes" id="notes-${i}" placeholder="${lang.notesPlaceholder}" rows="2"></textarea>
-        </div>
-      `;
+          ${safetyBlock}
+        </div>`;
       container.appendChild(card);
     });
 
@@ -1440,33 +1048,18 @@
     document.getElementById('card-walk').classList.add('active');
   }
 
-  // ===================== RESULTS =====================
   function setResult(index, result, btn) {
     stopResults[index] = result;
     const card = document.getElementById(`stop-${index}`);
     const status = document.getElementById(`status-${index}`);
     const notes = document.getElementById(`notes-${index}`);
     const lang = t[currentLang];
-
     card.className = `stop-card ${result}`;
     card.querySelectorAll('.pfna-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-
-    if (result === 'pass') {
-      status.className = 'stop-status pass';
-      status.textContent = lang.pass;
-      notes.classList.remove('show');
-    } else if (result === 'fail') {
-      status.className = 'stop-status fail';
-      status.textContent = lang.fail;
-      notes.classList.add('show');
-      notes.focus();
-    } else {
-      status.className = 'stop-status na';
-      status.textContent = lang.na;
-      notes.classList.remove('show');
-    }
-
+    if (result === 'pass') { status.className = 'stop-status pass'; status.textContent = lang.pass; notes.classList.remove('show'); }
+    else if (result === 'fail') { status.className = 'stop-status fail'; status.textContent = lang.fail; notes.classList.add('show'); notes.focus(); }
+    else { status.className = 'stop-status na'; status.textContent = lang.na; notes.classList.remove('show'); }
     updateProgress();
     updateFailSummary();
   }
@@ -1488,30 +1081,17 @@
         fails.push(`<li><strong>${area}</strong>${note ? ': ' + note : ''}</li>`);
       }
     });
-
     const summary = document.getElementById('failSummary');
     const list = document.getElementById('failList');
-    if (fails.length > 0) {
-      list.innerHTML = `<ul>${fails.join('')}</ul>`;
-      summary.classList.add('show');
-    } else {
-      summary.classList.remove('show');
-    }
+    if (fails.length > 0) { list.innerHTML = `<ul>${fails.join('')}</ul>`; summary.classList.add('show'); }
+    else { summary.classList.remove('show'); }
   }
 
   function handleNameSelect(sel) {
     const other = document.getElementById('staffNameOther');
     const hidden = document.getElementById('staffName');
-    if (sel.value === '__other__') {
-      other.style.display = 'block';
-      other.focus();
-      hidden.value = '';
-      other.oninput = () => hidden.value = other.value.trim();
-    } else {
-      other.style.display = 'none';
-      other.value = '';
-      hidden.value = sel.value;
-    }
+    if (sel.value === '__other__') { other.style.display = 'block'; other.focus(); hidden.value = ''; other.oninput = () => hidden.value = other.value.trim(); }
+    else { other.style.display = 'none'; other.value = ''; hidden.value = sel.value; }
     if (sel.value && sel.value !== '__other__') {
       document.getElementById('card-staff').classList.remove('active');
       document.getElementById('card-walk').classList.add('active');
@@ -1519,12 +1099,9 @@
     }
   }
 
-  // ===================== SUBMIT =====================
   function submitForm() {
-    const staff = document.getElementById('staffName').value.trim() ||
-                  document.getElementById('staffNameSelect').value;
+    const staff = document.getElementById('staffName').value.trim() || document.getElementById('staffNameSelect').value;
     const supervisor = document.getElementById('supervisorSelect').value;
-
     if (!selectedShift) return alert('Please select a shift.');
     if (!staff) return alert('Please select your name.');
     if (!supervisor) return alert('Please select the supervisor on duty.');
@@ -1536,11 +1113,17 @@
       return;
     }
 
-    const timestamp = new Date().toLocaleString('en-CA', {
-      weekday: 'long', year: 'numeric', month: 'long',
-      day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
+    // Validate safety checks — all must be answered, N/A must have a note
+    for (let i = 0; i < stops.length; i++) {
+      const r = safetyCheckResults[i] || {};
+      const area = stops[i].area;
+      if (!r.emLight) { alert(`⚠️ Please answer the Emergency Lighting check at: ${area}`); return; }
+      if (!r.exitSign) { alert(`⚠️ Please answer the Exit Sign check at: ${area}`); return; }
+      if (r.emLight === 'na' && !r.emLightNote?.trim()) { alert(`⚠️ N/A reason required for Emergency Lighting at: ${area}`); return; }
+      if (r.exitSign === 'na' && !r.exitSignNote?.trim()) { alert(`⚠️ N/A reason required for Exit Sign at: ${area}`); return; }
+    }
 
+    const timestamp = new Date().toLocaleString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
     const fails = stops.filter((_, i) => stopResults[i] === 'fail');
     const hasIssues = fails.length > 0;
 
@@ -1551,16 +1134,13 @@
     let stopSummary = stops.map((stop, i) => {
       const result = stopResults[i] || 'Not checked';
       const note = document.getElementById(`notes-${i}`)?.value || '';
-      return `${stop.num}. ${stop.area}: ${result.toUpperCase()}${note ? ' — ' + note : ''}`;
+      const safetySummary = getSafetyCheckSummary(i, stop.area);
+      return `${stop.num}. ${stop.area}: ${result.toUpperCase()}${note ? ' — ' + note : ''}\n${safetySummary}`;
     }).join('\n');
 
-    // Build checklist summaries for stops that have them
     const checklistSummaryLines = [];
     stops.forEach(stop => {
-      if (stop.checklist) {
-        checklistSummaryLines.push('');
-        checklistSummaryLines.push(getChecklistSummary(stop.checklist));
-      }
+      if (stop.checklist) { checklistSummaryLines.push(''); checklistSummaryLines.push(getChecklistSummary(stop.checklist)); }
     });
 
     const emailBody = `
@@ -1572,8 +1152,8 @@ SHIFT: ${selectedShift === 'morning' ? '☀️ Morning Walk' : '🌙 Evening Wal
 STAFF: ${staff}
 SUPERVISOR: ${supervisor}
 
-WALKTHROUGH RESULTS
--------------------
+WALKTHROUGH RESULTS (incl. Emergency Safety Checks)
+----------------------------------------------------
 ${stopSummary}
 
 ${hasIssues ? '⚠️ ISSUES REQUIRING ATTENTION:\n' + fails.map(f => `- ${f.area}`).join('\n') : '✅ No issues found'}
@@ -1591,9 +1171,7 @@ Submitted via Colasanti's Maintenance System
       subject: subjectLine,
       message: emailBody,
       from_name: 'Colasanti Maintenance System',
-    }).then(() => {
-      console.log('Email sent successfully');
-    }).catch(err => {
+    }).then(() => { console.log('Email sent successfully'); }).catch(err => {
       console.error('EmailJS error:', err);
       alert('Walk submitted! Note: Email notification may not have sent — please check your EmailJS settings.');
     });
@@ -1617,10 +1195,10 @@ Submitted via Colasanti's Maintenance System
     document.getElementById('successPanel').scrollIntoView({ behavior: 'instant', block: 'start' });
   }
 
-  // ===================== RESET =====================
   function resetForm() {
     selectedShift = null;
     stopResults = {};
+    Object.keys(safetyCheckResults).forEach(k => delete safetyCheckResults[k]);
     document.getElementById('staffNameSelect').value = '';
     document.getElementById('staffName').value = '';
     document.getElementById('staffNameOther').style.display = 'none';
@@ -1638,20 +1216,13 @@ Submitted via Colasanti's Maintenance System
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // ===================== QR CODE =====================
   window.addEventListener('load', () => {
-    // Fixed URL — corrected spelling colasanti (not colosanti)
     const url = 'https://colosanti.github.io/Colasanti-maintenance/daily_walk/';
     const qrDiv = document.getElementById('qrcode');
     const img = document.createElement('img');
     img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
-    img.alt = 'QR Code';
-    img.width = 160;
-    img.height = 160;
-    img.style.borderRadius = '4px';
+    img.alt = 'QR Code'; img.width = 160; img.height = 160; img.style.borderRadius = '4px';
     qrDiv.appendChild(img);
-
-    // Build checklist modals on load
     buildChecklists();
   });
 </script>
