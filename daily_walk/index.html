@@ -11,8 +11,7 @@
   :root {
     --bg:#0f1923;--panel:#1a2635;--panel2:#223044;--accent:#f0a500;--accent2:#e05c00;
     --text:#e8edf2;--muted:#7a8fa6;--ok:#2ecc71;--warn:#e74c3c;--na:#7a8fa6;
-    --border:#2d4059;--radius:12px;--morning:#f0a500;--evening:#6c5ce7;--safety:#00b894;
-    --caution:#f39c12;--boiler1:#e74c3c;--boiler2:#3498db;
+    --border:#2d4059;--radius:12px;--safety:#00b894;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 60px 0;}
@@ -23,9 +22,6 @@
   .header-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
   .lang-btn{background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.3);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
   .lang-btn.es{background:rgba(240,165,0,0.2);border-color:var(--accent);color:var(--accent);}
-  .shift-badge{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.9rem;padding:6px 12px;border-radius:20px;letter-spacing:1px;white-space:nowrap;}
-  .shift-badge.morning{background:var(--morning);color:#000;}
-  .shift-badge.evening{background:var(--evening);color:#fff;}
   .content{padding:16px;max-width:700px;margin:0 auto;}
   .step-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;}
   .step-card.active{border-color:var(--accent);}
@@ -33,15 +29,6 @@
   .step-num{background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:0.85rem;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .step-title{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
   .step-body{padding:16px;}
-  .shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .shift-btn{background:var(--panel2);border:2px solid var(--border);border-radius:10px;padding:20px 16px;cursor:pointer;text-align:center;transition:all 0.15s;}
-  .shift-btn .shift-icon{font-size:2rem;margin-bottom:6px;}
-  .shift-btn .shift-name{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
-  .shift-btn .shift-time{font-size:0.8rem;color:var(--muted);margin-top:4px;}
-  .shift-btn.morning-btn:hover,.shift-btn.morning-btn.selected{border-color:var(--morning);background:rgba(240,165,0,0.1);}
-  .shift-btn.morning-btn.selected .shift-name{color:var(--morning);}
-  .shift-btn.evening-btn:hover,.shift-btn.evening-btn.selected{border-color:var(--evening);background:rgba(108,92,231,0.1);}
-  .shift-btn.evening-btn.selected .shift-name{color:var(--evening);}
   .form-row{margin-bottom:14px;}
   .form-label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;}
   .form-input{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow',sans-serif;font-size:1.05rem;padding:13px 14px;outline:none;-webkit-appearance:none;}
@@ -106,7 +93,6 @@
   .fail-summary{background:rgba(231,76,60,0.1);border:1px solid var(--warn);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:0.9rem;color:var(--warn);display:none;}
   .fail-summary.show{display:block;}
   .fail-summary h4{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;}
-  /* MODAL */
   .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:500;padding:16px;overflow-y:auto;}
   .modal-overlay.show{display:flex;align-items:flex-start;justify-content:center;}
   .modal-box{background:var(--panel);border:2px solid var(--accent);border-radius:var(--radius);width:100%;max-width:600px;margin-top:20px;overflow:hidden;}
@@ -125,86 +111,58 @@
   .cl-progress{font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;color:var(--muted);text-align:center;margin-bottom:12px;}
   .modal-submit-btn{width:100%;background:linear-gradient(135deg,var(--ok) 0%,#27ae60 100%);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:16px;border:none;border-radius:var(--radius);cursor:pointer;margin-top:12px;}
   .modal-submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  /* BOILER MODAL SPECIFIC */
-  .boiler-section-card{background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;}
-  .boiler-section-hdr{padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
-  .boiler-section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.5px;flex:1;}
-  .boiler-section-status{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;}
-  .boiler-section-body{padding:12px 14px;}
-  .bchk-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(45,64,89,0.4);}
-  .bchk-row:last-child{border-bottom:none;}
-  .bchk-text{flex:1;font-size:0.88rem;line-height:1.3;}
-  .bchk-btns{display:flex;gap:5px;flex-shrink:0;}
-  .bchk-btn{padding:6px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;color:var(--text);}
-  .reading-row{display:grid;grid-template-columns:1fr auto 90px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);}
-  .reading-row:last-child{border-bottom:none;}
-  .reading-input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;text-align:center;}
-  .reading-input.alert-val{border-color:var(--caution);background:rgba(243,156,18,0.1);}
-  .reading-input.critical-val{border-color:var(--warn);background:rgba(231,76,60,0.15);}
-  .weekly-badge{background:rgba(108,92,231,0.2);border:1px solid #6c5ce7;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:0.5px;text-transform:uppercase;}
-  .pressure-alert-box{display:none;background:rgba(231,76,60,0.15);border:2px solid var(--warn);border-radius:8px;padding:10px 12px;margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:var(--warn);}
-  .pressure-alert-box.show{display:block;}
-  .blowdown-row{padding:10px 0;border-bottom:1px solid rgba(45,64,89,0.4);}
-  .blowdown-row:last-child{border-bottom:none;}
-  .blowdown-inputs{display:grid;grid-template-columns:1fr 1fr 80px;gap:8px;margin-top:6px;}
-  .blowdown-input{background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.88rem;padding:7px 8px;outline:none;width:100%;-webkit-appearance:none;}
-  .blowdown-lbl{font-size:0.75rem;color:var(--muted);margin-bottom:3px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:0.5px;}
-  .wt-row{display:grid;grid-template-columns:1fr auto 80px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(45,64,89,0.4);}
-  .wt-row:last-child{border-bottom:none;}
-  .deficiency-row{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
-  .notes-area{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px 12px;outline:none;resize:none;min-height:70px;margin-top:8px;}
-  .add-deficiency-btn{background:rgba(231,76,60,0.1);border:1.5px solid var(--warn);color:var(--warn);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;padding:10px 16px;border-radius:8px;cursor:pointer;width:100%;margin-top:8px;text-transform:uppercase;}
-  .wednesday-banner{background:rgba(108,92,231,0.15);border:2px solid #6c5ce7;border-radius:var(--radius);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
-  .wednesday-banner p{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:600;color:#a29bfe;line-height:1.4;}
-  /* DOORS MODAL */
+  .simple-section{background:var(--panel2);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+  .simple-section-hdr{padding:10px 14px;background:rgba(240,165,0,0.1);border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);}
+  .simple-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(45,64,89,0.4);}
+  .simple-row:last-child{border-bottom:none;}
+  .simple-row-text{flex:1;font-size:0.88rem;line-height:1.3;}
+  .simple-row-num{color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-right:4px;}
+  .simple-btns{display:flex;gap:5px;flex-shrink:0;}
+  .simple-btn{padding:7px 11px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;color:var(--text);}
+  .simple-input-row{display:grid;grid-template-columns:1fr 90px;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(45,64,89,0.4);}
+  .simple-input-row:last-child{border-bottom:none;}
+  .simple-text-input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;text-align:center;}
+  .simple-notes-area{background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px 12px;outline:none;resize:none;min-height:60px;margin:10px 14px;width:calc(100% - 28px);}
+  .equip-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px;}
+  .equip-tab{padding:12px 8px;border-radius:8px;border:2px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;color:var(--text);text-align:center;transition:all 0.15s;}
+  .equip-tab.selected{border-color:var(--accent);background:rgba(240,165,0,0.12);color:var(--accent);}
+  .simple-submit-btn{width:calc(100% - 28px);margin:14px;background:linear-gradient(135deg,var(--ok) 0%,#27ae60 100%);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:14px;border:none;border-radius:var(--radius);cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- FORKLIFT MODAL -->
 <div class="modal-overlay" id="modal-forklift">
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:650px;">
     <div class="modal-header">
-      <div class="modal-title">🚜 Forklift Pre-Use Inspection</div>
+      <div class="modal-title">🚜 Pallet Truck Daily Check</div>
       <button class="modal-close" onclick="closeModal('forklift')">✕ Close</button>
     </div>
-    <div class="modal-body">
-      <div class="cl-progress" id="cl-progress-forklift">0 of 10 items checked</div>
-      <div id="cl-items-forklift"></div>
-      <button class="modal-submit-btn" id="cl-submit-forklift" onclick="submitChecklist('forklift')" disabled>✔ COMPLETE CHECKLIST</button>
+    <div class="equip-tabs">
+      <button class="equip-tab" id="pkBtn_hansler" onclick="selectPalletTruck('hansler',this)">Hansler</button>
+      <button class="equip-tab" id="pkBtn_clark" onclick="selectPalletTruck('clark',this)">Clark</button>
+    </div>
+    <div id="palletTruckContent" style="padding:0 0 14px 0;">
+      <div style="padding:20px;text-align:center;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;">👆 Select a pallet truck above to begin</div>
     </div>
   </div>
 </div>
 
-<!-- BOILER MODAL (handles both boiler 1 and 2) -->
 <div class="modal-overlay" id="modal-boiler1">
-  <div class="modal-box" style="max-width:700px;">
-    <div class="modal-header" style="background:rgba(231,76,60,0.12);border-bottom-color:#e74c3c;flex-direction:column;align-items:flex-start;gap:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
-        <div class="modal-title" style="color:#e74c3c;">🔥 Boiler Room Inspection</div>
-        <button class="modal-close" onclick="closeBoilerModal()">✕ Close</button>
-      </div>
-      <div style="font-size:0.78rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;">Building: Boiler Room &nbsp;|&nbsp; 1550 Road #3 East, Kingsville ON &nbsp;|&nbsp; Fuel: #2 Oil &amp; Natural Gas</div>
-      <!-- Boiler selector -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;">
-        <button onclick="selectBoilerInModal(1,this)" id="bmBtn1"
-          style="padding:10px 8px;border-radius:8px;border:2px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;color:var(--text);transition:all 0.15s;text-align:center;">
-          🔥 Boiler #1<br><span style="font-size:0.72rem;color:var(--muted);font-weight:400;">Volcano ST-350E · 1999</span>
-        </button>
-        <button onclick="selectBoilerInModal(2,this)" id="bmBtn2"
-          style="padding:10px 8px;border-radius:8px;border:2px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;color:var(--text);transition:all 0.15s;text-align:center;">
-          🔥 Boiler #2<br><span style="font-size:0.72rem;color:var(--muted);font-weight:400;">Indeck Starfire ST-250E · 2004</span>
-        </button>
-      </div>
-      <div id="bmBadge" style="display:none;font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;padding:3px 12px;border-radius:10px;"></div>
+  <div class="modal-box" style="max-width:650px;">
+    <div class="modal-header" style="background:rgba(231,76,60,0.12);border-bottom-color:#e74c3c;">
+      <div class="modal-title" style="color:#e74c3c;">🔥 Steam Boiler Daily Check</div>
+      <button class="modal-close" onclick="closeBoilerModal()">✕ Close</button>
     </div>
-    <div id="boilerModalContent" style="padding:0;">
-      <div style="padding:24px;text-align:center;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;">👆 Select a boiler above to begin inspection</div>
+    <div class="equip-tabs">
+      <button class="equip-tab" id="boBtn_1" onclick="selectBoiler('1',this)">Boiler #1<br><span style="font-size:0.7rem;font-weight:400;color:var(--muted);">Volcano</span></button>
+      <button class="equip-tab" id="boBtn_2" onclick="selectBoiler('2',this)">Boiler #2<br><span style="font-size:0.7rem;font-weight:400;color:var(--muted);">Indeck</span></button>
+    </div>
+    <div id="boilerSimpleContent" style="padding:0 0 14px 0;">
+      <div style="padding:20px;text-align:center;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;">👆 Select a boiler above to begin</div>
     </div>
   </div>
 </div>
 
-<!-- PLAYGROUND MODAL -->
 <div class="modal-overlay" id="modal-playground">
   <div class="modal-box">
     <div class="modal-header">
@@ -219,7 +177,6 @@
   </div>
 </div>
 
-<!-- DOORS & EMERGENCY EXITS MODAL -->
 <div class="modal-overlay" id="modal-doors">
   <div class="modal-box" style="max-width:680px;">
     <div class="modal-header" style="background:rgba(108,92,231,0.15);border-bottom-color:#6c5ce7;">
@@ -242,26 +199,12 @@
   </div>
   <div class="header-right">
     <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">🇲🇽 ES</button>
-    <div class="shift-badge morning hidden" id="shiftBadge">☀️ MORNING</div>
   </div>
 </div>
 
 <div class="content">
-  <div class="step-card active" id="card-shift">
-    <div class="step-header"><div class="step-num">1</div><div class="step-title" id="shiftTitle">Select Shift</div></div>
-    <div class="step-body">
-      <div class="shift-grid">
-        <button class="shift-btn morning-btn" onclick="selectShift('morning',this)">
-          <div class="shift-icon">☀️</div><div class="shift-name" id="morningLabel">Morning</div><div class="shift-time" id="morningTime">Start of Day Walk</div>
-        </button>
-        <button class="shift-btn evening-btn" onclick="selectShift('evening',this)">
-          <div class="shift-icon">🌙</div><div class="shift-name" id="eveningLabel">Evening</div><div class="shift-time" id="eveningTime">End of Day Walk</div>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="step-card" id="card-staff">
-    <div class="step-header"><div class="step-num">2</div><div class="step-title" id="staffTitle">Your Name</div></div>
+  <div class="step-card active" id="card-staff">
+    <div class="step-header"><div class="step-num">1</div><div class="step-title" id="staffTitle">Your Name</div></div>
     <div class="step-body">
       <div class="form-row">
         <label class="form-label" id="staffLabel">👤 Select Your Name</label>
@@ -289,9 +232,9 @@
     </div>
   </div>
   <div class="step-card hidden" id="card-walk">
-    <div class="step-header"><div class="step-num">3</div><div class="step-title" id="walkTitle">Complete Walkthrough</div></div>
+    <div class="step-header"><div class="step-num">2</div><div class="step-title" id="walkTitle">Complete Morning Walkthrough</div></div>
     <div class="step-body">
-      <div class="progress-text" id="progressText">0 of 15 stops completed</div>
+      <div class="progress-text" id="progressText">0 of 14 stops completed</div>
       <div class="progress-bar-container"><div class="progress-bar" id="progressBar"></div></div>
       <div id="stopsContainer"></div>
       <div class="fail-summary" id="failSummary"><h4>⚠️ Issues Found</h4><div id="failList"></div></div>
@@ -313,341 +256,237 @@
 <script>
 let currentLang = 'en';
 
-// ===================== BOILER DATA =====================
-const bmBoilerInfo = {
-  1: { mfg:'Volcano (Indeck)', model:'ST-350E', serial:'4368-G', year:'1999', color:'#e74c3c', colorLight:'rgba(231,76,60,0.12)', name:'Steam Boiler #1', sub:'Volcano ST-350E · 1999' },
-  2: { mfg:'Indeck Boiler Corporation', model:'Volcano Starfire ST-250E-WP12', serial:'4407-GB', year:'2004', color:'#3498db', colorLight:'rgba(52,152,219,0.12)', name:'Steam Boiler #2', sub:'Indeck Starfire ST-250E · 2004' }
+const palletTruckInfo = {
+  hansler: { name: 'Hansler', sub:'Electric Pallet Truck' },
+  clark:   { name: 'Clark', sub:'Electric Pallet Truck' }
 };
 
-// Daily check items from the paper form (top half)
-const bmDailyChecks = [
-  { id:'water_level', en:'Observe water level', es:'Observar nivel de agua' },
-  { id:'pressure', en:'Record pressure (PSI)', es:'Registrar presión (PSI)', hasInput:true, unit:'PSI', warn:12, critical:14 },
-  { id:'combustion_air', en:'Combustion air adequate/unobstructed', es:'Aire de combustión adecuado/sin obstáculos' },
-  { id:'flue_gas', en:'Record flue gas temperature (°F)', es:'Registrar temperatura de gases de combustión (°F)', hasInput:true, unit:'°F' },
-  { id:'running_pct', en:'Running % (burner on time)', es:'Porcentaje de funcionamiento (%)', hasInput:true, unit:'%' },
-  { id:'cycle_count', en:'Cycle count reading (cumulative)', es:'Lectura del contador de ciclos (acumulado)', hasInput:true, unit:'#' },
-  { id:'cycles_today', en:'# of cycles today', es:'Número de ciclos hoy', hasInput:true, unit:'#' },
-  { id:'water_meter', en:'Water meter reading (GAL)', es:'Lectura del medidor de agua (GAL)', hasInput:true, unit:'GAL', required:true },
+const ptVisualItems = [
+  "Inspect battery connectors",
+  "Battery gate in place",
+  "Check wheel condition, no gouges or foreign objects",
+  "Test all controls, motions are free and smooth",
+  "Check control handle, returns freely to upright position and sets brake automatically",
+  "All safety and warning decals are present and legible",
+  "Inspect for fluid leaks",
+  "Ensure nameplate is present and legible",
+  "Check the fork condition",
 ];
 
-// Weekly check items from the paper form (bottom half) — shown every Wednesday
-const bmWeeklyChecks = [
-  { id:'w_lwco', en:'Test low water cutoff (LWCO)', es:'Probar corte de bajo nivel de agua (LWCO)' },
-  { id:'w_flame', en:'Observe flame condition', es:'Observar condición de la llama' },
-  { id:'w_gauge', en:'Test gauge glass', es:'Probar visor de nivel' },
-  { id:'w_piping', en:'Inspect fuel piping', es:'Inspeccionar tuberías de combustible' },
-  { id:'w_tank', en:'Condition of tank', es:'Condición del tanque' },
-  { id:'w_fuel', en:'Fuel level', es:'Nivel de combustible' },
-  { id:'w_vacuum', en:'Vacuum level', es:'Nivel de vacío' },
-  { id:'w_safetyvalve', en:'Manual lift safety valve', es:'Válvula de seguridad de elevación manual' },
-  { id:'w_linkages', en:'Review condition of linkages', es:'Revisar condición de enlaces' },
-  { id:'w_stopvalves', en:'Review condition of stop valves', es:'Revisar condición de válvulas de cierre' },
-  { id:'w_refractory', en:'Review condition of refractory', es:'Revisar condición del refractario' },
-  { id:'w_floordrain', en:'Floor drain clear', es:'Desagüe del piso despejado' },
-  { id:'w_flamedec', en:'Flame detection device operational', es:'Dispositivo de detección de llama operacional' },
-  { id:'w_limitctrls', en:'Limit controls functional', es:'Controles de límite funcionales' },
-  { id:'w_opctrls', en:'Operating controls functional', es:'Controles de operación funcionales' },
+const ptOperationalItems = [
+  "Check the steering mechanism for movement",
+  "Test the brakes",
+  "Check direction control and plugging functions",
+  "Inspect the lift and lower controls",
+  "Ensure the safety reversing switch is working properly",
+  "Ensure the horn is working",
 ];
 
-let bmSelectedBoiler = null;
-let bmState = {};   // { boilerNum: { daily:{}, weekly:{} } }
-let bmCompletedBoilers = [];
-const isWednesday = new Date().getDay() === 3;
+let ptSelected = null;
+let ptState = {};
+let ptCompleted = [];
 
-function selectBoilerInModal(num, btn) {
-  bmSelectedBoiler = num;
-  const info = bmBoilerInfo[num];
-  // Update selector buttons
-  [1,2].forEach(n => {
-    const b = document.getElementById(`bmBtn${n}`);
-    b.style.borderColor = 'var(--border)'; b.style.background = 'var(--panel)'; b.style.color = 'var(--text)';
-  });
-  btn.style.borderColor = info.color; btn.style.background = `${info.colorLight}`; btn.style.color = info.color;
-  // Badge
-  const badge = document.getElementById('bmBadge');
-  badge.style.display = 'block';
-  badge.style.background = info.colorLight; badge.style.color = info.color; badge.style.border = `1px solid ${info.color}`;
-  badge.textContent = `${info.name} · Serial: ${info.serial}`;
-  // Init state
-  if (!bmState[num]) bmState[num] = { daily:{}, weekly:{} };
-  buildBoilerModalContent(num);
+function selectPalletTruck(id, btn) {
+  ptSelected = id;
+  ['hansler','clark'].forEach(k => document.getElementById(`pkBtn_${k}`).classList.remove('selected'));
+  btn.classList.add('selected');
+  if (!ptState[id]) ptState[id] = { visual:{}, operational:{}, battery:'', shiftStart:'', shiftEnd:'', comments:'' };
+  buildPalletTruckContent(id);
 }
 
-function buildBoilerModalContent(num) {
-  const info = bmBoilerInfo[num];
-  const c = info.color;
-  const cl = info.colorLight;
-  const isWed = isWednesday;
-  const lang = currentLang;
-  let html = `<div style="padding:14px;overflow-y:auto;">`;
-
-  // Equipment info panel
-  html += `<div style="background:${cl};border:1px solid ${c};border-radius:10px;padding:12px 14px;margin-bottom:12px;">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;text-transform:uppercase;color:${c};margin-bottom:8px;">📋 Equipment Information</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;">
-      <div><span style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:0.75rem;">Manufacturer</span><br><strong>${info.mfg}</strong></div>
-      <div><span style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:0.75rem;">Model</span><br><strong>${info.model}</strong></div>
-      <div><span style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:0.75rem;">Serial #</span><br><strong>${info.serial}</strong></div>
-      <div><span style="color:var(--muted);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:0.75rem;">Year</span><br><strong>${info.year}</strong></div>
+function buildPalletTruckContent(id) {
+  const info = palletTruckInfo[id];
+  let html = `<div style="padding:0 14px;">
+    <div class="simple-input-row">
+      <div class="simple-row-text">Shift Start / End Hrs</div>
+      <input type="text" class="simple-text-input" placeholder="Start" id="pt_${id}_shiftStart" style="width:70px;">
+      <input type="text" class="simple-text-input" placeholder="End" id="pt_${id}_shiftEnd" style="width:70px;">
+    </div>
+    <div class="simple-input-row">
+      <div class="simple-row-text">Battery Percentage</div>
+      <input type="text" class="simple-text-input" placeholder="%" id="pt_${id}_battery">
     </div>
   </div>`;
 
-  // Wednesday banner
-  if (isWed) {
-    html += `<div class="wednesday-banner"><div style="font-size:1.3rem;">📅</div><p>It's Wednesday — Weekly checks are required today!</p></div>`;
-  }
-
-  // Daily checks section
-  html += `<div class="boiler-section-card">
-    <div class="boiler-section-hdr" style="background:${cl};border-bottom-color:${c};">
-      <span style="font-size:1rem;">☀️</span>
-      <div class="boiler-section-title" style="color:${c};">Daily Checks</div>
-      <div class="boiler-section-status" id="bmDailyStatus_${num}">—</div>
-    </div>
-    <div class="boiler-section-body">`;
-
-  bmDailyChecks.forEach(item => {
-    const label = lang === 'es' ? item.es : item.en;
-    if (item.hasInput) {
-      html += `<div class="bchk-row">
-        <div class="bchk-text">${label}${item.required ? ' <span style="color:var(--warn);">*</span>' : ''}</div>
-        <input type="number" inputmode="decimal" placeholder="—" id="bm_${num}_${item.id}"
-          style="width:80px;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:6px 8px;outline:none;text-align:center;"
-          ${item.warn ? `oninput="checkBmReading(${num},'${item.id}',${item.warn||0},${item.critical||0},this)"` : `oninput="updateBmDailyStatus(${num})"`}>
-        <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;color:var(--muted);white-space:nowrap;margin-left:4px;">${item.unit}</span>
-      </div>`;
-    } else {
-      const stateVal = (bmState[num]?.daily[item.id]) || null;
-      html += `<div class="bchk-row" id="bmrow_${num}_${item.id}">
-        <div class="bchk-text">${label}</div>
-        <div class="bchk-btns">
-          <button class="bchk-btn" onclick="setBmCheck(${num},'daily','${item.id}','ok',this)" ${stateVal==='ok'?'style="background:rgba(46,204,113,0.15);border-color:var(--ok);color:var(--ok);"':''}>✅ OK</button>
-          <button class="bchk-btn" onclick="setBmCheck(${num},'daily','${item.id}','fail',this)" ${stateVal==='fail'?'style="background:rgba(231,76,60,0.15);border-color:var(--warn);color:var(--warn);"':''}>⚠️ FAIL</button>
-          <button class="bchk-btn" onclick="setBmCheck(${num},'daily','${item.id}','na',this)">N/A</button>
-        </div>
-      </div>`;
-    }
-  });
-
-  html += `<div class="pressure-alert-box" id="bmPressureWarn_${num}">⚠️ PRESSURE WARNING — Above normal range. Monitor closely and notify supervisor.</div>
-    <div class="pressure-alert-box" id="bmPressureCrit_${num}">🚨 CRITICAL PRESSURE — Approaching high limit! Notify supervisor IMMEDIATELY.</div>
-    </div></div>`;
-
-  // Weekly checks section (Wednesday only or always visible with note)
-  html += `<div class="boiler-section-card" ${!isWed ? 'style="opacity:0.6;"' : ''}>
-    <div class="boiler-section-hdr" style="background:rgba(108,92,231,0.1);border-bottom-color:#6c5ce7;">
-      <span style="font-size:1rem;">📅</span>
-      <div class="boiler-section-title" style="color:#a29bfe;">Weekly Checks ${isWed ? '' : '(Wednesday)'}</div>
-      <span class="weekly-badge">📅 Weekly</span>
-      <div class="boiler-section-status" id="bmWeeklyStatus_${num}">—</div>
-    </div>
-    <div class="boiler-section-body">
-      ${!isWed ? '<div style="font-size:0.82rem;color:#a29bfe;font-family:\'Barlow Condensed\',sans-serif;margin-bottom:10px;">These checks are required every Wednesday. Today is not Wednesday — you may skip or complete as needed.</div>' : ''}`;
-
-  bmWeeklyChecks.forEach(item => {
-    const label = lang === 'es' ? item.es : item.en;
-    html += `<div class="bchk-row" id="bmrow_${num}_${item.id}">
-      <div class="bchk-text">${label}</div>
-      <div class="bchk-btns">
-        <button class="bchk-btn" onclick="setBmCheck(${num},'weekly','${item.id}','ok',this)">✅ OK</button>
-        <button class="bchk-btn" onclick="setBmCheck(${num},'weekly','${item.id}','fail',this)">⚠️ FAIL</button>
-        <button class="bchk-btn" onclick="setBmCheck(${num},'weekly','${item.id}','na',this)">N/A</button>
+  html += `<div class="simple-section" style="margin:12px 14px;">
+    <div class="simple-section-hdr">Visual Inspection (key OFF, battery disconnected)</div>`;
+  ptVisualItems.forEach((item, i) => {
+    html += `<div class="simple-row" id="pt-row-${id}-v${i}">
+      <div class="simple-row-text"><span class="simple-row-num">${i+1}.</span>${item}</div>
+      <div class="simple-btns">
+        <button class="simple-btn" onclick="setPtCheck('${id}','visual',${i},'ok',this)">✅</button>
+        <button class="simple-btn" onclick="setPtCheck('${id}','visual',${i},'fail',this)">⚠️</button>
       </div>
     </div>`;
   });
-  html += `</div></div>`;
+  html += `</div>`;
 
-  // Deficiencies & Notes
-  html += `<div class="boiler-section-card">
-    <div class="boiler-section-hdr" style="background:rgba(231,76,60,0.08);border-bottom-color:var(--warn);">
-      <span>⚠️</span>
-      <div class="boiler-section-title" style="color:var(--warn);">Deficiencies &amp; Notes</div>
-    </div>
-    <div class="boiler-section-body">
-      <div id="bmDefList_${num}"></div>
-      <button class="add-deficiency-btn" onclick="addBmDeficiency(${num})">+ Add Deficiency</button>
-      <div class="form-row" style="margin-top:12px;">
-        <label class="form-label">Overall Boiler Status</label>
-        <select class="form-input" id="bmOverall_${num}" style="background:var(--panel2);">
-          <option value="">— Select status —</option>
-          <option value="Normal Operation">✅ Normal Operation</option>
-          <option value="Monitor Required">⚠️ Monitor Required</option>
-          <option value="Immediate Attention Required">🚨 Immediate Attention Required</option>
-          <option value="Shut Down">🔴 Shut Down</option>
-        </select>
+  html += `<div class="simple-section" style="margin:12px 14px;">
+    <div class="simple-section-hdr">Operational Inspection (key ON position)</div>`;
+  ptOperationalItems.forEach((item, i) => {
+    html += `<div class="simple-row" id="pt-row-${id}-o${i}">
+      <div class="simple-row-text"><span class="simple-row-num">${i+1}.</span>${item}</div>
+      <div class="simple-btns">
+        <button class="simple-btn" onclick="setPtCheck('${id}','operational',${i},'ok',this)">✅</button>
+        <button class="simple-btn" onclick="setPtCheck('${id}','operational',${i},'fail',this)">⚠️</button>
       </div>
-      <textarea class="notes-area" id="bmNotes_${num}" placeholder="Additional notes for this shift..."></textarea>
-    </div>
-  </div>`;
-
-  // Supervisor sign-off
-  html += `<div class="boiler-section-card">
-    <div class="boiler-section-hdr" style="background:rgba(46,204,113,0.08);border-bottom-color:var(--ok);">
-      <span>✍️</span>
-      <div class="boiler-section-title" style="color:var(--ok);">Shift Sign-Off</div>
-    </div>
-    <div class="boiler-section-body">
-      <div class="form-row">
-        <label class="form-label">Supervisor Notified?</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <button id="bmSupYes_${num}" onclick="setBmSup(${num},'yes',this)" style="padding:12px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;color:var(--text);">✅ YES</button>
-          <button id="bmSupNo_${num}" onclick="setBmSup(${num},'no',this)" style="padding:12px;border-radius:8px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;color:var(--text);">❌ NO</button>
-        </div>
-      </div>
-      <div id="bmSupNameRow_${num}" style="display:none;" class="form-row">
-        <label class="form-label">Supervisor Name</label>
-        <input class="form-input" id="bmSupName_${num}" type="text" placeholder="Enter supervisor name" style="background:var(--panel2);">
-      </div>
-    </div>
-  </div>`;
-
-  // Action buttons
-  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;padding-bottom:4px;">
-    <button onclick="submitBoilerModal(${num})"
-      style="padding:14px;border-radius:8px;background:linear-gradient(135deg,${c},${c}cc);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;text-transform:uppercase;">
-      🔥 Log Boiler #${num}
-    </button>
-    <button onclick="selectBoilerInModal(${num===1?2:1},document.getElementById('bmBtn${num===1?2:1}'))"
-      style="padding:14px;border-radius:8px;background:var(--panel2);border:2px solid ${num===1?'#3498db':'#e74c3c'};color:${num===1?'#3498db':'#e74c3c'};font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;text-transform:uppercase;">
-      🔥 Boiler #${num===1?2:1}
-    </button>
-  </div>`;
-
-  html += `</div>`; // end padding div
-
-  document.getElementById('boilerModalContent').innerHTML = html;
-}
-
-let bmDefCount = {};
-function addBmDeficiency(num) {
-  if (!bmDefCount[num]) bmDefCount[num] = 0;
-  bmDefCount[num]++;
-  const list = document.getElementById(`bmDefList_${num}`);
-  const div = document.createElement('div');
-  div.className = 'deficiency-row';
-  const n = bmDefCount[num];
-  div.innerHTML = `
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--warn);text-transform:uppercase;font-size:0.9rem;">Deficiency #${n}</div>
-    <textarea placeholder="Describe the deficiency..." id="bmDef_${num}_${n}" style="width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px;outline:none;resize:none;min-height:60px;margin-top:6px;"></textarea>
-    <div class="blowdown-lbl" style="margin-top:8px;">Priority</div>
-    <select id="bmDefP_${num}_${n}" style="width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;margin-top:4px;-webkit-appearance:none;">
-      <option value="">— Select priority —</option>
-      <option value="Low">🟡 Low</option>
-      <option value="Medium">🟠 Medium</option>
-      <option value="High">🔴 High — Immediate Action</option>
-    </select>`;
-  list.appendChild(div);
-}
-
-let bmSupState = {};
-function setBmSup(num, val, btn) {
-  bmSupState[num] = val;
-  [`bmSupYes_${num}`,`bmSupNo_${num}`].forEach(id => {
-    const b = document.getElementById(id);
-    if (b) { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; }
+    </div>`;
   });
-  if (val==='yes') { btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)'; }
-  else { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
-  const row = document.getElementById(`bmSupNameRow_${num}`);
-  if (row) row.style.display = val==='yes' ? 'block' : 'none';
+  html += `</div>`;
+
+  html += `<textarea class="simple-notes-area" id="pt_${id}_comments" placeholder="Record comments...">${ptState[id].comments||''}</textarea>`;
+  html += `<button class="simple-submit-btn" onclick="submitPalletTruck('${id}')">✔ Log ${info.name} Check</button>`;
+
+  document.getElementById('palletTruckContent').innerHTML = html;
 }
 
-function setBmCheck(num, section, id, val, btn) {
-  if (!bmState[num]) bmState[num] = { daily:{}, weekly:{} };
-  bmState[num][section][id] = val;
-  const row = document.getElementById(`bmrow_${num}_${id}`);
-  if (row) {
-    row.querySelectorAll('.bchk-btn').forEach(b => { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; });
-  }
+function setPtCheck(id, section, idx, val, btn) {
+  ptState[id][section][idx] = val;
+  const row = document.getElementById(`pt-row-${id}-${section==='visual'?'v':'o'}${idx}`);
+  row.querySelectorAll('.simple-btn').forEach(b => { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; });
   if (val==='ok') { btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)'; }
-  else if (val==='fail') { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
-  else { btn.style.background='rgba(122,143,166,0.15)'; btn.style.borderColor='var(--muted)'; btn.style.color='var(--muted)'; }
-  updateBmDailyStatus(num);
+  else { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
 }
 
-function checkBmReading(num, id, warn, critical, input) {
-  const val = parseFloat(input.value);
-  input.classList.remove('alert-val','critical-val');
-  const warnEl = document.getElementById(`bmPressureWarn_${num}`);
-  const critEl = document.getElementById(`bmPressureCrit_${num}`);
-  if (warnEl) warnEl.classList.remove('show');
-  if (critEl) critEl.classList.remove('show');
-  if (critical > 0 && val >= critical) { input.classList.add('critical-val'); if(critEl) critEl.classList.add('show'); }
-  else if (warn > 0 && val >= warn) { input.classList.add('alert-val'); if(warnEl) warnEl.classList.add('show'); }
-  updateBmDailyStatus(num);
+function submitPalletTruck(id) {
+  ptState[id].battery = document.getElementById(`pt_${id}_battery`)?.value || '';
+  ptState[id].shiftStart = document.getElementById(`pt_${id}_shiftStart`)?.value || '';
+  ptState[id].shiftEnd = document.getElementById(`pt_${id}_shiftEnd`)?.value || '';
+  ptState[id].comments = document.getElementById(`pt_${id}_comments`)?.value || '';
+  if (!ptCompleted.includes(id)) ptCompleted.push(id);
+  closeModal('forklift');
+  updatePtButton();
 }
 
-function updateBmDailyStatus(num) {
-  const statusEl = document.getElementById(`bmDailyStatus_${num}`);
-  if (!statusEl) return;
-  const checkItems = bmDailyChecks.filter(i => !i.hasInput);
-  const inputItems = bmDailyChecks.filter(i => i.hasInput);
-  const checkedCount = checkItems.filter(i => bmState[num]?.daily[i.id]).length;
-  const filledCount = inputItems.filter(i => document.getElementById(`bm_${num}_${i.id}`)?.value).length;
-  const total = checkItems.length + inputItems.length;
-  const done = checkedCount + filledCount;
-  const hasFail = Object.values(bmState[num]?.daily || {}).includes('fail');
-  if (done >= total) { statusEl.textContent = hasFail ? '⚠️ Issues' : '✅ Done'; statusEl.style.color = hasFail ? 'var(--warn)' : 'var(--ok)'; }
-  else { statusEl.textContent = `${done}/${total}`; statusEl.style.color = 'var(--muted)'; }
+function updatePtButton() {
+  const btn = document.getElementById('clbtn-forklift');
+  if (!btn) return;
+  const h = ptCompleted.includes('hansler');
+  const c = ptCompleted.includes('clark');
+  if (h && c) { btn.classList.add('completed'); btn.textContent = '✅ Both Pallet Trucks Done'; }
+  else if (h) { btn.classList.add('completed'); btn.textContent = '✅ Hansler Done — Check Clark'; }
+  else if (c) { btn.classList.add('completed'); btn.textContent = '✅ Clark Done — Check Hansler'; }
 }
 
-function submitBoilerModal(num) {
-  const waterMeter = document.getElementById(`bm_${num}_water_meter`)?.value;
-  if (!waterMeter) { alert('⚠️ Water meter reading is required!'); return; }
-  const overall = document.getElementById(`bmOverall_${num}`)?.value;
-  if (!overall) { alert('Please select overall boiler status.'); return; }
-  bmCompletedBoilers.push(num);
-  closeBoilerModal();
-  // Mark the boiler checklist button as done
-  const btn = document.getElementById('clbtn-boiler1');
-  if (btn) {
-    const b1 = bmCompletedBoilers.includes(1);
-    const b2 = bmCompletedBoilers.includes(2);
-    if (b1 && b2) { btn.classList.add('completed'); btn.textContent = '✅ Both Boilers Done'; }
-    else if (b1) { btn.classList.add('completed'); btn.textContent = `✅ Boiler #1 Done — Check #2`; }
-    else if (b2) { btn.classList.add('completed'); btn.textContent = `✅ Boiler #2 Done — Check #1`; }
-  }
-}
-
-function closeBoilerModal() { closeModal('boiler1'); }
-
-function getBoilerSummary() {
-  const lines = ['\nBoiler Room Inspection'];
-  [1,2].forEach(num => {
-    if (!bmCompletedBoilers.includes(num)) { lines.push(`  Boiler #${num}: Not completed`); return; }
-    const info = bmBoilerInfo[num];
-    lines.push(`\n  Boiler #${num} — ${info.model} (S/N: ${info.serial})`);
-    bmDailyChecks.forEach(item => {
-      const inp = document.getElementById(`bm_${num}_${item.id}`);
-      if (item.hasInput) { lines.push(`    ${item.en}: ${inp?.value || '—'} ${item.unit}`); }
-      else { lines.push(`    ${item.en}: ${(bmState[num]?.daily[item.id] || 'not checked').toUpperCase()}`); }
-    });
-    const overall = document.getElementById(`bmOverall_${num}`)?.value;
-    const notes = document.getElementById(`bmNotes_${num}`)?.value;
-    if (overall) lines.push(`    Overall Status: ${overall}`);
-    if (notes) lines.push(`    Notes: ${notes}`);
+function getPalletTruckSummary() {
+  const lines = ['\nPallet Truck Daily Checks'];
+  ['hansler','clark'].forEach(id => {
+    const info = palletTruckInfo[id];
+    if (!ptCompleted.includes(id)) { lines.push(`  ${info.name}: Not completed`); return; }
+    const s = ptState[id];
+    lines.push(`\n  ${info.name} — Shift: ${s.shiftStart||'—'} to ${s.shiftEnd||'—'} | Battery: ${s.battery||'—'}%`);
+    lines.push(`    Visual Inspection:`);
+    ptVisualItems.forEach((item,i) => lines.push(`      ${i+1}. ${item}: ${(s.visual[i]||'not checked').toUpperCase()}`));
+    lines.push(`    Operational Inspection:`);
+    ptOperationalItems.forEach((item,i) => lines.push(`      ${i+1}. ${item}: ${(s.operational[i]||'not checked').toUpperCase()}`));
+    if (s.comments) lines.push(`    Comments: ${s.comments}`);
   });
   return lines.join('\n');
 }
 
-// ===================== OTHER CHECKLISTS =====================
+const boilerInfoSimple = {
+  '1': { name:'Boiler #1', model:'Volcano ST-350E', year:'1999' },
+  '2': { name:'Boiler #2', model:'Indeck Volcano Starfire ST-250E-WP12', year:'2004' }
+};
+
+const boilerDailyItemsSimple = [
+  { id:'water_level', label:'Observe Water Level' },
+  { id:'pressure', label:'Record Pressure (PSI)', hasInput:true, unit:'PSI' },
+  { id:'flue_gas', label:'Record Flue Gas Temp (°F)', hasInput:true, unit:'°F' },
+  { id:'combustion_air', label:'Combustion Air Adequate / Unobstructed' },
+  { id:'running_pct', label:'Running %', hasInput:true, unit:'%' },
+  { id:'cycle_count', label:'Cycle Count Reading', hasInput:true, unit:'#' },
+  { id:'cycles_today', label:'# of Cycle Counts Today', hasInput:true, unit:'#' },
+];
+
+let boilerSelectedSimple = null;
+let boilerStateSimple = {};
+let boilerCompletedSimple = [];
+
+function selectBoiler(num, btn) {
+  boilerSelectedSimple = num;
+  ['1','2'].forEach(n => document.getElementById(`boBtn_${n}`).classList.remove('selected'));
+  btn.classList.add('selected');
+  if (!boilerStateSimple[num]) boilerStateSimple[num] = { checks:{}, comments:'' };
+  buildBoilerSimpleContent(num);
+}
+
+function buildBoilerSimpleContent(num) {
+  const info = boilerInfoSimple[num];
+  let html = `<div class="simple-section" style="margin:14px;">
+    <div class="simple-section-hdr">${info.name} — ${info.model} (${info.year})</div>`;
+
+  boilerDailyItemsSimple.forEach(item => {
+    if (item.hasInput) {
+      html += `<div class="simple-input-row">
+        <div class="simple-row-text">${item.label}</div>
+        <input type="number" inputmode="decimal" class="simple-text-input" id="bo_${num}_${item.id}" placeholder="${item.unit}">
+      </div>`;
+    } else {
+      html += `<div class="simple-row" id="bo-row-${num}-${item.id}">
+        <div class="simple-row-text">${item.label}</div>
+        <div class="simple-btns">
+          <button class="simple-btn" onclick="setBoilerCheckSimple('${num}','${item.id}','ok',this)">✅</button>
+          <button class="simple-btn" onclick="setBoilerCheckSimple('${num}','${item.id}','fail',this)">⚠️</button>
+        </div>
+      </div>`;
+    }
+  });
+  html += `</div>`;
+  html += `<textarea class="simple-notes-area" id="bo_${num}_comments" placeholder="Record comments...">${boilerStateSimple[num].comments||''}</textarea>`;
+  html += `<button class="simple-submit-btn" onclick="submitBoilerSimple('${num}')">✔ Log ${info.name} Check</button>`;
+
+  document.getElementById('boilerSimpleContent').innerHTML = html;
+}
+
+function setBoilerCheckSimple(num, id, val, btn) {
+  boilerStateSimple[num].checks[id] = val;
+  const row = document.getElementById(`bo-row-${num}-${id}`);
+  row.querySelectorAll('.simple-btn').forEach(b => { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; });
+  if (val==='ok') { btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)'; }
+  else { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
+}
+
+function submitBoilerSimple(num) {
+  boilerDailyItemsSimple.forEach(item => {
+    if (item.hasInput) boilerStateSimple[num].checks[item.id] = document.getElementById(`bo_${num}_${item.id}`)?.value || '';
+  });
+  boilerStateSimple[num].comments = document.getElementById(`bo_${num}_comments`)?.value || '';
+  if (!boilerCompletedSimple.includes(num)) boilerCompletedSimple.push(num);
+  closeBoilerModal();
+  updateBoilerButtonSimple();
+}
+
+function updateBoilerButtonSimple() {
+  const btn = document.getElementById('clbtn-boiler1');
+  if (!btn) return;
+  const b1 = boilerCompletedSimple.includes('1');
+  const b2 = boilerCompletedSimple.includes('2');
+  if (b1 && b2) { btn.classList.add('completed'); btn.textContent = '✅ Both Boilers Done'; }
+  else if (b1) { btn.classList.add('completed'); btn.textContent = '✅ Boiler #1 Done — Check #2'; }
+  else if (b2) { btn.classList.add('completed'); btn.textContent = '✅ Boiler #2 Done — Check #1'; }
+}
+
+function closeBoilerModal() { closeModal('boiler1'); }
+
+function getBoilerSummarySimple() {
+  const lines = ['\nSteam Boiler Daily Checks'];
+  ['1','2'].forEach(num => {
+    const info = boilerInfoSimple[num];
+    if (!boilerCompletedSimple.includes(num)) { lines.push(`  ${info.name}: Not completed`); return; }
+    const s = boilerStateSimple[num];
+    lines.push(`\n  ${info.name} — ${info.model}`);
+    boilerDailyItemsSimple.forEach(item => {
+      const val = s.checks[item.id];
+      if (item.hasInput) lines.push(`    ${item.label}: ${val||'—'} ${item.unit}`);
+      else lines.push(`    ${item.label}: ${(val||'not checked').toUpperCase()}`);
+    });
+    if (s.comments) lines.push(`    Comments: ${s.comments}`);
+  });
+  return lines.join('\n');
+}
+
 const checklists = {
-  forklift: {
-    title:'Forklift Pre-Use Inspection',
-    items:[
-      {id:'f1',label:'Check fluid levels (oil, hydraulic, coolant)',needsNote:true},
-      {id:'f2',label:'Inspect forks for cracks, bends, or damage',needsNote:true},
-      {id:'f3',label:'Test horn — audible and working',needsNote:true},
-      {id:'f4',label:'Test brakes (parking and service)',needsNote:true},
-      {id:'f5',label:'Check lights (headlights, reverse, strobe)',needsNote:true},
-      {id:'f6',label:'Inspect tires for wear, damage, or low pressure',needsNote:true},
-      {id:'f7',label:'Test reverse alarm / back-up beeper',needsNote:true},
-      {id:'f8',label:'Inspect mast, chains, and lift mechanism',needsNote:true},
-      {id:'f9',label:'Check seatbelt / restraint system',needsNote:true},
-      {id:'f10',label:'Verify fire extinguisher on unit and charged',needsNote:true},
-    ]
-  },
   playground: {
     title:'Playground & Rides Inspection',
     items:[
@@ -666,9 +505,7 @@ const checklists = {
   doors:{title:'Doors & Emergency Exits',_doors:true}
 };
 
-const safetyCheckResults = {};
 const checklistResults = {};
-let activeModal = null;
 
 function buildChecklists() {
   Object.keys(checklists).forEach(key => {
@@ -719,12 +556,13 @@ function updateClProgress(key) {
   if (btn) btn.disabled = (done < total);
 }
 
-function openModal(key) { document.getElementById(`modal-${key}`)?.classList.add('show'); document.body.style.overflow='hidden'; activeModal=key; }
-function closeModal(key) { document.getElementById(`modal-${key}`)?.classList.remove('show'); document.body.style.overflow=''; activeModal=null; }
+function openModal(key) { document.getElementById(`modal-${key}`)?.classList.add('show'); document.body.style.overflow='hidden'; }
+function closeModal(key) { document.getElementById(`modal-${key}`)?.classList.remove('show'); document.body.style.overflow=''; }
 function submitChecklist(key) { closeModal(key); const btn=document.getElementById(`clbtn-${key}`); if(btn){btn.classList.add('completed');btn.textContent='✅ Checklist Done';} }
 
 function getChecklistSummary(key) {
-  if (key==='boiler1') return getBoilerSummary();
+  if (key==='boiler1') return getBoilerSummarySimple();
+  if (key==='forklift') return getPalletTruckSummary();
   if (key==='doors') return getDoorCheckSummary();
   const cl = checklists[key];
   const lines = cl.items.map(item => {
@@ -733,6 +571,8 @@ function getChecklistSummary(key) {
   });
   return `${cl.title}\n${lines.join('\n')}`;
 }
+
+const safetyCheckResults = {};
 
 function setSafetyCheck(stopIdx,field,val,btn) {
   if (!safetyCheckResults[stopIdx]) safetyCheckResults[stopIdx]={emLight:null,emLightNote:'',exitSign:null,exitSignNote:''};
@@ -759,7 +599,6 @@ function getSafetyCheckSummary(stopIdx) {
   return `  🚨 Emergency Lighting: ${(r.emLight||'Not checked').toUpperCase()}${emNote}\n  🚪 Exit Sign: ${(r.exitSign||'Not checked').toUpperCase()}${exNote}`;
 }
 
-// DOORS
 const doorCheckDoors = [
   {id:'banquet',label:'Banquet Door'},{id:'gh1',label:'GH1 Door'},{id:'zoo',label:'Zoo Door'},
   {id:'employee',label:'Employee Door'},{id:'loading',label:'Loading Dock'},{id:'fire',label:'Fire Exits'},
@@ -836,11 +675,10 @@ function getDoorCheckSummary() {
   return lines.join('\n');
 }
 
-// ===================== STOPS =====================
 const stops = [
   {num:1,area:'Maintenance Shop',area_es:'Taller de Mantenimiento',task:'Clock in — review previous shift notes and open work orders',task_es:'Registrar entrada — revisar notas del turno anterior y órdenes de trabajo abiertas'},
-  {num:2,area:'Forklift Area',area_es:'Área del Montacargas',task:'Complete forklift pre-use inspection checklist',task_es:'Completar la lista de verificación previa al uso del montacargas',checklist:'forklift',checklistLabel:'🚜 Open Forklift Checklist',checklistLabel_es:'🚜 Abrir Lista de Montacargas'},
-  {num:3,area:'Boiler Room',area_es:'Sala de Calderas',task:'Complete boiler inspection — both Boiler #1 and Boiler #2',task_es:'Completar inspección de calderas — Caldera #1 y Caldera #2',checklist:'boiler1',checklistLabel:'🔥 Open Boiler Inspections',checklistLabel_es:'🔥 Abrir Inspección de Calderas'},
+  {num:2,area:'Forklift Area',area_es:'Área del Montacargas',task:'Complete pallet truck daily check — Hansler and Clark',task_es:'Completar verificación diaria de montacargas — Hansler y Clark',checklist:'forklift',checklistLabel:'🚜 Open Pallet Truck Checks',checklistLabel_es:'🚜 Abrir Verificación de Montacargas'},
+  {num:3,area:'Boiler Room',area_es:'Sala de Calderas',task:'Complete steam boiler daily check — both Boiler #1 and Boiler #2',task_es:'Completar verificación diaria de calderas — Caldera #1 y Caldera #2',checklist:'boiler1',checklistLabel:'🔥 Open Boiler Daily Checks',checklistLabel_es:'🔥 Abrir Verificación de Calderas'},
   {num:4,area:'Retail Floor',area_es:'Piso de Ventas',task:'Walk retail — check hazards, lighting, displays, emergency exits',task_es:'Recorrer tienda — verificar peligros, iluminación, exhibidores, salidas de emergencia'},
   {num:5,area:'Zoo',area_es:'Zoológico',task:'Walk zoo — check enclosures, fencing, pathways, animal areas',task_es:'Recorrer zoológico — verificar cercados, vallas, caminos, áreas de animales'},
   {num:6,area:'Playground & Rides',area_es:'Área de Juegos y Atracciones',task:'Walk playground & rides — check equipment, safety surfacing, signage',task_es:'Recorrer área de juegos — verificar equipo, superficie de seguridad, señalización',checklist:'playground',checklistLabel:'🛝 Open Playground Checklist',checklistLabel_es:'🛝 Abrir Lista de Área de Juegos'},
@@ -854,7 +692,6 @@ const stops = [
   {num:14,area:'Maintenance Shop',area_es:'Taller de Mantenimiento',task:'Return to shop — start toolbox talk, log all issues found',task_es:'Regresar al taller — iniciar charla de seguridad, registrar todos los problemas encontrados'},
 ];
 
-let selectedShift=null;
 let stopResults={};
 
 function toggleLanguage(){currentLang=currentLang==='en'?'es':'en';applyLanguage();}
@@ -863,20 +700,6 @@ function applyLanguage(){
   const btn=document.getElementById('langBtn');
   if(lang==='es'){btn.textContent='🇨🇦 EN';btn.classList.add('es');}else{btn.textContent='🇲🇽 ES';btn.classList.remove('es');}
   document.getElementById('headerSubtitle').textContent=lang==='es'?'Recorrido Diario de Instalaciones y Verificación de Seguridad':'Daily Facility Walk & Safety Check';
-}
-
-function selectShift(shift,btn) {
-  selectedShift=shift;
-  document.querySelectorAll('.shift-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  const badge=document.getElementById('shiftBadge');
-  badge.classList.remove('hidden','morning','evening');
-  badge.classList.add(shift);
-  badge.textContent=shift==='morning'?'☀️ MORNING':'🌙 EVENING';
-  document.getElementById('card-shift').classList.remove('active');
-  document.getElementById('card-staff').classList.add('active');
-  document.getElementById('card-staff').scrollIntoView({behavior:'instant',block:'start'});
-  buildStops();
 }
 
 function buildStops() {
@@ -989,7 +812,6 @@ function handleNameSelect(sel) {
 function submitForm() {
   const staff=document.getElementById('staffName').value.trim()||document.getElementById('staffNameSelect').value;
   const supervisor=document.getElementById('supervisorSelect').value;
-  if(!selectedShift) return alert('Please select a shift.');
   if(!staff) return alert('Please select your name.');
   if(!supervisor) return alert('Please select the supervisor on duty.');
   const totalDone=Object.keys(stopResults).length;
@@ -1010,8 +832,8 @@ function submitForm() {
   const fails=stops.filter((_,i)=>stopResults[i]==='fail');
   const hasIssues=fails.length>0;
   const subjectLine=hasIssues
-    ?`⚠️ Colasanti's ${selectedShift==='morning'?'Morning':'Evening'} Walk — ISSUES FOUND: ${fails.map(f=>f.area).join(', ')} | ${staff} | ${timestamp}`
-    :`✅ Colasanti's ${selectedShift==='morning'?'Morning':'Evening'} Walk — All Clear | ${staff} | ${timestamp}`;
+    ?`⚠️ Colasanti's Morning Walk — ISSUES FOUND: ${fails.map(f=>f.area).join(', ')} | ${staff} | ${timestamp}`
+    :`✅ Colasanti's Morning Walk — All Clear | ${staff} | ${timestamp}`;
   let stopSummary=stops.map((stop,i)=>{
     const result=stopResults[i]||'Not checked';
     const note=document.getElementById(`notes-${i}`)?.value||'';
@@ -1026,7 +848,7 @@ function submitForm() {
 COLASANTI'S DAILY FACILITY WALK & SAFETY CHECK
 ===============================================
 Submitted: ${timestamp}
-SHIFT: ${selectedShift==='morning'?'☀️ Morning Walk':'🌙 Evening Walk'}
+SHIFT: ☀️ Morning Walk
 STAFF: ${staff}
 SUPERVISOR: ${supervisor}
 
@@ -1050,7 +872,7 @@ Submitted via Colasanti's Maintenance System`;
   const failCount=Object.values(stopResults).filter(r=>r==='fail').length;
   const naCount=Object.values(stopResults).filter(r=>r==='na').length;
   document.getElementById('summaryBox').innerHTML=`
-    <strong>Shift</strong> ${selectedShift==='morning'?'☀️ Morning':'🌙 Evening'}<br>
+    <strong>Shift</strong> ☀️ Morning<br>
     <strong>Staff</strong> ${staff}<br><strong>Supervisor</strong> ${supervisor}<br>
     <strong>Submitted</strong> ${timestamp}<br>
     <strong>Stops Completed</strong> ${totalDone} of ${stops.length}<br>
@@ -1062,26 +884,26 @@ Submitted via Colasanti's Maintenance System`;
 }
 
 function resetForm() {
-  selectedShift=null;stopResults={};
+  stopResults={};
   Object.keys(safetyCheckResults).forEach(k=>delete safetyCheckResults[k]);
-  bmCompletedBoilers=[];bmState={};bmSelectedBoiler=null;
+  ptCompleted=[];ptState={};ptSelected=null;
+  boilerCompletedSimple=[];boilerStateSimple={};boilerSelectedSimple=null;
   document.getElementById('staffNameSelect').value='';
   document.getElementById('staffName').value='';
   document.getElementById('staffNameOther').style.display='none';
   document.getElementById('supervisorSelect').value='';
   document.getElementById('stopsContainer').innerHTML='';
-  document.getElementById('card-shift').classList.add('active');
-  document.getElementById('card-staff').classList.remove('active');
+  document.getElementById('card-staff').classList.add('active');
   document.getElementById('card-walk').classList.add('hidden');
   document.getElementById('card-walk').classList.remove('active');
   document.getElementById('successPanel').classList.remove('show');
-  document.getElementById('shiftBadge').classList.add('hidden');
   document.getElementById('failSummary').classList.remove('show');
-  document.querySelectorAll('.shift-btn').forEach(b=>b.classList.remove('selected'));
-  document.getElementById('boilerModalContent').innerHTML='<div style="padding:24px;text-align:center;color:var(--muted);font-family:\'Barlow Condensed\',sans-serif;font-size:0.95rem;">👆 Select a boiler above to begin inspection</div>';
-  [1,2].forEach(n=>{const b=document.getElementById(`bmBtn${n}`);if(b){b.style.borderColor='var(--border)';b.style.background='var(--panel)';b.style.color='var(--text)';}});
-  document.getElementById('bmBadge').style.display='none';
+  document.getElementById('palletTruckContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-family:\'Barlow Condensed\',sans-serif;font-size:0.9rem;">👆 Select a pallet truck above to begin</div>';
+  document.getElementById('boilerSimpleContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-family:\'Barlow Condensed\',sans-serif;font-size:0.9rem;">👆 Select a boiler above to begin</div>';
+  ['hansler','clark'].forEach(k=>document.getElementById(`pkBtn_${k}`)?.classList.remove('selected'));
+  ['1','2'].forEach(n=>document.getElementById(`boBtn_${n}`)?.classList.remove('selected'));
   buildChecklists();
+  buildStops();
   window.scrollTo({top:0,behavior:'instant'});
 }
 
@@ -1093,6 +915,7 @@ window.addEventListener('load',()=>{
   img.alt='QR Code';img.width=160;img.height=160;img.style.borderRadius='4px';
   qrDiv.appendChild(img);
   buildChecklists();
+  buildStops();
 });
 </script>
 </body>
