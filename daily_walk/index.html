@@ -865,7 +865,7 @@ ${checklistSummaryLines.join('\n')}
 Submitted via Colasanti's Maintenance System`;
 
   emailjs.send('service_a35rfka','template_ehen3f7',{
-    to_email:'maintenance@colasanti.com',subject:subjectLine,message:emailBody,from_name:'Colasanti Maintenance System'
+    to_email:'jasonkath7610@gmail.com',subject:subjectLine,message:emailBody,from_name:'Colasanti Maintenance System'
   }).then(()=>console.log('Email sent')).catch(err=>console.error('EmailJS error:',err));
 
   const passCount=Object.values(stopResults).filter(r=>r==='pass').length;
