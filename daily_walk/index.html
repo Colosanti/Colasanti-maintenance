@@ -212,7 +212,9 @@
           <option value="">— Select your name —</option>
           <option value="Jason B">Jason B</option>
           <option value="Jason R">Jason R</option>
-          <option value="Roman">Roman</option>      
+          <option value="Roman">Roman</option>
+          <option value="Anton">Anton</option>
+          <option value="Raul">Raul</option>
           <option value="__other__">Other (type name)</option>
         </select>
         <input class="form-input" id="staffNameOther" type="text" placeholder="Enter your name" style="margin-top:8px;display:none;" autocomplete="off">
@@ -863,7 +865,7 @@ ${checklistSummaryLines.join('\n')}
 Submitted via Colasanti's Maintenance System`;
 
   emailjs.send('service_a35rfka','template_ehen3f7',{
-    to_email:'jasonkath7610@gmail.com',subject:subjectLine,message:emailBody,from_name:'Colasanti Maintenance System'
+    to_email:'maintenance@colasanti.com',subject:subjectLine,message:emailBody,from_name:'Colasanti Maintenance System'
   }).then(()=>console.log('Email sent')).catch(err=>console.error('EmailJS error:',err));
 
   const passCount=Object.values(stopResults).filter(r=>r==='pass').length;
