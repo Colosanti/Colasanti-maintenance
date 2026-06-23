@@ -75,6 +75,8 @@
   .checklist-btn{display:inline-block;margin-top:8px;background:rgba(240,165,0,0.15);border:1.5px solid var(--accent);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer;text-decoration:none;letter-spacing:0.5px;transition:all 0.15s;}
   .checklist-btn:hover{background:rgba(240,165,0,0.3);}
   .checklist-btn.completed{background:rgba(46,204,113,0.15);border-color:var(--ok);color:var(--ok);}
+  .checklist-required{font-size:0.75rem;color:var(--warn);font-family:'Barlow Condensed',sans-serif;margin-top:4px;display:none;}
+  .checklist-required.show{display:block;}
   .progress-bar-container{background:var(--panel2);border-radius:20px;height:8px;margin-bottom:16px;overflow:hidden;}
   .progress-bar{background:linear-gradient(90deg,var(--accent),var(--ok));height:100%;border-radius:20px;transition:width 0.3s ease;width:0%;}
   .progress-text{font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;color:var(--muted);text-align:center;margin-bottom:10px;}
@@ -391,12 +393,15 @@ const boilerInfoSimple = {
 
 const boilerDailyItemsSimple = [
   { id:'water_level', label:'Observe Water Level' },
+  { id:'condensate_pit', label:'Check Condensate Pit — clear, no overflow' },
+  { id:'salt_levels', label:'Check Water Softener Salt Levels' },
   { id:'pressure', label:'Record Pressure (PSI)', hasInput:true, unit:'PSI' },
   { id:'flue_gas', label:'Record Flue Gas Temp (°F)', hasInput:true, unit:'°F' },
   { id:'combustion_air', label:'Combustion Air Adequate / Unobstructed' },
   { id:'running_pct', label:'Running %', hasInput:true, unit:'%' },
   { id:'cycle_count', label:'Cycle Count Reading', hasInput:true, unit:'#' },
   { id:'cycles_today', label:'# of Cycle Counts Today', hasInput:true, unit:'#' },
+  { id:'water_meter', label:'Water Meter Reading (GAL)', hasInput:true, unit:'GAL' },
 ];
 
 let boilerSelectedSimple = null;
@@ -677,17 +682,17 @@ function getDoorCheckSummary() {
 
 const stops = [
   {num:1,area:'Maintenance Shop',area_es:'Taller de Mantenimiento',task:'Clock in — review previous shift notes and open work orders',task_es:'Registrar entrada — revisar notas del turno anterior y órdenes de trabajo abiertas'},
-  {num:2,area:'Forklift Area',area_es:'Área del Montacargas',task:'Complete pallet truck daily check — Hansler and Clark',task_es:'Completar verificación diaria de montacargas — Hansler y Clark',checklist:'forklift',checklistLabel:'🚜 Open Pallet Truck Checks',checklistLabel_es:'🚜 Abrir Verificación de Montacargas'},
-  {num:3,area:'Boiler Room',area_es:'Sala de Calderas',task:'Complete steam boiler daily check — both Boiler #1 and Boiler #2',task_es:'Completar verificación diaria de calderas — Caldera #1 y Caldera #2',checklist:'boiler1',checklistLabel:'🔥 Open Boiler Daily Checks',checklistLabel_es:'🔥 Abrir Verificación de Calderas'},
+  {num:2,area:'Forklift Area',area_es:'Área del Montacargas',task:'Complete pallet truck daily check — Hansler and Clark',task_es:'Completar verificación diaria de montacargas — Hansler y Clark',checklist:'forklift',checklistLabel:'🚜 Open Pallet Truck Checks',checklistLabel_es:'🚜 Abrir Verificación de Montacargas',required:true},
+  {num:3,area:'Boiler Room',area_es:'Sala de Calderas',task:'Complete steam boiler daily check — both Boiler #1 and Boiler #2',task_es:'Completar verificación diaria de calderas — Caldera #1 y Caldera #2',checklist:'boiler1',checklistLabel:'🔥 Open Boiler Daily Checks',checklistLabel_es:'🔥 Abrir Verificación de Calderas',required:true},
   {num:4,area:'Retail Floor',area_es:'Piso de Ventas',task:'Walk retail — check hazards, lighting, displays, emergency exits',task_es:'Recorrer tienda — verificar peligros, iluminación, exhibidores, salidas de emergencia'},
   {num:5,area:'Zoo',area_es:'Zoológico',task:'Walk zoo — check enclosures, fencing, pathways, animal areas',task_es:'Recorrer zoológico — verificar cercados, vallas, caminos, áreas de animales'},
-  {num:6,area:'Playground & Rides',area_es:'Área de Juegos y Atracciones',task:'Walk playground & rides — check equipment, safety surfacing, signage',task_es:'Recorrer área de juegos — verificar equipo, superficie de seguridad, señalización',checklist:'playground',checklistLabel:'🛝 Open Playground Checklist',checklistLabel_es:'🛝 Abrir Lista de Área de Juegos'},
+  {num:6,area:'Playground & Rides',area_es:'Área de Juegos y Atracciones',task:'Walk playground & rides — check equipment, safety surfacing, signage',task_es:'Recorrer área de juegos — verificar equipo, superficie de seguridad, señalización',checklist:'playground',checklistLabel:'🛝 Open Playground Checklist',checklistLabel_es:'🛝 Abrir Lista de Área de Juegos',required:true},
   {num:7,area:'All Doors & Lights',area_es:'Todas las Puertas y Luces',task:'Check all exterior/interior doors, fire doors, emergency lighting',task_es:'Verificar todas las puertas exteriores/interiores, puertas contra incendio, iluminación de emergencia'},
   {num:8,area:'Arcade',area_es:'Arcadia',task:'Walk arcade — check equipment, GFI, exits, lighting',task_es:'Recorrer arcadia — verificar equipos, GFI, salidas, iluminación'},
   {num:9,area:'Mini Golf',area_es:'Mini Golf',task:'Walk mini golf — check course conditions, lighting, fencing',task_es:'Recorrer mini golf — verificar condiciones del campo, iluminación, vallas'},
   {num:10,area:'Restaurant',area_es:'Restaurante',task:'Walk restaurant — check kitchen safety equipment, dining area, exits',task_es:'Recorrer restaurante — verificar equipo de seguridad de cocina, área de comedor, salidas'},
   {num:11,area:'Warehouse',area_es:'Almacén',task:'Walk warehouse — check storage, racking, loading areas',task_es:'Recorrer almacén — verificar almacenamiento, estanterías, áreas de carga'},
-  {num:12,area:'Doors & Emergency Exits',area_es:'Puertas y Salidas de Emergencia',task:'Check all doors — salt/scrape and emergency exit status',task_es:'Verificar todas las puertas — sal/raspado y estado de salida de emergencia',checklist:'doors',checklistLabel:'🚪 Open Door Checks',checklistLabel_es:'🚪 Abrir Verificación de Puertas'},
+  {num:12,area:'Doors & Emergency Exits',area_es:'Puertas y Salidas de Emergencia',task:'Check all doors — salt/scrape and emergency exit status',task_es:'Verificar todas las puertas — sal/raspado y estado de salida de emergencia',checklist:'doors',checklistLabel:'🚪 Open Door Checks',checklistLabel_es:'🚪 Abrir Verificación de Puertas',required:true},
   {num:13,area:'Grow Houses',area_es:'Invernaderos',task:'Walk grow houses — check temperature, humidity, equipment, safety',task_es:'Recorrer invernaderos — verificar temperatura, humedad, equipo, seguridad'},
   {num:14,area:'Maintenance Shop',area_es:'Taller de Mantenimiento',task:'Return to shop — start toolbox talk, log all issues found',task_es:'Regresar al taller — iniciar charla de seguridad, registrar todos los problemas encontrados'},
 ];
@@ -710,7 +715,8 @@ function buildStops() {
     card.className='stop-card';
     card.id=`stop-${i}`;
     const checklistBtn=stop.checklist
-      ?`<button class="checklist-btn" id="clbtn-${stop.checklist}" onclick="openModal('${stop.checklist}')">${currentLang==='es'?stop.checklistLabel_es:stop.checklistLabel}</button>`
+      ?`<button class="checklist-btn" id="clbtn-${stop.checklist}" onclick="openModal('${stop.checklist}')">${currentLang==='es'?stop.checklistLabel_es:stop.checklistLabel}</button>
+        ${stop.required ? `<div class="checklist-required" id="clreq-${stop.checklist}">⚠️ This checklist must be completed before submitting the walk</div>` : ''}`
       :'';
     const safetyBlock=`
       <div class="safety-checks">
@@ -814,6 +820,40 @@ function submitForm() {
   const supervisor=document.getElementById('supervisorSelect').value;
   if(!staff) return alert('Please select your name.');
   if(!supervisor) return alert('Please select the supervisor on duty.');
+  // ── CHECKLIST VALIDATION ──
+  if(!ptCompleted.includes('hansler') || !ptCompleted.includes('clark')) {
+    const reqEl = document.getElementById('clreq-forklift');
+    if(reqEl) reqEl.classList.add('show');
+    const missing = [];
+    if(!ptCompleted.includes('hansler')) missing.push('Hansler');
+    if(!ptCompleted.includes('clark')) missing.push('Clark');
+    alert('⚠️ Please complete the Pallet Truck checklist before submitting:\n\nMissing: ' + missing.join(', '));
+    return;
+  }
+  if(!boilerCompletedSimple.includes('1') || !boilerCompletedSimple.includes('2')) {
+    const reqEl = document.getElementById('clreq-boiler1');
+    if(reqEl) reqEl.classList.add('show');
+    const missing = [];
+    if(!boilerCompletedSimple.includes('1')) missing.push('Boiler #1');
+    if(!boilerCompletedSimple.includes('2')) missing.push('Boiler #2');
+    alert('⚠️ Please complete the Boiler checklist before submitting:\n\nMissing: ' + missing.join(', '));
+    return;
+  }
+  const playgroundDone = checklists.playground.items.every(item => checklistResults['playground']?.[item.id]?.checked);
+  if(!playgroundDone) {
+    const reqEl = document.getElementById('clreq-playground');
+    if(reqEl) reqEl.classList.add('show');
+    alert('⚠️ Please complete the Playground checklist before submitting.');
+    return;
+  }
+  const doorsDone = doorCheckDoors.every(d => doorCheckState[d.id]?.saltScrape && doorCheckState[d.id]?.exitCheck);
+  if(!doorsDone) {
+    const reqEl = document.getElementById('clreq-doors');
+    if(reqEl) reqEl.classList.add('show');
+    alert('⚠️ Please complete the Door Checks before submitting.');
+    return;
+  }
+
   const totalDone=Object.keys(stopResults).length;
   if(totalDone<stops.length){
     const missing=stops.filter((_,i)=>!stopResults[i]).map(s=>s.area);
