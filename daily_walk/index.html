@@ -186,6 +186,11 @@
       <button class="modal-close" onclick="closeModal('doors')">✕ Close</button>
     </div>
     <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <button id="seasonWinter" onclick="setSeason('winter',this)" style="padding:10px;border-radius:8px;border:2px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;color:var(--text);text-align:center;">❄️ Winter Mode</button>
+        <button id="seasonSummer" onclick="setSeason('summer',this)" style="padding:10px;border-radius:8px;border:2px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;color:var(--text);text-align:center;">☀️ Summer Mode</button>
+      </div>
+      <div id="seasonNote" style="font-size:0.8rem;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin-bottom:12px;text-align:center;">Select season — Winter includes salt/scrape checks</div>
       <div class="cl-progress" id="cl-progress-doors">Complete all door checks below</div>
       <div id="cl-items-doors"></div>
       <button class="modal-submit-btn" id="cl-submit-doors" onclick="submitDoorsModal()" style="background:linear-gradient(135deg,#6c5ce7,#5f4fcf);">🚪 COMPLETE DOOR CHECKS</button>
@@ -215,8 +220,6 @@
           <option value="Jason B">Jason B</option>
           <option value="Jason R">Jason R</option>
           <option value="Roman">Roman</option>
-          <option value="Anton">Anton</option>
-          <option value="Raul">Raul</option>
           <option value="__other__">Other (type name)</option>
         </select>
         <input class="form-input" id="staffNameOther" type="text" placeholder="Enter your name" style="margin-top:8px;display:none;" autocomplete="off">
@@ -604,6 +607,34 @@ function getSafetyCheckSummary(stopIdx) {
   return `  🚨 Emergency Lighting: ${(r.emLight||'Not checked').toUpperCase()}${emNote}\n  🚪 Exit Sign: ${(r.exitSign||'Not checked').toUpperCase()}${exNote}`;
 }
 
+let currentSeason = 'winter'; // Default to winter — auto-detected on load
+
+function setSeason(season, btn) {
+  currentSeason = season;
+  // Update button styles
+  document.getElementById('seasonWinter').style.borderColor = 'var(--border)';
+  document.getElementById('seasonWinter').style.background = 'var(--panel)';
+  document.getElementById('seasonWinter').style.color = 'var(--text)';
+  document.getElementById('seasonSummer').style.borderColor = 'var(--border)';
+  document.getElementById('seasonSummer').style.background = 'var(--panel)';
+  document.getElementById('seasonSummer').style.color = 'var(--text)';
+  if (season === 'winter') {
+    btn.style.borderColor = '#74b9ff';
+    btn.style.background = 'rgba(116,185,255,0.15)';
+    btn.style.color = '#74b9ff';
+    document.getElementById('seasonNote').textContent = '❄️ Winter Mode — Salt/scrape checks required';
+    document.getElementById('seasonNote').style.color = '#74b9ff';
+  } else {
+    btn.style.borderColor = '#f0a500';
+    btn.style.background = 'rgba(240,165,0,0.15)';
+    btn.style.color = '#f0a500';
+    document.getElementById('seasonNote').textContent = '☀️ Summer Mode — Emergency exit checks only';
+    document.getElementById('seasonNote').style.color = '#f0a500';
+  }
+  // Rebuild door modal with new season
+  buildDoorsModal();
+}
+
 const doorCheckDoors = [
   {id:'banquet',label:'Banquet Door'},{id:'gh1',label:'GH1 Door'},{id:'zoo',label:'Zoo Door'},
   {id:'employee',label:'Employee Door'},{id:'loading',label:'Loading Dock'},{id:'fire',label:'Fire Exits'},
@@ -620,7 +651,7 @@ function buildDoorsModal() {
         <span>🚪</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:0.5px;color:#6c5ce7;">${door.label}</span>
       </div>
       <div style="padding:12px 14px;">
-        <div style="margin-bottom:12px;">
+        ${currentSeason === 'winter' ? `<div style="margin-bottom:12px;">
           <div style="font-size:0.85rem;margin-bottom:6px;font-weight:600;">🧂 Salt / Scrape</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;" id="door-salt-grp-${door.id}">
             <button onclick="setDoorCheck('${door.id}','saltScrape','pass',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">✅ PASS</button>
@@ -628,7 +659,7 @@ function buildDoorsModal() {
             <button onclick="setDoorCheck('${door.id}','saltScrape','na',this)" class="door-btn" style="padding:8px;border-radius:6px;border:1.5px solid var(--border);background:var(--panel);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--text);">— N/A</button>
           </div>
           <textarea id="door-salt-note-${door.id}" placeholder="Required: explain why N/A..." rows="2" style="width:100%;margin-top:6px;background:var(--panel);border:1.5px solid #6c5ce7;border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.85rem;padding:8px 10px;outline:none;resize:none;display:none;" oninput="doorCheckState['${door.id}'].saltNote=this.value"></textarea>
-        </div>
+        </div>` : ''}
         <div>
           <div style="font-size:0.85rem;margin-bottom:6px;font-weight:600;">🚨 Emergency Exit Check</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;" id="door-exit-grp-${door.id}">
@@ -659,9 +690,9 @@ function setDoorCheck(doorId,field,val,btn) {
 function submitDoorsModal() {
   for(const door of doorCheckDoors){
     const s=doorCheckState[door.id];
-    if(!s.saltScrape){alert(`⚠️ Please complete Salt/Scrape check for: ${door.label}`);return;}
+    if(currentSeason==='winter' && !s.saltScrape){alert(`⚠️ Please complete Salt/Scrape check for: ${door.label}`);return;}
     if(!s.exitCheck){alert(`⚠️ Please complete Emergency Exit check for: ${door.label}`);return;}
-    if(s.saltScrape==='na'&&!s.saltNote.trim()){alert(`⚠️ N/A reason required for Salt/Scrape at: ${door.label}`);return;}
+    if(currentSeason==='winter' && s.saltScrape==='na'&&!s.saltNote.trim()){alert(`⚠️ N/A reason required for Salt/Scrape at: ${door.label}`);return;}
     if(s.exitCheck==='na'&&!s.exitNote.trim()){alert(`⚠️ N/A reason required for Emergency Exit at: ${door.label}`);return;}
   }
   closeModal('doors');
@@ -846,7 +877,7 @@ function submitForm() {
     alert('⚠️ Please complete the Playground checklist before submitting.');
     return;
   }
-  const doorsDone = doorCheckDoors.every(d => doorCheckState[d.id]?.saltScrape && doorCheckState[d.id]?.exitCheck);
+  const doorsDone = doorCheckDoors.every(d => (currentSeason==='summer' || doorCheckState[d.id]?.saltScrape) && doorCheckState[d.id]?.exitCheck);
   if(!doorsDone) {
     const reqEl = document.getElementById('clreq-doors');
     if(reqEl) reqEl.classList.add('show');
@@ -942,6 +973,13 @@ function resetForm() {
   document.getElementById('boilerSimpleContent').innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-family:\'Barlow Condensed\',sans-serif;font-size:0.9rem;">👆 Select a boiler above to begin</div>';
   ['hansler','clark'].forEach(k=>document.getElementById(`pkBtn_${k}`)?.classList.remove('selected'));
   ['1','2'].forEach(n=>document.getElementById(`boBtn_${n}`)?.classList.remove('selected'));
+  // Auto-detect season based on month
+  const month = new Date().getMonth(); // 0=Jan, 11=Dec
+  const isWinter = month >= 10 || month <= 2; // Nov-Mar = winter
+  const autoSeason = isWinter ? 'winter' : 'summer';
+  currentSeason = autoSeason;
+  const seasonBtn = document.getElementById(isWinter ? 'seasonWinter' : 'seasonSummer');
+  // Will be set when doors modal opens
   buildChecklists();
   buildStops();
   window.scrollTo({top:0,behavior:'instant'});
@@ -954,6 +992,13 @@ window.addEventListener('load',()=>{
   img.src=`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
   img.alt='QR Code';img.width=160;img.height=160;img.style.borderRadius='4px';
   qrDiv.appendChild(img);
+  // Auto-detect season based on month
+  const month = new Date().getMonth(); // 0=Jan, 11=Dec
+  const isWinter = month >= 10 || month <= 2; // Nov-Mar = winter
+  const autoSeason = isWinter ? 'winter' : 'summer';
+  currentSeason = autoSeason;
+  const seasonBtn = document.getElementById(isWinter ? 'seasonWinter' : 'seasonSummer');
+  // Will be set when doors modal opens
   buildChecklists();
   buildStops();
 });
