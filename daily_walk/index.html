@@ -58,6 +58,14 @@
   .stop-notes{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow',sans-serif;font-size:0.9rem;padding:10px 12px;outline:none;resize:none;min-height:60px;display:none;}
   .stop-notes.show{display:block;}
   .stop-notes:focus{border-color:var(--warn);}
+  .photo-btn{display:none;margin-top:8px;background:rgba(231,76,60,0.12);border:1.5px solid var(--warn);color:var(--warn);font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;padding:8px 14px;border-radius:8px;cursor:pointer;width:100%;text-align:center;}
+  .photo-btn.show{display:block;}
+  .photo-btn.taken{background:rgba(108,92,231,0.15);border-color:#6c5ce7;color:#a29bfe;}
+  .photo-preview{display:none;margin-top:8px;border-radius:8px;overflow:hidden;border:2px solid #6c5ce7;}
+  .photo-preview.show{display:block;}
+  .photo-preview img{width:100%;max-height:200px;object-fit:cover;display:block;}
+  .photo-note{display:none;margin-top:6px;font-size:0.78rem;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;}
+  .photo-note.show{display:block;}
   .safety-checks{margin-top:10px;background:rgba(0,184,148,0.07);border:1px solid rgba(0,184,148,0.3);border-radius:8px;padding:10px 12px;}
   .safety-checks-title{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--safety);margin-bottom:8px;}
   .safety-check-row{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(0,184,148,0.15);}
@@ -729,6 +737,7 @@ const stops = [
 ];
 
 let stopResults={};
+const photoState = {};
 
 function toggleLanguage(){currentLang=currentLang==='en'?'es':'en';applyLanguage();}
 function applyLanguage(){
@@ -790,6 +799,10 @@ function buildStops() {
           <button class="pfna-btn na-btn" onclick="setResult(${i},'na',this)">— N/A</button>
         </div>
         <textarea class="stop-notes" id="notes-${i}" placeholder="Describe the issue..." rows="2"></textarea>
+        <button class="photo-btn" id="photo-btn-${i}" onclick="takePhoto(${i})">📷 Take Photo of Issue</button>
+        <div class="photo-preview" id="photo-preview-${i}"><img id="photo-img-${i}" src="" alt="Issue photo"></div>
+        <div class="photo-note" id="photo-note-${i}">📷 Photo captured — will be noted in report</div>
+        <input type="file" accept="image/*" capture="environment" id="photo-input-${i}" style="display:none;" onchange="handlePhoto(${i},this)">
         ${safetyBlock}
       </div>`;
     container.appendChild(card);
@@ -806,9 +819,18 @@ function setResult(index,result,btn) {
   card.className=`stop-card ${result}`;
   card.querySelectorAll('.pfna-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
-  if(result==='pass'){status.className='stop-status pass';status.textContent='✅ PASS';notes.classList.remove('show');}
-  else if(result==='fail'){status.className='stop-status fail';status.textContent='⚠️ FAIL';notes.classList.add('show');notes.focus();}
-  else{status.className='stop-status na';status.textContent='— N/A';notes.classList.remove('show');}
+  if(result==='pass'){status.className='stop-status pass';status.textContent='✅ PASS';notes.classList.remove('show');
+    document.getElementById(`photo-btn-${index}`)?.classList.remove('show');
+    document.getElementById(`photo-preview-${index}`)?.classList.remove('show');
+    document.getElementById(`photo-note-${index}`)?.classList.remove('show');
+    delete photoState[index];}
+  else if(result==='fail'){status.className='stop-status fail';status.textContent='⚠️ FAIL';notes.classList.add('show');notes.focus();
+    document.getElementById(`photo-btn-${index}`)?.classList.add('show');}
+  else{status.className='stop-status na';status.textContent='— N/A';notes.classList.remove('show');
+    document.getElementById(`photo-btn-${index}`)?.classList.remove('show');
+    document.getElementById(`photo-preview-${index}`)?.classList.remove('show');
+    document.getElementById(`photo-note-${index}`)?.classList.remove('show');
+    delete photoState[index];}
   updateProgress();
   updateFailSummary();
 }
@@ -844,6 +866,30 @@ function handleNameSelect(sel) {
     document.getElementById('card-walk').classList.add('active');
     document.getElementById('card-walk').scrollIntoView({behavior:'instant',block:'start'});
   }
+}
+
+function takePhoto(index) {
+  document.getElementById(`photo-input-${index}`)?.click();
+}
+
+function handlePhoto(index, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = document.getElementById(`photo-img-${index}`);
+    const preview = document.getElementById(`photo-preview-${index}`);
+    const note = document.getElementById(`photo-note-${index}`);
+    const btn = document.getElementById(`photo-btn-${index}`);
+    img.src = e.target.result;
+    preview.classList.add('show');
+    note.classList.add('show');
+    btn.classList.add('taken');
+    btn.textContent = '📷 Photo Taken — Tap to Retake';
+    const now = new Date().toLocaleTimeString('en-CA', {hour:'2-digit', minute:'2-digit'});
+    photoState[index] = { taken: true, time: now };
+  };
+  reader.readAsDataURL(file);
 }
 
 function submitForm() {
@@ -909,7 +955,8 @@ function submitForm() {
     const result=stopResults[i]||'Not checked';
     const note=document.getElementById(`notes-${i}`)?.value||'';
     const safety=getSafetyCheckSummary(i);
-    return `${stop.num}. ${stop.area}: ${result.toUpperCase()}${note?' — '+note:''}\n${safety}`;
+    const photo=photoState[i]?.taken ? `\n  📷 Photo taken at ${photoState[i].time} — request from staff if needed` : '';
+    return `${stop.num}. ${stop.area}: ${result.toUpperCase()}${note?' — '+note:''}${photo}\n${safety}`;
   }).join('\n');
   const checklistSummaryLines=[];
   stops.forEach(stop=>{
@@ -957,6 +1004,7 @@ Submitted via Colasanti's Maintenance System`;
 function resetForm() {
   stopResults={};
   Object.keys(safetyCheckResults).forEach(k=>delete safetyCheckResults[k]);
+  Object.keys(photoState).forEach(k=>delete photoState[k]);
   ptCompleted=[];ptState={};ptSelected=null;
   boilerCompletedSimple=[];boilerStateSimple={};boilerSelectedSimple=null;
   document.getElementById('staffNameSelect').value='';
