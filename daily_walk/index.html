@@ -357,8 +357,13 @@ function setPtCheck(id, section, idx, val, btn) {
   ptState[id][section][idx] = val;
   const row = document.getElementById(`pt-row-${id}-${section==='visual'?'v':'o'}${idx}`);
   row.querySelectorAll('.simple-btn').forEach(b => { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; });
-  if (val==='ok') { btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)'; }
-  else { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
+  if (val==='ok') {
+    btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)';
+    hideInlinePhoto(`pt-${id}-${section}-${idx}`);
+  } else {
+    btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)';
+    showInlinePhoto(`pt-${id}-${section}-${idx}`, row);
+  }
 }
 
 function submitPalletTruck(id) {
@@ -459,8 +464,13 @@ function setBoilerCheckSimple(num, id, val, btn) {
   boilerStateSimple[num].checks[id] = val;
   const row = document.getElementById(`bo-row-${num}-${id}`);
   row.querySelectorAll('.simple-btn').forEach(b => { b.style.background='var(--panel)'; b.style.borderColor='var(--border)'; b.style.color='var(--text)'; });
-  if (val==='ok') { btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)'; }
-  else { btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)'; }
+  if (val==='ok') {
+    btn.style.background='rgba(46,204,113,0.15)'; btn.style.borderColor='var(--ok)'; btn.style.color='var(--ok)';
+    hideInlinePhoto(`bo-${num}-${id}`);
+  } else {
+    btn.style.background='rgba(231,76,60,0.15)'; btn.style.borderColor='var(--warn)'; btn.style.color='var(--warn)';
+    showInlinePhoto(`bo-${num}-${id}`, row);
+  }
 }
 
 function submitBoilerSimple(num) {
@@ -556,7 +566,13 @@ function toggleClItem(key,id) {
   checkEl.classList.toggle('checked',checked);
   checkEl.textContent = checked ? '✓' : '';
   labelEl.classList.toggle('checked',checked);
-  if (!checked) { noteEl.classList.add('show'); } else { noteEl.classList.remove('show'); noteEl.value = ''; checklistResults[key][id].note = ''; }
+  if (!checked) {
+    noteEl.classList.add('show');
+    showInlinePhoto(`cl-${key}-${id}`, document.getElementById(`clitem-${key}-${id}`));
+  } else {
+    noteEl.classList.remove('show'); noteEl.value = ''; checklistResults[key][id].note = '';
+    hideInlinePhoto(`cl-${key}-${id}`);
+  }
   updateClProgress(key);
 }
 
@@ -687,10 +703,11 @@ function setDoorCheck(doorId,field,val,btn) {
   doorCheckState[doorId][field]=val;
   const grpId=field==='saltScrape'?`door-salt-grp-${doorId}`:`door-exit-grp-${doorId}`;
   const noteId=field==='saltScrape'?`door-salt-note-${doorId}`:`door-exit-note-${doorId}`;
-  document.getElementById(grpId).querySelectorAll('.door-btn').forEach(b=>{b.style.background='var(--panel)';b.style.borderColor='var(--border)';b.style.color='var(--text)';});
-  if(val==='pass'){btn.style.background='rgba(46,204,113,0.15)';btn.style.borderColor='var(--ok)';btn.style.color='var(--ok)';}
-  else if(val==='fail'){btn.style.background='rgba(231,76,60,0.15)';btn.style.borderColor='var(--warn)';btn.style.color='var(--warn)';}
-  else{btn.style.background='rgba(108,92,231,0.15)';btn.style.borderColor='#6c5ce7';btn.style.color='#a29bfe';}
+  const grpEl = document.getElementById(grpId);
+  grpEl.querySelectorAll('.door-btn').forEach(b=>{b.style.background='var(--panel)';b.style.borderColor='var(--border)';b.style.color='var(--text)';});
+  if(val==='pass'){btn.style.background='rgba(46,204,113,0.15)';btn.style.borderColor='var(--ok)';btn.style.color='var(--ok)';hideInlinePhoto(`door-${doorId}-${field}`);}
+  else if(val==='fail'){btn.style.background='rgba(231,76,60,0.15)';btn.style.borderColor='var(--warn)';btn.style.color='var(--warn)';showInlinePhoto(`door-${doorId}-${field}`, grpEl.parentElement);}
+  else{btn.style.background='rgba(108,92,231,0.15)';btn.style.borderColor='#6c5ce7';btn.style.color='#a29bfe';hideInlinePhoto(`door-${doorId}-${field}`);}
   const noteEl=document.getElementById(noteId);
   if(val==='na'){noteEl.style.display='block';noteEl.focus();}else{noteEl.style.display='none';noteEl.value='';doorCheckState[doorId][field==='saltScrape'?'saltNote':'exitNote']='';}
 }
@@ -868,6 +885,55 @@ function handleNameSelect(sel) {
   }
 }
 
+// ── INLINE PHOTO HELPERS for internal checklists ──
+const inlinePhotoState = {};
+
+function showInlinePhoto(key, parentEl) {
+  if (!parentEl) return;
+  let container = document.getElementById(`inline-photo-${key}`);
+  if (!container) {
+    container = document.createElement('div');
+    container.id = `inline-photo-${key}`;
+    container.style.cssText = 'margin-top:8px;';
+    container.innerHTML = `
+      <button onclick="triggerInlinePhoto('${key}')" id="inline-btn-${key}" style="display:block;width:100%;padding:7px 12px;border-radius:6px;border:1.5px solid var(--warn);background:rgba(231,76,60,0.12);font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;color:var(--warn);text-align:center;">📷 Take Photo of Issue</button>
+      <div id="inline-preview-${key}" style="display:none;margin-top:6px;border-radius:6px;overflow:hidden;border:2px solid #6c5ce7;"><img id="inline-img-${key}" src="" style="width:100%;max-height:160px;object-fit:cover;display:block;"></div>
+      <div id="inline-note-${key}" style="display:none;margin-top:4px;font-size:0.75rem;color:#a29bfe;font-family:'Barlow Condensed',sans-serif;">📷 Photo captured — will be noted in report</div>
+      <input type="file" accept="image/*" capture="environment" id="inline-input-${key}" style="display:none;" onchange="handleInlinePhoto('${key}',this)">`;
+    parentEl.appendChild(container);
+  }
+  container.style.display = 'block';
+}
+
+function hideInlinePhoto(key) {
+  const container = document.getElementById(`inline-photo-${key}`);
+  if (container) container.style.display = 'none';
+  delete inlinePhotoState[key];
+}
+
+function triggerInlinePhoto(key) {
+  document.getElementById(`inline-input-${key}`)?.click();
+}
+
+function handleInlinePhoto(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById(`inline-img-${key}`).src = e.target.result;
+    document.getElementById(`inline-preview-${key}`).style.display = 'block';
+    document.getElementById(`inline-note-${key}`).style.display = 'block';
+    const btn = document.getElementById(`inline-btn-${key}`);
+    btn.textContent = '📷 Photo Taken — Tap to Retake';
+    btn.style.borderColor = '#6c5ce7';
+    btn.style.background = 'rgba(108,92,231,0.15)';
+    btn.style.color = '#a29bfe';
+    const now = new Date().toLocaleTimeString('en-CA', {hour:'2-digit', minute:'2-digit'});
+    inlinePhotoState[key] = { taken: true, time: now };
+  };
+  reader.readAsDataURL(file);
+}
+
 function takePhoto(index) {
   document.getElementById(`photo-input-${index}`)?.click();
 }
@@ -1005,6 +1071,7 @@ function resetForm() {
   stopResults={};
   Object.keys(safetyCheckResults).forEach(k=>delete safetyCheckResults[k]);
   Object.keys(photoState).forEach(k=>delete photoState[k]);
+  Object.keys(inlinePhotoState).forEach(k=>delete inlinePhotoState[k]);
   ptCompleted=[];ptState={};ptSelected=null;
   boilerCompletedSimple=[];boilerStateSimple={};boilerSelectedSimple=null;
   document.getElementById('staffNameSelect').value='';
