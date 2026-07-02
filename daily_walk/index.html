@@ -269,6 +269,19 @@
 <script>
 let currentLang = 'en';
 
+// ── SHARED HELPERS FOR INDIVIDUAL CHECKLIST EMAILS ──
+function getStaffSupervisor() {
+  const staff = (document.getElementById('staffName')?.value || '').trim() || document.getElementById('staffNameSelect')?.value || 'Not selected';
+  const supervisor = document.getElementById('supervisorSelect')?.value || 'Not selected';
+  return { staff, supervisor };
+}
+
+function sendEquipmentEmail(subject, body) {
+  emailjs.send('service_a35rfka','template_ehen3f7',{
+    to_email:'jasonkath7610@gmail.com', subject: subject, message: body, from_name:'Colasanti Maintenance System'
+  }).then(()=>console.log('Email sent:',subject)).catch(err=>console.error('EmailJS error:',err));
+}
+
 const palletTruckInfo = {
   hansler: { name: 'Hansler', sub:'Electric Pallet Truck' },
   clark:   { name: 'Clark', sub:'Electric Pallet Truck' }
@@ -372,6 +385,49 @@ function submitPalletTruck(id) {
   ptState[id].shiftEnd = document.getElementById(`pt_${id}_shiftEnd`)?.value || '';
   ptState[id].comments = document.getElementById(`pt_${id}_comments`)?.value || '';
   if (!ptCompleted.includes(id)) ptCompleted.push(id);
+
+  // ── SEND INDIVIDUAL EMAIL FOR THIS PALLET TRUCK ──
+  const info = palletTruckInfo[id];
+  const s = ptState[id];
+  const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const { staff, supervisor } = getStaffSupervisor();
+  let hasIssues = false;
+  const visualLines = ptVisualItems.map((item,i) => {
+    const val = s.visual[i];
+    if (val === 'fail') hasIssues = true;
+    return `${i+1}. ${item}: ${(val||'NOT CHECKED').toUpperCase()}`;
+  }).join('\n');
+  const operationalLines = ptOperationalItems.map((item,i) => {
+    const val = s.operational[i];
+    if (val === 'fail') hasIssues = true;
+    return `${i+1}. ${item}: ${(val||'NOT CHECKED').toUpperCase()}`;
+  }).join('\n');
+  const ptSubject = hasIssues
+    ? `⚠️ Colasanti's Pallet Truck Check — ${info.name} ISSUES FOUND | ${staff} | ${timestamp}`
+    : `✅ Colasanti's Pallet Truck Check — ${info.name} All Clear | ${staff} | ${timestamp}`;
+  const ptBody = `
+COLASANTI'S PALLET TRUCK DAILY CHECK
+========================================
+Submitted: ${timestamp}
+TRUCK: ${info.name} — ${info.sub}
+STAFF: ${staff}
+SUPERVISOR: ${supervisor}
+Shift Hours: ${s.shiftStart||'—'} to ${s.shiftEnd||'—'}
+Battery: ${s.battery||'—'}%
+
+VISUAL INSPECTION
+------------------
+${visualLines}
+
+OPERATIONAL INSPECTION
+------------------------
+${operationalLines}
+
+COMMENTS: ${s.comments || 'None'}
+========================================
+Submitted via Colasanti's Maintenance System`;
+  sendEquipmentEmail(ptSubject, ptBody);
+
   closeModal('forklift');
   updatePtButton();
 }
@@ -479,6 +535,39 @@ function submitBoilerSimple(num) {
   });
   boilerStateSimple[num].comments = document.getElementById(`bo_${num}_comments`)?.value || '';
   if (!boilerCompletedSimple.includes(num)) boilerCompletedSimple.push(num);
+
+  // ── SEND INDIVIDUAL EMAIL FOR THIS BOILER ──
+  const info = boilerInfoSimple[num];
+  const s = boilerStateSimple[num];
+  const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const { staff, supervisor } = getStaffSupervisor();
+  let hasIssues = false;
+  const boilerLines = boilerDailyItemsSimple.map(item => {
+    const val = s.checks[item.id];
+    if (item.hasInput) return `${item.label}: ${val||'—'} ${item.unit}`;
+    if (val === 'fail') hasIssues = true;
+    return `${item.label}: ${(val||'NOT CHECKED').toUpperCase()}`;
+  }).join('\n');
+  const boilerSubject = hasIssues
+    ? `⚠️ Colasanti's Boiler Check — ${info.name} ISSUES FOUND | ${staff} | ${timestamp}`
+    : `✅ Colasanti's Boiler Check — ${info.name} All Clear | ${staff} | ${timestamp}`;
+  const boilerBody = `
+COLASANTI'S STEAM BOILER DAILY CHECK
+========================================
+Submitted: ${timestamp}
+BOILER: ${info.name} — ${info.model} (${info.year})
+STAFF: ${staff}
+SUPERVISOR: ${supervisor}
+
+DAILY CHECKS
+------------
+${boilerLines}
+
+COMMENTS: ${s.comments || 'None'}
+========================================
+Submitted via Colasanti's Maintenance System`;
+  sendEquipmentEmail(boilerSubject, boilerBody);
+
   closeBoilerModal();
   updateBoilerButtonSimple();
 }
@@ -590,7 +679,30 @@ function updateClProgress(key) {
 
 function openModal(key) { document.getElementById(`modal-${key}`)?.classList.add('show'); document.body.style.overflow='hidden'; }
 function closeModal(key) { document.getElementById(`modal-${key}`)?.classList.remove('show'); document.body.style.overflow=''; }
-function submitChecklist(key) { closeModal(key); const btn=document.getElementById(`clbtn-${key}`); if(btn){btn.classList.add('completed');btn.textContent='✅ Checklist Done';} }
+
+function submitChecklist(key) {
+  // ── SEND INDIVIDUAL EMAIL FOR THIS CHECKLIST ──
+  const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const { staff, supervisor } = getStaffSupervisor();
+  const cl = checklists[key];
+  const summary = getChecklistSummary(key);
+  const clSubject = `✅ Colasanti's ${cl.title} Complete | ${staff} | ${timestamp}`;
+  const clBody = `
+COLASANTI'S ${cl.title.toUpperCase()}
+========================================
+Submitted: ${timestamp}
+STAFF: ${staff}
+SUPERVISOR: ${supervisor}
+
+${summary}
+========================================
+Submitted via Colasanti's Maintenance System`;
+  sendEquipmentEmail(clSubject, clBody);
+
+  closeModal(key);
+  const btn=document.getElementById(`clbtn-${key}`);
+  if(btn){btn.classList.add('completed');btn.textContent='✅ Checklist Done';}
+}
 
 function getChecklistSummary(key) {
   if (key==='boiler1') return getBoilerSummarySimple();
@@ -720,6 +832,27 @@ function submitDoorsModal() {
     if(currentSeason==='winter' && s.saltScrape==='na'&&!s.saltNote.trim()){alert(`⚠️ N/A reason required for Salt/Scrape at: ${door.label}`);return;}
     if(s.exitCheck==='na'&&!s.exitNote.trim()){alert(`⚠️ N/A reason required for Emergency Exit at: ${door.label}`);return;}
   }
+
+  // ── SEND INDIVIDUAL EMAIL FOR DOOR CHECKS ──
+  const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const { staff, supervisor } = getStaffSupervisor();
+  const doorSummary = getDoorCheckSummary();
+  const doorHasIssues = doorCheckDoors.some(d => doorCheckState[d.id].saltScrape==='fail' || doorCheckState[d.id].exitCheck==='fail');
+  const doorSubject = doorHasIssues
+    ? `⚠️ Colasanti's Door Checks — ISSUES FOUND | ${staff} | ${timestamp}`
+    : `✅ Colasanti's Door Checks — All Clear | ${staff} | ${timestamp}`;
+  const doorBody = `
+COLASANTI'S DOOR CHECKS / SALTING LOG
+========================================
+Submitted: ${timestamp}
+STAFF: ${staff}
+SUPERVISOR: ${supervisor}
+SEASON: ${currentSeason==='winter'?'❄️ Winter':'☀️ Summer'}
+${doorSummary}
+========================================
+Submitted via Colasanti's Maintenance System`;
+  sendEquipmentEmail(doorSubject, doorBody);
+
   closeModal('doors');
   const btn=document.getElementById('clbtn-doors');
   if(btn){btn.classList.add('completed');btn.textContent='✅ Door Checks Done';}
