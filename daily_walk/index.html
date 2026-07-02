@@ -406,13 +406,13 @@ function submitPalletTruck(id) {
     ? `⚠️ Colasanti's Pallet Truck Check — ${info.name} ISSUES FOUND | ${staff} | ${timestamp}`
     : `✅ Colasanti's Pallet Truck Check — ${info.name} All Clear | ${staff} | ${timestamp}`;
   const ptBody = `
-COLASANTI'S PALLET TRUCK DAILY CHECK
+COLASANTI'S — ELECTRIC PALLET TRUCK DAILY CHECK LIST
 ========================================
+${info.name} — ${info.sub}
 Submitted: ${timestamp}
-TRUCK: ${info.name} — ${info.sub}
 STAFF: ${staff}
 SUPERVISOR: ${supervisor}
-Shift Hours: ${s.shiftStart||'—'} to ${s.shiftEnd||'—'}
+Shift Start Hrs: ${s.shiftStart||'—'}      Shift End Hrs: ${s.shiftEnd||'—'}
 Battery: ${s.battery||'—'}%
 
 VISUAL INSPECTION
@@ -536,32 +536,47 @@ function submitBoilerSimple(num) {
   boilerStateSimple[num].comments = document.getElementById(`bo_${num}_comments`)?.value || '';
   if (!boilerCompletedSimple.includes(num)) boilerCompletedSimple.push(num);
 
-  // ── SEND INDIVIDUAL EMAIL FOR THIS BOILER ──
+  // ── SEND INDIVIDUAL EMAIL FOR THIS BOILER (formatted to mirror paper log) ──
   const info = boilerInfoSimple[num];
   const s = boilerStateSimple[num];
   const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   const { staff, supervisor } = getStaffSupervisor();
   let hasIssues = false;
-  const boilerLines = boilerDailyItemsSimple.map(item => {
-    const val = s.checks[item.id];
-    if (item.hasInput) return `${item.label}: ${val||'—'} ${item.unit}`;
+
+  // Paper log order: Water Level, Pressure, Flue Gas Temp, Running %, Cycle Count Reading, # of Cycle Counts
+  const dailyLogIds = ['water_level','pressure','flue_gas','running_pct','cycle_count','cycles_today'];
+  // Extra fields Jason added beyond the paper log
+  const extraIds = ['condensate_pit','salt_levels','combustion_air','water_meter'];
+
+  function fmtBoilerItem(id) {
+    const item = boilerDailyItemsSimple.find(x => x.id === id);
+    const val = s.checks[id];
+    if (item.hasInput) return `${item.label}: ${val || '—'} ${item.unit}`;
     if (val === 'fail') hasIssues = true;
-    return `${item.label}: ${(val||'NOT CHECKED').toUpperCase()}`;
-  }).join('\n');
+    return `${item.label}: ${(val || 'NOT CHECKED').toUpperCase()}`;
+  }
+
+  const dailyLogLines = dailyLogIds.map(fmtBoilerItem).join('\n');
+  const extraLines = extraIds.map(fmtBoilerItem).join('\n');
+
   const boilerSubject = hasIssues
     ? `⚠️ Colasanti's Boiler Check — ${info.name} ISSUES FOUND | ${staff} | ${timestamp}`
     : `✅ Colasanti's Boiler Check — ${info.name} All Clear | ${staff} | ${timestamp}`;
   const boilerBody = `
-COLASANTI'S STEAM BOILER DAILY CHECK
+COLASANTI'S — STEAM BOILER DAILY CHECK
 ========================================
+${info.name} — ${info.model} (${info.year})
 Submitted: ${timestamp}
-BOILER: ${info.name} — ${info.model} (${info.year})
 STAFF: ${staff}
 SUPERVISOR: ${supervisor}
 
-DAILY CHECKS
-------------
-${boilerLines}
+DAILY LOG
+---------
+${dailyLogLines}
+
+ADDITIONAL CHECKS
+------------------
+${extraLines}
 
 COMMENTS: ${s.comments || 'None'}
 ========================================
@@ -685,16 +700,21 @@ function submitChecklist(key) {
   const timestamp = new Date().toLocaleString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
   const { staff, supervisor } = getStaffSupervisor();
   const cl = checklists[key];
-  const summary = getChecklistSummary(key);
+  const itemLines = cl.items.map(item => {
+    const r = checklistResults[key][item.id];
+    return `  • ${item.label}: ${r.checked?'PASS':'FAIL'}${r.note?' — '+r.note:''}`;
+  }).join('\n');
   const clSubject = `✅ Colasanti's ${cl.title} Complete | ${staff} | ${timestamp}`;
   const clBody = `
-COLASANTI'S ${cl.title.toUpperCase()}
+COLASANTI'S — ${cl.title.toUpperCase()} LOG
 ========================================
 Submitted: ${timestamp}
-STAFF: ${staff}
+INSPECTED BY: ${staff}
 SUPERVISOR: ${supervisor}
 
-${summary}
+INSPECTION ITEMS
+-----------------
+${itemLines}
 ========================================
 Submitted via Colasanti's Maintenance System`;
   sendEquipmentEmail(clSubject, clBody);
@@ -842,12 +862,12 @@ function submitDoorsModal() {
     ? `⚠️ Colasanti's Door Checks — ISSUES FOUND | ${staff} | ${timestamp}`
     : `✅ Colasanti's Door Checks — All Clear | ${staff} | ${timestamp}`;
   const doorBody = `
-COLASANTI'S DOOR CHECKS / SALTING LOG
+COLASANTI'S — SALTING LOG / DOOR CHECKS
 ========================================
-Submitted: ${timestamp}
-STAFF: ${staff}
+Date/Time: ${timestamp}
+Initials: ${staff}
 SUPERVISOR: ${supervisor}
-SEASON: ${currentSeason==='winter'?'❄️ Winter':'☀️ Summer'}
+SEASON: ${currentSeason==='winter'?'❄️ Winter (Salt/Scrape required)':'☀️ Summer (Exit checks only)'}
 ${doorSummary}
 ========================================
 Submitted via Colasanti's Maintenance System`;
